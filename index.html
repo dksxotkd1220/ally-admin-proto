@@ -187,6 +187,8 @@ tbody tr:hover { background: #FAFBFF; }
 .ubar      { height: 4px; border-radius: 2px; background: var(--accent); }
 .ubar.warn { background: #F59E0B; }
 .ubar.dang { background: #EF4444; }
+.limit-select { border: 1px solid var(--border); border-radius: 6px; padding: 4px 8px; font-size: 12px; color: var(--text); background: #fff; cursor: pointer; outline: none; }
+.limit-select:focus { border-color: var(--accent); }
 .key-cell  { font-family: 'Courier New', monospace; font-size: 12px; }
 .key-cell span { background: var(--bg); border: 1px solid var(--border); border-radius: 5px; padding: 2px 8px; }
 
@@ -262,7 +264,6 @@ tbody tr:hover { background: #FAFBFF; }
 
   <div class="sidebar-footer">
     <div class="footer-user">
-      <div class="user-avatar">임</div>
       <div>
         <div class="user-name">관리자</div>
         <div class="user-timer" id="sessionTimer">● 59:58</div>
@@ -279,10 +280,7 @@ tbody tr:hover { background: #FAFBFF; }
       <div class="topbar-breadcrumb">A11Y.so 관리시스템 &rsaquo; <span id="topbarTitle">대시보드</span></div>
     </div>
     <div class="topbar-right">
-      <div style="display:flex;align-items:center;gap:8px">
-        <div style="width:28px;height:28px;border-radius:50%;background:#3fc26a;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:700">임</div>
-        <span style="font-size:13px;font-weight:600;color:var(--text)">관리자</span>
-      </div>
+      <span style="font-size:13px;font-weight:600;color:var(--text)">관리자</span>
     </div>
   </div>
 
@@ -364,12 +362,6 @@ tbody tr:hover { background: #FAFBFF; }
             <option value="suspended">정지</option>
             <option value="pending">대기</option>
           </select>
-          <select class="flt" onchange="renderKeys()" id="keyModeFlt">
-            <option value="">전체 모드</option>
-            <option value="a11y">웹 접근성 지침 준수</option>
-            <option value="simple">간소화 설명</option>
-            <option value="seo">SEO/이커머스</option>
-          </select>
           <div class="ml-auto">
             <button class="btn btn-outline btn-sm" onclick="toast('엑셀 파일 다운로드 중...','info')">📥 엑셀 다운로드</button>
           </div>
@@ -378,7 +370,7 @@ tbody tr:hover { background: #FAFBFF; }
           <table>
             <thead><tr>
               <th>API Key</th><th>이메일</th><th>발급일</th><th>상태</th>
-              <th>잔여 사용량</th><th>API 총 사용량</th><th>웹 접근성 지침 준수 모드</th><th>간소화 설명 모드</th><th>SEO/이커머스 모드</th><th>최근 사용</th><th>처리</th>
+              <th>잔여 사용량</th><th>API 총 사용량</th><th>웹 접근성 지침 준수 모드</th><th>간소화 설명 모드</th><th>SEO/이커머스 모드</th><th>최근 사용</th><th>한도 방식</th><th>처리</th>
             </tr></thead>
             <tbody id="keyTbody"></tbody>
           </table>
@@ -412,9 +404,9 @@ tbody tr:hover { background: #FAFBFF; }
           </div>
           <div class="fsec">
             <div class="fsec-title">기본 사용량 한도</div>
-            <div style="font-size:12px;color:var(--text-muted);margin-bottom:16px">개별 Key 발급 시 적용할 한도 방식을 하나 선택합니다. 개별 Key에서 재설정 가능합니다.</div>
+            <div style="font-size:12px;color:var(--text-muted);margin-bottom:16px">신규 Key 발급 시 기본으로 적용할 한도 방식을 선택합니다. API Key 관리에서 Key별로 개별 변경할 수 있습니다.</div>
             <div class="frow">
-              <div class="flabel">한도 방식</div>
+              <div class="flabel">AI 사용권 사용 방식</div>
               <div class="radio-group" style="margin-top:8px">
                 <label class="radio-opt sel" id="limit-daily-opt" onclick="selLimit('daily')">
                   <input type="radio" name="limitMode" value="daily" checked onclick="event.stopPropagation()">
@@ -441,17 +433,6 @@ tbody tr:hover { background: #FAFBFF; }
               </div>
             </div>
           </div>
-          <div class="fsec">
-            <div class="fsec-title">허용 모드</div>
-            <div class="frow">
-              <div class="flabel">기본 허용 API 모드</div>
-              <div style="display:flex;gap:16px;margin-top:8px;flex-wrap:wrap">
-                <label style="display:flex;align-items:center;gap:7px;font-size:13px;cursor:pointer"><input type="checkbox" checked style="accent-color:var(--accent)"> 웹 접근성 지침 준수 모드</label>
-                <label style="display:flex;align-items:center;gap:7px;font-size:13px;cursor:pointer"><input type="checkbox" checked style="accent-color:var(--accent)"> 간소화 설명 모드</label>
-                <label style="display:flex;align-items:center;gap:7px;font-size:13px;cursor:pointer"><input type="checkbox" style="accent-color:var(--accent)"> SEO/이커머스 모드</label>
-              </div>
-            </div>
-          </div>
         </div>
         <div class="settings-footer">
           <button class="btn btn-primary" onclick="saveSettings()">설정 저장</button>
@@ -460,6 +441,26 @@ tbody tr:hover { background: #FAFBFF; }
       </div>
     </div>
 
+  </div>
+</div>
+
+<!-- ── 한도 방식 변경 팝업 ── -->
+<div id="limitModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:1000;align-items:center;justify-content:center">
+  <div style="background:#fff;border-radius:14px;box-shadow:0 8px 40px rgba(0,0,0,.18);padding:28px 28px 22px;min-width:320px;max-width:380px;width:100%">
+    <div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:6px">한도 방식 변경</div>
+    <div style="font-size:12px;color:var(--text-muted);margin-bottom:20px">Key: <code style="background:var(--bg);padding:2px 6px;border-radius:4px;font-size:11px" id="limitPopupKey"></code></div>
+    <div style="margin-bottom:18px">
+      <label style="display:block;font-size:12px;font-weight:600;color:var(--text-sub);margin-bottom:8px" id="limitPopupLabel"></label>
+      <div style="display:flex;align-items:center;gap:10px">
+        <input type="number" id="limitPopupValue" min="1" style="border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-size:14px;width:120px;outline:none;color:var(--text)" onkeydown="if(event.key==='Enter')saveLimitChange()">
+        <span style="font-size:13px;color:var(--text-muted)" id="limitPopupUnit"></span>
+      </div>
+    </div>
+    <input type="hidden" id="limitPopupTypeHidden">
+    <div style="display:flex;gap:8px;justify-content:flex-end">
+      <button class="btn btn-outline btn-sm" onclick="closeLimitPopup()">취소</button>
+      <button class="btn btn-primary btn-sm" onclick="saveLimitChange()">저장</button>
+    </div>
   </div>
 </div>
 
@@ -480,13 +481,13 @@ const APPLICANTS = [
   {id:12, email:'pending3@company.org',     applyAt:'2026-07-09 07:55', status:'pending',  keyId:null},
 ];
 const API_KEYS = [
-  {key:'a11y-8f3d2c1b', email:'park.jimin@webagency.com', issuedAt:'2026-07-08', status:'active',    usedToday:23, dailyLimit:50,  usedTotal:87,  totalGrant:100, lastUsed:'5분 전',   mode:'a11y',   modeUsage:{a11y:65,  simple:15,  seo:7}},
-  {key:'a11y-7e1a0f9c', email:'emily.chen@techfirm.sg',   issuedAt:'2026-07-08', status:'active',    usedToday:49, dailyLimit:50,  usedTotal:91,  totalGrant:100, lastUsed:'12분 전',  mode:'simple', modeUsage:{a11y:12,  simple:71,  seo:8}},
-  {key:'a11y-2b4d6e8f', email:'hiroshi@e-access.jp',      issuedAt:'2026-07-07', status:'active',    usedToday:7,  dailyLimit:50,  usedTotal:142, totalGrant:200, lastUsed:'2시간 전', mode:'a11y',   modeUsage:{a11y:108, simple:28,  seo:6}},
-  {key:'a11y-9c3a5e7d', email:'admin@public-sector.gov',  issuedAt:'2026-07-07', status:'active',    usedToday:0,  dailyLimit:200, usedTotal:38,  totalGrant:500, lastUsed:'어제',     mode:'seo',    modeUsage:{a11y:5,   simple:4,   seo:29}},
-  {key:'a11y-1f5c3b9a', email:'kim.sohee@uiagency.kr',    issuedAt:'2026-07-06', status:'active',    usedToday:50, dailyLimit:50,  usedTotal:100, totalGrant:100, lastUsed:'방금',     mode:'simple', modeUsage:{a11y:11,  simple:82,  seo:7}},
-  {key:'a11y-5d9b2e6a', email:'previous@olduser.com',     issuedAt:'2026-06-15', status:'suspended', usedToday:0,  dailyLimit:50,  usedTotal:312, totalGrant:0,   lastUsed:'2주 전',   mode:'a11y',   modeUsage:{a11y:248, simple:47,  seo:17}},
-  {key:'a11y-0e4c8f2d', email:'beta@earlyuser.net',       issuedAt:'2026-05-01', status:'active',    usedToday:12, dailyLimit:100, usedTotal:891, totalGrant:0,   lastUsed:'1시간 전', mode:'a11y',   modeUsage:{a11y:698, simple:152, seo:41}},
+  {key:'a11y-8f3d2c1b', email:'park.jimin@webagency.com', issuedAt:'2026-07-08', status:'active',    usedToday:23, dailyLimit:50,  usedTotal:87,  totalGrant:100, lastUsed:'5분 전',   mode:'a11y',   modeUsage:{a11y:65,  simple:15,  seo:7},  limitType:'daily', limitValue:50},
+  {key:'a11y-7e1a0f9c', email:'emily.chen@techfirm.sg',   issuedAt:'2026-07-08', status:'active',    usedToday:49, dailyLimit:50,  usedTotal:91,  totalGrant:100, lastUsed:'12분 전',  mode:'simple', modeUsage:{a11y:12,  simple:71,  seo:8},  limitType:'total', limitValue:100},
+  {key:'a11y-2b4d6e8f', email:'hiroshi@e-access.jp',      issuedAt:'2026-07-07', status:'active',    usedToday:7,  dailyLimit:50,  usedTotal:142, totalGrant:200, lastUsed:'2시간 전', mode:'a11y',   modeUsage:{a11y:108, simple:28,  seo:6},  limitType:'total', limitValue:200},
+  {key:'a11y-9c3a5e7d', email:'admin@public-sector.gov',  issuedAt:'2026-07-07', status:'active',    usedToday:0,  dailyLimit:200, usedTotal:38,  totalGrant:500, lastUsed:'어제',     mode:'seo',    modeUsage:{a11y:5,   simple:4,   seo:29}, limitType:'daily', limitValue:200},
+  {key:'a11y-1f5c3b9a', email:'kim.sohee@uiagency.kr',    issuedAt:'2026-07-06', status:'active',    usedToday:50, dailyLimit:50,  usedTotal:100, totalGrant:100, lastUsed:'방금',     mode:'simple', modeUsage:{a11y:11,  simple:82,  seo:7},  limitType:'daily', limitValue:50},
+  {key:'a11y-5d9b2e6a', email:'previous@olduser.com',     issuedAt:'2026-06-15', status:'suspended', usedToday:0,  dailyLimit:50,  usedTotal:312, totalGrant:0,   lastUsed:'2주 전',   mode:'a11y',   modeUsage:{a11y:248, simple:47,  seo:17}, limitType:'daily', limitValue:50},
+  {key:'a11y-0e4c8f2d', email:'beta@earlyuser.net',       issuedAt:'2026-05-01', status:'active',    usedToday:12, dailyLimit:100, usedTotal:891, totalGrant:0,   lastUsed:'1시간 전', mode:'a11y',   modeUsage:{a11y:698, simple:152, seo:41}, limitType:'daily', limitValue:100},
 ];
 
 // ── 뷰 전환 ─────────────────────────────────────────────────────────
@@ -543,19 +544,18 @@ function rejectApp(id) {
 function renderKeys() {
   const q  = (document.getElementById('keySearch').value||'').toLowerCase();
   const sf = document.getElementById('keyStatusFlt').value;
-  const mf = document.getElementById('keyModeFlt').value;
   const rows = API_KEYS.filter(k =>
     (!q  || k.email.toLowerCase().includes(q) || k.key.toLowerCase().includes(q)) &&
-    (!sf || k.status === sf) &&
-    (!mf || k.mode === mf)
+    (!sf || k.status === sf)
   );
   const tb = document.getElementById('keyTbody');
-  if (!rows.length) { tb.innerHTML = '<tr><td colspan="8" class="empty-state">일치하는 Key가 없습니다.</td></tr>'; return; }
+  if (!rows.length) { tb.innerHTML = '<tr><td colspan="12" class="empty-state">일치하는 Key가 없습니다.</td></tr>'; return; }
   tb.innerHTML = rows.map(k => {
     const tp = k.dailyLimit > 0 ? Math.min(Math.round(k.usedToday/k.dailyLimit*100),100) : 0;
-    const up = k.totalGrant  > 0 ? Math.min(Math.round(k.usedTotal/k.totalGrant*100), 100) : 0;
     const tc = tp>=100?'dang':tp>=80?'warn':'';
-    const uc = up>=100?'dang':up>=80?'warn':'';
+    const limitLabel = k.limitType==='daily'
+      ? `<span style="font-size:11px;color:var(--text-muted)">일일 ${k.limitValue}회/일</span>`
+      : `<span style="font-size:11px;color:var(--text-muted)">총 ${k.limitValue}회</span>`;
     return `<tr>
       <td class="key-cell"><span>${k.key.slice(0,8)}••••••••</span></td>
       <td>${k.email}</td>
@@ -567,6 +567,13 @@ function renderKeys() {
       <td style="font-size:13px;color:#818CF8;font-weight:500">${k.modeUsage.simple.toLocaleString('ko-KR')}<span style="font-size:11px;font-weight:400;color:var(--text-muted);margin-left:3px">회</span></td>
       <td style="font-size:13px;color:#10B981;font-weight:500">${k.modeUsage.seo.toLocaleString('ko-KR')}<span style="font-size:11px;font-weight:400;color:var(--text-muted);margin-left:3px">회</span></td>
       <td style="font-size:12px;color:var(--text-muted)">${k.lastUsed}</td>
+      <td style="min-width:120px">
+        <select class="limit-select" onchange="openLimitPopup('${k.key}', this.value, this)" data-key="${k.key}">
+          <option value="daily" ${k.limitType==='daily'?'selected':''}>일일 제한</option>
+          <option value="total" ${k.limitType==='total'?'selected':''}>총 사용권</option>
+        </select>
+        <div style="margin-top:3px">${limitLabel}</div>
+      </td>
       <td style="white-space:nowrap">
         ${k.status==='active'    ? `<button class="btn btn-warning btn-sm" onclick="suspendKey('${k.key}')">정지</button>` : ''}
         ${k.status==='suspended' ? `<button class="btn btn-success btn-sm" onclick="restoreKey('${k.key}')">해제</button>` : ''}
@@ -582,6 +589,52 @@ function suspendKey(k) {
 function restoreKey(k) {
   const x = API_KEYS.find(a=>a.key===k); if(x) x.status='active';
   toast(`Key ${k.slice(0,8)}•••• 활성화됨`, 'success'); renderKeys();
+}
+
+// ── 한도 방식 팝업 ──────────────────────────────────────────────────
+let _limitTargetKey = null;
+let _limitSelectEl  = null;
+let _limitPrevType  = null;
+
+function openLimitPopup(keyId, newType, selectEl) {
+  const k = API_KEYS.find(a => a.key === keyId);
+  if (!k || newType === k.limitType) return;
+  _limitTargetKey = keyId;
+  _limitSelectEl  = selectEl;
+  _limitPrevType  = k.limitType;
+
+  document.getElementById('limitPopupKey').textContent = keyId.slice(0,8) + '••••';
+  const isDaily = newType === 'daily';
+  document.getElementById('limitPopupLabel').textContent = isDaily ? '하루 최대 호출 수' : '총 부여 횟수';
+  document.getElementById('limitPopupUnit').textContent  = isDaily ? '회 / 일' : '회';
+  document.getElementById('limitPopupValue').value = k.limitValue;
+  document.getElementById('limitPopupTypeHidden').value = newType;
+  document.getElementById('limitModal').style.display = 'flex';
+  document.getElementById('limitPopupValue').focus();
+}
+
+function closeLimitPopup() {
+  if (_limitSelectEl && _limitPrevType) {
+    _limitSelectEl.value = _limitPrevType;
+  }
+  document.getElementById('limitModal').style.display = 'none';
+  _limitTargetKey = null; _limitSelectEl = null; _limitPrevType = null;
+}
+
+function saveLimitChange() {
+  const k = API_KEYS.find(a => a.key === _limitTargetKey);
+  if (!k) return;
+  const newType  = document.getElementById('limitPopupTypeHidden').value;
+  const newValue = parseInt(document.getElementById('limitPopupValue').value, 10);
+  if (!newValue || newValue < 1) { toast('올바른 값을 입력하세요.', 'danger'); return; }
+  k.limitType  = newType;
+  k.limitValue = newValue;
+  if (newType === 'daily')  { k.dailyLimit = newValue; }
+  else                      { k.totalGrant = newValue; }
+  document.getElementById('limitModal').style.display = 'none';
+  _limitTargetKey = null; _limitSelectEl = null; _limitPrevType = null;
+  toast('저장되었습니다.', 'success');
+  renderKeys();
 }
 
 // ── 설정 ────────────────────────────────────────────────────────────
