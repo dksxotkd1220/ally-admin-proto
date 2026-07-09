@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A11Y.so 관리시스템</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --accent:       #4A6CF7;
+  --accent-light: #EEF2FF;
+  --accent-dark:  #3555D8;
+  --bg:           #F5F6FA;
+  --sidebar-bg:   #FFFFFF;
+  --card-bg:      #FFFFFF;
+  --border:       #E8EAF0;
+  --border-light: #F0F2F8;
+  --text:         #1C1F2E;
+  --text-sub:     #4B5480;
+  --text-muted:   #9BA4C0;
+  --sidebar-w:    200px;
+  --topbar-h:     56px;
+  --shadow-sm:    0 1px 4px rgba(74,108,247,.06), 0 0 1px rgba(0,0,0,.06);
+  --shadow:       0 2px 12px rgba(74,108,247,.08), 0 1px 3px rgba(0,0,0,.06);
+  --radius:       12px;
+}
+body { font-family: 'Apple SD Gothic Neo', '맑은 고딕', 'Noto Sans KR', system-ui, sans-serif; background: var(--bg); color: var(--text); display: flex; height: 100vh; overflow: hidden; font-size: 14px; }
+
+/* ──────────────── 사이드바 ──────────────── */
+.sidebar { width: var(--sidebar-w); background: var(--sidebar-bg); border-right: 1px solid var(--border); display: flex; flex-direction: column; flex-shrink: 0; }
+
+.sidebar-logo { padding: 18px 16px 14px; border-bottom: 1px solid var(--border-light); }
+.logo-row { display: flex; align-items: center; gap: 8px; }
+.logo-icon { width: 30px; height: 30px; background: linear-gradient(135deg,#4A6CF7,#7B5CF7); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 13px; font-weight: 900; letter-spacing: -1px; flex-shrink: 0; }
+.logo-text { flex: 1; }
+.logo-name { font-size: 15px; font-weight: 800; color: var(--text); letter-spacing: -.3px; }
+.logo-name span { color: var(--accent); }
+.logo-badge { display: inline-block; background: var(--accent-light); color: var(--accent); font-size: 10px; font-weight: 700; padding: 1px 6px; border-radius: 4px; margin-left: 4px; vertical-align: 1px; }
+.logo-sub { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+
+nav { flex: 1; padding: 10px 8px; overflow-y: auto; }
+.nav-item { display: flex; align-items: center; gap: 9px; padding: 9px 12px; border-radius: 8px; color: var(--text-sub); font-size: 13px; font-weight: 500; cursor: pointer; transition: background .12s, color .12s; user-select: none; }
+.nav-item:hover { background: #F5F6FA; color: var(--text); }
+.nav-item.active { background: var(--accent-light); color: var(--accent); font-weight: 700; }
+.nav-item .nav-icon { width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; opacity: .7; }
+.nav-item.active .nav-icon { opacity: 1; }
+.nav-item .nav-arrow { margin-left: auto; font-size: 11px; color: var(--text-muted); transition: transform .15s; }
+.nav-section { font-size: 10px; font-weight: 700; color: var(--text-muted); letter-spacing: .8px; text-transform: uppercase; padding: 10px 12px 4px; margin-top: 6px; }
+.nav-sub { padding-left: 40px; font-size: 12px; color: var(--text-muted); display: none; }
+.nav-sub.open { display: block; }
+.nav-sub-item { padding: 7px 12px; border-radius: 6px; cursor: pointer; transition: background .1s; }
+.nav-sub-item:hover { background: #F5F6FA; color: var(--text-sub); }
+
+.sidebar-footer { padding: 12px 12px; border-top: 1px solid var(--border-light); }
+.footer-user { display: flex; align-items: center; gap: 10px; }
+.user-avatar { width: 30px; height: 30px; border-radius: 50%; background: #3fc26a; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+.user-name { font-size: 13px; font-weight: 600; color: var(--text); }
+.user-timer { font-size: 11px; color: #e53e3e; font-weight: 600; }
+.footer-dots { margin-left: auto; color: var(--text-muted); font-size: 16px; cursor: pointer; line-height: 1; }
+
+/* ──────────────── 메인 ──────────────── */
+.main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+.topbar { background: var(--card-bg); border-bottom: 1px solid var(--border); padding: 0 24px; height: var(--topbar-h); display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
+.topbar-left { display: flex; align-items: center; gap: 12px; }
+.topbar-breadcrumb { font-size: 12px; color: var(--text-muted); }
+.topbar-breadcrumb span { color: var(--accent); font-weight: 600; }
+.topbar-right { display: flex; align-items: center; gap: 16px; }
+.topbar-btn { width: 32px; height: 32px; border-radius: 8px; background: var(--bg); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 14px; cursor: pointer; color: var(--text-sub); transition: background .1s; }
+.topbar-btn:hover { background: var(--accent-light); color: var(--accent); }
+.content { flex: 1; overflow-y: auto; padding: 20px 24px; }
+
+/* ──────────────── 뷰 ──────────────── */
+.view { display: none; }
+.view.active { display: block; }
+
+/* ──────────────── 카드 ──────────────── */
+.card { background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow-sm); overflow: hidden; margin-bottom: 16px; }
+.card-header { padding: 14px 18px; border-bottom: 1px solid var(--border-light); display: flex; align-items: center; justify-content: space-between; }
+.card-title { font-size: 13px; font-weight: 700; color: var(--text); display: flex; align-items: center; gap: 7px; }
+.card-title .ct-icon { width: 22px; height: 22px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0; }
+
+/* ──────────────── 대시보드 위젯 ──────────────── */
+.dash-grid-top { display: grid; grid-template-columns: 240px 1fr; gap: 16px; margin-bottom: 16px; }
+.dash-grid-left { display: flex; flex-direction: column; gap: 16px; }
+
+/* 현재 시각 */
+.clock-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow-sm); padding: 20px 22px; }
+.clock-card .clock-label { font-size: 12px; color: var(--text-muted); display: flex; align-items: center; gap: 6px; margin-bottom: 14px; }
+.clock-card .clock-time { font-size: 26px; font-weight: 700; color: var(--text); text-align: center; letter-spacing: -.5px; font-variant-numeric: tabular-nums; }
+
+/* 저장 공간 */
+.storage-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow-sm); padding: 18px 22px; }
+.storage-card .st-label { font-size: 12px; color: var(--text-muted); display: flex; align-items: center; gap: 6px; margin-bottom: 12px; }
+.storage-bar-wrap { height: 8px; background: var(--border); border-radius: 4px; margin: 8px 0; }
+.storage-bar { height: 8px; border-radius: 4px; background: var(--accent); }
+.storage-meta { display: flex; justify-content: space-between; font-size: 12px; color: var(--text-muted); }
+.storage-pct { font-size: 20px; font-weight: 700; color: var(--accent); }
+
+/* 에러 로그 */
+.log-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow-sm); overflow: hidden; }
+.log-header { padding: 14px 18px; border-bottom: 1px solid var(--border-light); display: flex; align-items: center; justify-content: space-between; }
+.log-title { font-size: 13px; font-weight: 700; color: var(--text); display: flex; align-items: center; gap: 7px; }
+.log-body { padding: 0; min-height: 140px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.empty-illust { text-align: center; padding: 24px; color: var(--text-muted); }
+.empty-illust .illust-box { font-size: 48px; margin-bottom: 8px; filter: grayscale(.4) opacity(.5); }
+.empty-illust p { font-size: 13px; color: var(--text-muted); }
+
+/* 빠른 링크 */
+.quick-links-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; padding: 14px; }
+.quick-link { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; display: flex; align-items: center; gap: 12px; cursor: pointer; transition: box-shadow .15s, border-color .15s; font-size: 13px; font-weight: 600; color: var(--text); }
+.quick-link:hover { box-shadow: var(--shadow); border-color: #d0d8f8; }
+.quick-link .ql-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0; }
+.quick-link .ql-arrow { margin-left: auto; color: var(--text-muted); font-size: 12px; }
+
+/* KPI 카드 행 */
+.kpi-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 16px; }
+.kpi-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow-sm); padding: 16px 18px; }
+.kpi-card .k-label { font-size: 11px; color: var(--text-muted); font-weight: 600; margin-bottom: 8px; text-transform: uppercase; letter-spacing: .3px; }
+.kpi-card .k-value { font-size: 26px; font-weight: 800; color: var(--text); line-height: 1; }
+.kpi-card .k-sub { font-size: 11px; color: var(--text-muted); margin-top: 5px; }
+.kpi-card .k-sub b { color: var(--accent); }
+.kpi-card .k-icon { float: right; width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; margin-top: -2px; }
+
+/* ──────────────── 툴바 ──────────────── */
+.toolbar { display: flex; align-items: center; gap: 8px; padding: 12px 16px; border-bottom: 1px solid var(--border-light); background: #FCFCFE; flex-wrap: wrap; }
+.search-wrap { display: flex; align-items: center; gap: 6px; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 6px 12px; }
+.search-wrap input { border: none; outline: none; font-size: 13px; width: 200px; color: var(--text); background: transparent; }
+.search-wrap input::placeholder { color: var(--text-muted); }
+select.flt { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 7px 10px; font-size: 12px; color: var(--text-sub); cursor: pointer; outline: none; }
+select.flt:focus { border-color: var(--accent); }
+.chip { padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+.chip-y { background: #FFF8EC; color: #B45309; }
+.chip-g { background: #ECFDF5; color: #065F46; }
+.chip-r { background: #F9FAFB; color: #374151; }
+.ml-auto { margin-left: auto; }
+
+/* ──────────────── 테이블 ──────────────── */
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+thead th { background: #F8F9FD; padding: 10px 14px; text-align: left; font-size: 11px; font-weight: 700; color: var(--text-muted); border-bottom: 1px solid var(--border); white-space: nowrap; letter-spacing: .3px; text-transform: uppercase; }
+tbody td { padding: 11px 14px; border-bottom: 1px solid var(--border-light); color: var(--text); vertical-align: middle; }
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover { background: #FAFBFF; }
+
+/* ──────────────── 뱃지 ──────────────── */
+.badge { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; white-space: nowrap; }
+.badge::before { content: ''; width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
+.badge-pending   { background: #FFF8EC; color: #B45309; } .badge-pending::before   { background: #F59E0B; }
+.badge-active    { background: #ECFDF5; color: #065F46; } .badge-active::before    { background: #10B981; }
+.badge-suspended { background: #FEF2F2; color: #991B1B; } .badge-suspended::before { background: #EF4444; }
+.badge-rejected  { background: #F3F4F6; color: #374151; } .badge-rejected::before  { background: #9CA3AF; }
+
+/* ──────────────── 버튼 ──────────────── */
+.btn { display: inline-flex; align-items: center; gap: 5px; padding: 7px 16px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; border: none; transition: background .12s, box-shadow .12s; white-space: nowrap; }
+.btn:disabled { opacity: .4; cursor: not-allowed; }
+.btn-primary   { background: var(--accent); color: #fff; }
+.btn-primary:hover:not(:disabled)   { background: var(--accent-dark); box-shadow: 0 2px 8px rgba(74,108,247,.3); }
+.btn-success   { background: #10B981; color: #fff; }
+.btn-success:hover:not(:disabled)   { background: #059669; }
+.btn-danger    { background: #EF4444; color: #fff; }
+.btn-danger:hover:not(:disabled)    { background: #DC2626; }
+.btn-warning   { background: #F59E0B; color: #fff; }
+.btn-warning:hover:not(:disabled)   { background: #D97706; }
+.btn-outline   { background: #fff; color: var(--text-sub); border: 1px solid var(--border); }
+.btn-outline:hover { background: var(--bg); }
+.btn-sm { padding: 5px 12px; font-size: 12px; border-radius: 6px; }
+
+/* ──────────────── 설정 폼 ──────────────── */
+.settings-body { padding: 22px 24px; max-width: 560px; }
+.fsec { margin-bottom: 28px; }
+.fsec-title { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 14px; padding-bottom: 8px; border-bottom: 1px solid var(--border-light); }
+.frow { margin-bottom: 18px; }
+.flabel { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+.fhint  { font-size: 12px; color: var(--text-muted); margin-bottom: 8px; }
+.radio-group { display: flex; flex-direction: column; gap: 10px; }
+.radio-opt { display: flex; align-items: flex-start; gap: 10px; padding: 13px 15px; border: 1.5px solid var(--border); border-radius: 10px; cursor: pointer; transition: border-color .15s, background .15s; }
+.radio-opt:hover { background: #FAFBFF; }
+.radio-opt.sel { border-color: var(--accent); background: var(--accent-light); }
+.radio-opt input[type=radio] { accent-color: var(--accent); margin-top: 2px; flex-shrink: 0; }
+.ropt-title { font-size: 13px; font-weight: 700; color: var(--text); }
+.ropt-desc  { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+.num-input { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 8px 12px; font-size: 13px; color: var(--text); width: 140px; outline: none; }
+.num-input:focus { border-color: var(--accent); }
+.settings-footer { padding: 14px 24px; border-top: 1px solid var(--border-light); background: #F8F9FD; display: flex; align-items: center; gap: 12px; }
+
+/* ──────────────── 사용량 셀 ──────────────── */
+.ubar-wrap { height: 4px; background: var(--border); border-radius: 2px; margin-top: 4px; }
+.ubar      { height: 4px; border-radius: 2px; background: var(--accent); }
+.ubar.warn { background: #F59E0B; }
+.ubar.dang { background: #EF4444; }
+.key-cell  { font-family: 'Courier New', monospace; font-size: 12px; }
+.key-cell span { background: var(--bg); border: 1px solid var(--border); border-radius: 5px; padding: 2px 8px; }
+
+/* ──────────────── 모드 카드 ──────────────── */
+.mode-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; padding: 14px; }
+.mode-card { background: var(--bg); border-radius: 10px; padding: 14px 16px; border: 1px solid var(--border-light); }
+.mode-name { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 8px; }
+.mode-val  { font-size: 24px; font-weight: 800; color: var(--text); }
+.mode-pct  { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+.mode-bar-w { height: 4px; background: var(--border); border-radius: 2px; margin-top: 10px; }
+.mode-bar   { height: 4px; border-radius: 2px; }
+
+/* ──────────────── 토스트 ──────────────── */
+.toast-wrap { position: fixed; top: 20px; right: 24px; z-index: 9999; display: flex; flex-direction: column; gap: 8px; pointer-events: none; }
+.toast { padding: 11px 18px; border-radius: 10px; font-size: 13px; font-weight: 600; box-shadow: 0 4px 20px rgba(0,0,0,.14); animation: tin .2s ease; opacity: 1; transition: opacity .3s; border-left: 4px solid; display: flex; align-items: center; gap: 8px; }
+.toast.hide { opacity: 0; }
+.toast.success { background: #fff; color: #065F46; border-color: #10B981; }
+.toast.danger  { background: #fff; color: #991B1B; border-color: #EF4444; }
+.toast.info    { background: #fff; color: var(--accent); border-color: var(--accent); }
+@keyframes tin { from { transform: translateX(16px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+.empty-state { text-align: center; padding: 44px 24px; color: var(--text-muted); font-size: 13px; }
+@media (max-width:1100px) { .kpi-row { grid-template-columns: repeat(3,1fr); } }
+
+/* ──────────────── 날짜 범위 바 ──────────────── */
+.date-range-bar { background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow-sm); padding: 11px 16px; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.preset-btn { padding: 5px 13px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; border: 1px solid var(--border); background: #fff; color: var(--text-sub); transition: all .12s; white-space: nowrap; }
+.preset-btn:hover { background: var(--accent-light); color: var(--accent); border-color: #c7d4fb; }
+.preset-btn.on { background: var(--accent); color: #fff; border-color: var(--accent); }
+.drbar-sep { width: 1px; height: 22px; background: var(--border); margin: 0 6px; flex-shrink: 0; }
+.date-input { background: #fff; border: 1px solid var(--border); border-radius: 6px; padding: 6px 10px; font-size: 12px; color: var(--text); outline: none; cursor: pointer; transition: border-color .12s; }
+.date-input:focus { border-color: var(--accent); }
+.date-tilde { font-size: 13px; color: var(--text-muted); font-weight: 500; }
+.range-chip { margin-left: auto; display: flex; align-items: center; gap: 5px; background: var(--accent-light); color: var(--accent); border-radius: 20px; padding: 4px 12px; font-size: 12px; font-weight: 600; white-space: nowrap; }
+
+/* KPI 카드 애니메이션 */
+@keyframes kfade { from { opacity:.4; transform:translateY(4px); } to { opacity:1; transform:translateY(0); } }
+.kpi-card.anim { animation: kfade .25s ease; }
+</style>
+</head>
+<body>
+
+<div class="toast-wrap" id="toastWrap"></div>
+
+<!-- ═══════════════════ 사이드바 ═══════════════════ -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-row">
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACEAAAAiCAIAAABeEieWAAADXklEQVR42mP8//8/A40B47Cz4/N3hi3nGVafYDh+i+H3X3LMYmJkMFZiiLdj8DRg4OdCtQNoy/kHDJ2bGPZeoY7DLVUZSnwZbNUZmJhgdgB9kD2fYfsFBioGm4kSw9QkBmVxmB17LjNETKKa6XAA9EqFH8wO325QHFAd6Mox7K+F2SGdyfDzDz7VbGzfpMRvvHyt/P0HP/F2sDAzvJgBs0MkFZ9SHu43WYnx+to7t+0pXLmx5c8fduKteTObODvkZc8XpIVLiN29fc980pxlb97KS0rcEBV+ePuuJUFvEWuHuOid4qxAWalrz1+q9k5fy831PjEyV0jg2clzQfOWTSffDk6OT6kx6Zqqh9Zvr7z7wDQpMldJ4ez3HzzHTkU4282BqHn9Vi6v6j75dggJPu6p1+Xk/Axkf/oswsb6nYPjK7KCO/dNF6/uuXXXhgJ/cH4A+sPEYBMryy80qX//GE+fD1i1qfnZC00GQoBwfGioHvRz79bT2sXM/BfZjvOXvXcfSr973/zrN4H//5kpsoOb612AV5uzzRxIoKEBYHCt2th0+bob+XZIit+IDy/QVj/AwvIbWfz7ZwZOXrCH/jPu2Ju7eHU/+Xa42M1IiMhnZv7z6zf7qbNBlqarICEWKvHPN4PROY6TlVdiztLpFPlDV3NXUlQOE9Pfnfuz9x9JqS50UVY4CxTPNvt3+ywDv7yygOf6L390GfACAnawMP8UEnrCyPD/7XtZYPmRFpviaDMfKN6eprR/7h0gg1XWm8dhMRO7IPl2oAFt9T0F6RF//7JUNB59tDb/9+NtDIxMnPoVnEb1jEys1LGDkfGvkvyZ79/5n73U+P369NdDyX/fX2bkEOG2msquFEYdO5DB/39/fz/d/XmnJ5DNxKPA73eMiUuSynZAwPerU76dLGH495NJQIPf5wgThzD17fj/99fXU6U/r01lYGLldd3IJoMlEVNsx////749/X6+lYGZjcuglolTBJ8d4ukMf/+RYw1+gFLX+nUzHKNBm0FPjmEfvM2w+DBD4SLq21EfwpDrDrPj03eG9NkMe65Qsw2nL88wI4VBVQJmBy3aogXeDI5aoBYwA7xNDSTefGY4eothzj6QfT9/k2M0IyMoDvxMGMItGMT5QVyoOB36BgAh38DMmXnzUQAAAABJRU5ErkJggg==" style="width:30px;height:30px;border-radius:8px;flex-shrink:0;" alt="A11Y">
+      <div class="logo-text">
+        <div class="logo-name"><span>A11Y</span>.so <span class="logo-badge">admin</span></div>
+        <div class="logo-sub">글로벌 관리자</div>
+      </div>
+    </div>
+  </div>
+
+  <nav>
+    <div class="nav-item active" onclick="showView('dashboard', this)" data-view="dashboard">
+      <span class="nav-icon">🏠</span> 대시보드
+    </div>
+    <div class="nav-section">운영 관리</div>
+    <div class="nav-item" onclick="showView('applicants', this)" data-view="applicants">
+      <span class="nav-icon">👤</span> 신청자 관리
+    </div>
+    <div class="nav-item" onclick="showView('apikeys', this)" data-view="apikeys">
+      <span class="nav-icon">🔑</span> API Key 관리
+    </div>
+    <div class="nav-section">시스템</div>
+    <div class="nav-item" onclick="showView('settings', this)" data-view="settings">
+      <span class="nav-icon">⚙️</span> API 설정
+    </div>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="footer-user">
+      <div class="user-avatar">임</div>
+      <div>
+        <div class="user-name">관리자</div>
+        <div class="user-timer" id="sessionTimer">● 59:58</div>
+      </div>
+      <div class="footer-dots">···</div>
+    </div>
+  </div>
+</aside>
+
+<!-- ═══════════════════ 메인 영역 ═══════════════════ -->
+<div class="main">
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="topbar-breadcrumb">A11Y.so 관리시스템 &rsaquo; <span id="topbarTitle">대시보드</span></div>
+    </div>
+    <div class="topbar-right">
+      <div style="display:flex;align-items:center;gap:8px">
+        <div style="width:28px;height:28px;border-radius:50%;background:#3fc26a;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:700">임</div>
+        <span style="font-size:13px;font-weight:600;color:var(--text)">관리자</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ═══ 대시보드 ═══ -->
+    <div class="view active" id="view-dashboard">
+      <!-- 날짜 범위 선택 -->
+      <div class="date-range-bar">
+        <button class="preset-btn on" data-preset="today"   onclick="setPreset('today')">오늘</button>
+        <button class="preset-btn"    data-preset="yesterday" onclick="setPreset('yesterday')">어제</button>
+        <button class="preset-btn"    data-preset="7days"   onclick="setPreset('7days')">최근 7일</button>
+        <button class="preset-btn"    data-preset="30days"  onclick="setPreset('30days')">최근 30일</button>
+        <button class="preset-btn"    data-preset="month"   onclick="setPreset('month')">이번 달</button>
+        <div class="drbar-sep"></div>
+        <input type="date" class="date-input" id="dateFrom" onchange="onDateChange()">
+        <span class="date-tilde">~</span>
+        <input type="date" class="date-input" id="dateTo" onchange="onDateChange()">
+        <button class="btn btn-primary btn-sm" onclick="applyDateRange()" style="margin-left:4px">조회</button>
+        <div class="range-chip" id="range-chip">📅 오늘</div>
+      </div>
+
+      <!-- KPI 요약 (JS 렌더링) -->
+      <div class="kpi-row" id="kpi-row"></div>
+
+      <!-- 모드별 사용 현황 (JS 렌더링) -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">모드별 사용 현황</div>
+          <span style="font-size:12px;color:var(--text-muted)" id="mode-range-label"></span>
+        </div>
+        <div class="mode-row" id="mode-row"></div>
+      </div>
+    </div>
+
+    <!-- ═══ 신청자 관리 ═══ -->
+    <div class="view" id="view-applicants">
+      <div class="card">
+        <div class="toolbar">
+          <div class="search-wrap">
+            <span style="color:var(--text-muted);font-size:13px">🔍</span>
+            <input type="text" placeholder="이메일 검색..." oninput="renderApplicants()" id="appSearch">
+          </div>
+          <select class="flt" onchange="renderApplicants()" id="appStatusFlt">
+            <option value="">전체 상태</option>
+            <option value="pending">대기 중</option>
+            <option value="active">승인됨</option>
+            <option value="rejected">거절됨</option>
+          </select>
+          <div style="display:flex;gap:6px">
+            <span class="chip chip-y">대기 12</span>
+            <span class="chip chip-g">승인 103</span>
+            <span class="chip chip-r">거절 32</span>
+          </div>
+          <div class="ml-auto">
+            <button class="btn btn-outline btn-sm" onclick="toast('엑셀 다운로드 준비 중','info')">📥 엑셀 다운로드</button>
+          </div>
+        </div>
+        <table>
+          <thead><tr>
+            <th>#</th><th>이메일</th><th>신청 일시</th><th>상태</th><th>API Key</th><th>처리</th>
+          </tr></thead>
+          <tbody id="appTbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ═══ API Key 관리 ═══ -->
+    <div class="view" id="view-apikeys">
+      <div class="card">
+        <div class="toolbar">
+          <div class="search-wrap">
+            <span style="color:var(--text-muted);font-size:13px">🔍</span>
+            <input type="text" placeholder="이메일 또는 Key 검색..." oninput="renderKeys()" id="keySearch">
+          </div>
+          <select class="flt" onchange="renderKeys()" id="keyStatusFlt">
+            <option value="">전체 상태</option>
+            <option value="active">활성</option>
+            <option value="suspended">정지</option>
+            <option value="pending">대기</option>
+          </select>
+          <select class="flt" onchange="renderKeys()" id="keyModeFlt">
+            <option value="">전체 모드</option>
+            <option value="a11y">웹 접근성 지침 준수</option>
+            <option value="simple">간소화 설명</option>
+            <option value="seo">SEO/이커머스</option>
+          </select>
+          <div class="ml-auto">
+            <button class="btn btn-outline btn-sm" onclick="toast('엑셀 파일 다운로드 중...','info')">📥 엑셀 다운로드</button>
+          </div>
+        </div>
+        <div style="overflow-x:auto">
+          <table>
+            <thead><tr>
+              <th>API Key</th><th>이메일</th><th>발급일</th><th>상태</th>
+              <th>잔여 사용량</th><th>API 총 사용량</th><th>웹 접근성 지침 준수 모드</th><th>간소화 설명 모드</th><th>SEO/이커머스 모드</th><th>최근 사용</th><th>처리</th>
+            </tr></thead>
+            <tbody id="keyTbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ API 설정 ═══ -->
+    <div class="view" id="view-settings">
+      <div class="card" style="max-width:620px">
+        <div class="card-header">
+          <div class="card-title">⚙️ API Key 발급 설정</div>
+        </div>
+        <div class="settings-body">
+          <div class="fsec">
+            <div class="fsec-title">발급 모드</div>
+            <div class="frow">
+              <div class="flabel">신규 API Key 발급 방식</div>
+              <div class="fhint">신청자가 API Key를 요청했을 때 처리 방식을 선택합니다.</div>
+              <div class="radio-group">
+                <label class="radio-opt sel" id="ropt-auto" onclick="selMode('auto')">
+                  <input type="radio" name="issueMode" value="auto" checked>
+                  <div><div class="ropt-title">자동 지급</div><div class="ropt-desc">신청 즉시 API Key가 자동으로 발급됩니다. 별도 승인 절차 없음.</div></div>
+                </label>
+                <label class="radio-opt" id="ropt-manual" onclick="selMode('manual')">
+                  <input type="radio" name="issueMode" value="manual">
+                  <div><div class="ropt-title">승인 후 발급</div><div class="ropt-desc">관리자가 신청 내역을 검토하고 수동으로 승인한 후 Key가 발급됩니다.</div></div>
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="fsec">
+            <div class="fsec-title">기본 사용량 한도</div>
+            <div style="font-size:12px;color:var(--text-muted);margin-bottom:16px">개별 Key 발급 시 적용할 한도 방식을 하나 선택합니다. 개별 Key에서 재설정 가능합니다.</div>
+            <div class="frow">
+              <div class="flabel">한도 방식</div>
+              <div class="radio-group" style="margin-top:8px">
+                <label class="radio-opt sel" id="limit-daily-opt" onclick="selLimit('daily')">
+                  <input type="radio" name="limitMode" value="daily" checked onclick="event.stopPropagation()">
+                  <div style="flex:1">
+                    <div class="ropt-title">일일 제한 (Daily Limit)</div>
+                    <div class="ropt-desc">Key당 하루 최대 API 호출 수를 제한합니다. 매일 자정에 초기화됩니다.</div>
+                    <div id="daily-input" style="margin-top:12px;display:flex;align-items:center;gap:8px">
+                      <input type="number" class="num-input" value="50" min="0" id="dailyLimit" onclick="event.stopPropagation()">
+                      <span style="font-size:13px;color:var(--text-muted)">회 / 일</span>
+                    </div>
+                  </div>
+                </label>
+                <label class="radio-opt" id="limit-total-opt" onclick="selLimit('total')">
+                  <input type="radio" name="limitMode" value="total" onclick="event.stopPropagation()">
+                  <div style="flex:1">
+                    <div class="ropt-title">총 사용권 (Total Grant)</div>
+                    <div class="ropt-desc">Key 발급 시 사용 가능 횟수를 일괄 부여합니다. 소진 시 자동 비활성화됩니다.</div>
+                    <div id="total-input" style="margin-top:12px;display:none;align-items:center;gap:8px">
+                      <input type="number" class="num-input" value="100" min="0" id="totalGrant" onclick="event.stopPropagation()">
+                      <span style="font-size:13px;color:var(--text-muted)">회</span>
+                    </div>
+                  </div>
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="fsec">
+            <div class="fsec-title">허용 모드</div>
+            <div class="frow">
+              <div class="flabel">기본 허용 API 모드</div>
+              <div style="display:flex;gap:16px;margin-top:8px;flex-wrap:wrap">
+                <label style="display:flex;align-items:center;gap:7px;font-size:13px;cursor:pointer"><input type="checkbox" checked style="accent-color:var(--accent)"> 웹 접근성 지침 준수 모드</label>
+                <label style="display:flex;align-items:center;gap:7px;font-size:13px;cursor:pointer"><input type="checkbox" checked style="accent-color:var(--accent)"> 간소화 설명 모드</label>
+                <label style="display:flex;align-items:center;gap:7px;font-size:13px;cursor:pointer"><input type="checkbox" style="accent-color:var(--accent)"> SEO/이커머스 모드</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="settings-footer">
+          <button class="btn btn-primary" onclick="saveSettings()">설정 저장</button>
+          <span style="font-size:12px;color:var(--text-muted)">마지막 저장: 2026-07-08 09:30 (관리자)</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ── 데이터 ──────────────────────────────────────────────────────────
+const APPLICANTS = [
+  {id:1,  email:'john.doe@example.com',    applyAt:'2026-07-09 11:42', status:'pending',  keyId:null},
+  {id:2,  email:'alice@globalco.io',        applyAt:'2026-07-09 10:15', status:'pending',  keyId:null},
+  {id:3,  email:'dev.team@startup.kr',      applyAt:'2026-07-09 09:03', status:'pending',  keyId:null},
+  {id:4,  email:'park.jimin@webagency.com', applyAt:'2026-07-08 16:22', status:'active',   keyId:'a11y-8f3d2c1b'},
+  {id:5,  email:'emily.chen@techfirm.sg',   applyAt:'2026-07-08 14:55', status:'active',   keyId:'a11y-7e1a0f9c'},
+  {id:6,  email:'marco@designstudio.it',    applyAt:'2026-07-08 11:30', status:'rejected', keyId:null},
+  {id:7,  email:'hiroshi@e-access.jp',      applyAt:'2026-07-07 17:10', status:'active',   keyId:'a11y-2b4d6e8f'},
+  {id:8,  email:'admin@public-sector.gov',  applyAt:'2026-07-07 09:45', status:'active',   keyId:'a11y-9c3a5e7d'},
+  {id:9,  email:'freelance@webwork.net',    applyAt:'2026-07-06 20:33', status:'rejected', keyId:null},
+  {id:10, email:'kim.sohee@uiagency.kr',    applyAt:'2026-07-06 15:12', status:'active',   keyId:'a11y-1f5c3b9a'},
+  {id:11, email:'pending2@test.com',        applyAt:'2026-07-09 08:01', status:'pending',  keyId:null},
+  {id:12, email:'pending3@company.org',     applyAt:'2026-07-09 07:55', status:'pending',  keyId:null},
+];
+const API_KEYS = [
+  {key:'a11y-8f3d2c1b', email:'park.jimin@webagency.com', issuedAt:'2026-07-08', status:'active',    usedToday:23, dailyLimit:50,  usedTotal:87,  totalGrant:100, lastUsed:'5분 전',   mode:'a11y',   modeUsage:{a11y:65,  simple:15,  seo:7}},
+  {key:'a11y-7e1a0f9c', email:'emily.chen@techfirm.sg',   issuedAt:'2026-07-08', status:'active',    usedToday:49, dailyLimit:50,  usedTotal:91,  totalGrant:100, lastUsed:'12분 전',  mode:'simple', modeUsage:{a11y:12,  simple:71,  seo:8}},
+  {key:'a11y-2b4d6e8f', email:'hiroshi@e-access.jp',      issuedAt:'2026-07-07', status:'active',    usedToday:7,  dailyLimit:50,  usedTotal:142, totalGrant:200, lastUsed:'2시간 전', mode:'a11y',   modeUsage:{a11y:108, simple:28,  seo:6}},
+  {key:'a11y-9c3a5e7d', email:'admin@public-sector.gov',  issuedAt:'2026-07-07', status:'active',    usedToday:0,  dailyLimit:200, usedTotal:38,  totalGrant:500, lastUsed:'어제',     mode:'seo',    modeUsage:{a11y:5,   simple:4,   seo:29}},
+  {key:'a11y-1f5c3b9a', email:'kim.sohee@uiagency.kr',    issuedAt:'2026-07-06', status:'active',    usedToday:50, dailyLimit:50,  usedTotal:100, totalGrant:100, lastUsed:'방금',     mode:'simple', modeUsage:{a11y:11,  simple:82,  seo:7}},
+  {key:'a11y-5d9b2e6a', email:'previous@olduser.com',     issuedAt:'2026-06-15', status:'suspended', usedToday:0,  dailyLimit:50,  usedTotal:312, totalGrant:0,   lastUsed:'2주 전',   mode:'a11y',   modeUsage:{a11y:248, simple:47,  seo:17}},
+  {key:'a11y-0e4c8f2d', email:'beta@earlyuser.net',       issuedAt:'2026-05-01', status:'active',    usedToday:12, dailyLimit:100, usedTotal:891, totalGrant:0,   lastUsed:'1시간 전', mode:'a11y',   modeUsage:{a11y:698, simple:152, seo:41}},
+];
+
+// ── 뷰 전환 ─────────────────────────────────────────────────────────
+const TITLES = {dashboard:'대시보드', applicants:'신청자 관리', apikeys:'API Key 관리', settings:'API 설정'};
+function showView(name, el) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(a => a.classList.remove('active'));
+  document.getElementById('view-'+name).classList.add('active');
+  if (el) el.classList.add('active');
+  document.getElementById('topbarTitle').textContent = TITLES[name] || name;
+  if (name === 'applicants') renderApplicants();
+  if (name === 'apikeys')    renderKeys();
+}
+
+// ── 뱃지 ────────────────────────────────────────────────────────────
+function badge(s) {
+  const m = {pending:'대기 중 badge-pending', active:'활성 badge-active', suspended:'정지됨 badge-suspended', rejected:'거절됨 badge-rejected'};
+  const [lbl, cls] = (m[s]||'unknown badge-rejected').split(' ');
+  return `<span class="badge ${cls}">${lbl}</span>`;
+}
+
+// ── 신청자 렌더링 ────────────────────────────────────────────────────
+function renderApplicants() {
+  const q = (document.getElementById('appSearch').value||'').toLowerCase();
+  const sf = document.getElementById('appStatusFlt').value;
+  const rows = APPLICANTS.filter(a => (!q || a.email.toLowerCase().includes(q)) && (!sf || a.status === sf));
+  const tb = document.getElementById('appTbody');
+  if (!rows.length) { tb.innerHTML = '<tr><td colspan="6" class="empty-state">일치하는 신청자가 없습니다.</td></tr>'; return; }
+  tb.innerHTML = rows.map(a => `<tr>
+    <td style="color:var(--text-muted);font-size:12px">${a.id}</td>
+    <td>${a.email}</td>
+    <td style="font-size:12px;color:var(--text-muted)">${a.applyAt}</td>
+    <td>${badge(a.status)}</td>
+    <td class="key-cell">${a.keyId ? `<span>${a.keyId.slice(0,8)}••••••••</span>` : '<span style="color:#C8CEDF">미발급</span>'}</td>
+    <td style="white-space:nowrap">${a.status==='pending'
+      ? `<button class="btn btn-success btn-sm" onclick="approveApp(${a.id})">승인</button> <button class="btn btn-danger btn-sm" onclick="rejectApp(${a.id})">거절</button>`
+      : '<span style="font-size:12px;color:var(--text-muted)">처리 완료</span>'}</td>
+  </tr>`).join('');
+}
+function approveApp(id) {
+  const a = APPLICANTS.find(x=>x.id===id);
+  if(a){ a.status='active'; a.keyId='a11y-'+Math.random().toString(36).slice(2,10); }
+  toast(`${a.email} 승인 완료 · API Key 발급`, 'success');
+  renderApplicants();
+}
+function rejectApp(id) {
+  const a = APPLICANTS.find(x=>x.id===id);
+  if(a) a.status='rejected';
+  toast(`${a.email} 거절 처리됨`, 'danger');
+  renderApplicants();
+}
+
+// ── API Key 렌더링 ──────────────────────────────────────────────────
+function renderKeys() {
+  const q  = (document.getElementById('keySearch').value||'').toLowerCase();
+  const sf = document.getElementById('keyStatusFlt').value;
+  const mf = document.getElementById('keyModeFlt').value;
+  const rows = API_KEYS.filter(k =>
+    (!q  || k.email.toLowerCase().includes(q) || k.key.toLowerCase().includes(q)) &&
+    (!sf || k.status === sf) &&
+    (!mf || k.mode === mf)
+  );
+  const tb = document.getElementById('keyTbody');
+  if (!rows.length) { tb.innerHTML = '<tr><td colspan="8" class="empty-state">일치하는 Key가 없습니다.</td></tr>'; return; }
+  tb.innerHTML = rows.map(k => {
+    const tp = k.dailyLimit > 0 ? Math.min(Math.round(k.usedToday/k.dailyLimit*100),100) : 0;
+    const up = k.totalGrant  > 0 ? Math.min(Math.round(k.usedTotal/k.totalGrant*100), 100) : 0;
+    const tc = tp>=100?'dang':tp>=80?'warn':'';
+    const uc = up>=100?'dang':up>=80?'warn':'';
+    return `<tr>
+      <td class="key-cell"><span>${k.key.slice(0,8)}••••••••</span></td>
+      <td>${k.email}</td>
+      <td style="font-size:12px;color:var(--text-muted)">${k.issuedAt}</td>
+      <td>${badge(k.status)}</td>
+      <td style="min-width:90px"><div style="font-size:12px">${k.usedToday} / ${k.dailyLimit||'∞'}</div>${k.dailyLimit>0?`<div class="ubar-wrap"><div class="ubar ${tc}" style="width:${tp}%"></div></div>`:''}</td>
+      <td style="font-size:13px;font-weight:600;color:var(--text)">${k.usedTotal.toLocaleString('ko-KR')}<span style="font-size:11px;font-weight:400;color:var(--text-muted);margin-left:3px">회</span></td>
+      <td style="font-size:13px;color:#4A6CF7;font-weight:500">${k.modeUsage.a11y.toLocaleString('ko-KR')}<span style="font-size:11px;font-weight:400;color:var(--text-muted);margin-left:3px">회</span></td>
+      <td style="font-size:13px;color:#818CF8;font-weight:500">${k.modeUsage.simple.toLocaleString('ko-KR')}<span style="font-size:11px;font-weight:400;color:var(--text-muted);margin-left:3px">회</span></td>
+      <td style="font-size:13px;color:#10B981;font-weight:500">${k.modeUsage.seo.toLocaleString('ko-KR')}<span style="font-size:11px;font-weight:400;color:var(--text-muted);margin-left:3px">회</span></td>
+      <td style="font-size:12px;color:var(--text-muted)">${k.lastUsed}</td>
+      <td style="white-space:nowrap">
+        ${k.status==='active'    ? `<button class="btn btn-warning btn-sm" onclick="suspendKey('${k.key}')">정지</button>` : ''}
+        ${k.status==='suspended' ? `<button class="btn btn-success btn-sm" onclick="restoreKey('${k.key}')">해제</button>` : ''}
+        ${k.status==='pending'   ? `<button class="btn btn-success btn-sm" onclick="restoreKey('${k.key}')">발급</button>` : ''}
+      </td>
+    </tr>`;
+  }).join('');
+}
+function suspendKey(k) {
+  const x = API_KEYS.find(a=>a.key===k); if(x) x.status='suspended';
+  toast(`Key ${k.slice(0,8)}•••• 정지됨`, 'danger'); renderKeys();
+}
+function restoreKey(k) {
+  const x = API_KEYS.find(a=>a.key===k); if(x) x.status='active';
+  toast(`Key ${k.slice(0,8)}•••• 활성화됨`, 'success'); renderKeys();
+}
+
+// ── 설정 ────────────────────────────────────────────────────────────
+function selMode(m) {
+  document.getElementById('ropt-auto').classList.toggle('sel',   m==='auto');
+  document.getElementById('ropt-manual').classList.toggle('sel', m==='manual');
+  document.querySelector(`input[name="issueMode"][value="${m}"]`).checked = true;
+}
+function selLimit(l) {
+  document.getElementById('limit-daily-opt').classList.toggle('sel', l==='daily');
+  document.getElementById('limit-total-opt').classList.toggle('sel', l==='total');
+  document.querySelector(`input[name="limitMode"][value="${l}"]`).checked = true;
+  document.getElementById('daily-input').style.display = l==='daily' ? 'flex' : 'none';
+  document.getElementById('total-input').style.display = l==='total' ? 'flex' : 'none';
+}
+function saveSettings() {
+  const issueMode  = document.querySelector('input[name="issueMode"]:checked').value;
+  const limitMode  = document.querySelector('input[name="limitMode"]:checked').value;
+  const limitVal   = limitMode==='daily'
+    ? document.getElementById('dailyLimit').value + '회/일'
+    : document.getElementById('totalGrant').value + '회(총)';
+  toast(`설정 저장 완료 — ${issueMode==='auto'?'자동지급':'승인후발급'} / ${limitMode==='daily'?'일일제한':'총사용권'} ${limitVal}`, 'success');
+}
+
+// ── 토스트 ──────────────────────────────────────────────────────────
+function toast(msg, type) {
+  const el = document.createElement('div');
+  el.className = 'toast '+(type||'info');
+  el.innerHTML = (type==='success'?'✅ ':type==='danger'?'❌ ':'ℹ️ ') + msg;
+  document.getElementById('toastWrap').appendChild(el);
+  setTimeout(()=>{ el.classList.add('hide'); setTimeout(()=>el.remove(),300); }, 3000);
+}
+
+// ── 날짜 범위 & 대시보드 ─────────────────────────────────────────────
+const TODAY_STR = '2026-07-09';
+
+function isoToDate(s) { return new Date(s + 'T00:00:00'); }
+function fmtIso(d) { return d.toISOString().slice(0,10); }
+function daysDiff(f, t) { return Math.max(1, Math.round((isoToDate(t)-isoToDate(f))/86400000)+1); }
+
+function setPreset(p) {
+  const base = isoToDate(TODAY_STR);
+  const msDay = 86400000;
+  let from = TODAY_STR, to = TODAY_STR;
+  if (p === 'yesterday')  { from = to = fmtIso(new Date(base - msDay)); }
+  else if (p === '7days') { from = fmtIso(new Date(base - 6*msDay)); }
+  else if (p === '30days'){ from = fmtIso(new Date(base - 29*msDay)); }
+  else if (p === 'month') { from = TODAY_STR.slice(0,7) + '-01'; }
+  document.getElementById('dateFrom').value = from;
+  document.getElementById('dateTo').value   = to;
+  document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('on'));
+  const btn = document.querySelector(`[data-preset="${p}"]`);
+  if (btn) btn.classList.add('on');
+  updateDashboard(from, to);
+}
+
+function onDateChange() {
+  document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('on'));
+}
+
+function applyDateRange() {
+  const from = document.getElementById('dateFrom').value;
+  const to   = document.getElementById('dateTo').value;
+  if (!from || !to) { toast('날짜를 모두 입력해주세요.', 'danger'); return; }
+  if (from > to)    { toast('시작일이 종료일보다 늦습니다.', 'danger'); return; }
+  updateDashboard(from, to);
+}
+
+function genData(from, to) {
+  const days = daysDiff(from, to);
+  // 날짜 기반 결정론적 변동 (같은 날짜는 항상 같은 값)
+  const seed = parseInt(from.replace(/-/g,'').slice(-4), 10);
+  const v = x => Math.round(x * (0.88 + (seed % 13) * 0.02));
+
+  const baseDailyCalls = 4831;
+  const totalCalls = v(baseDailyCalls * days);
+  const a11yPct    = 50 + (seed % 6);   // 50~55%
+  const simplePct  = 35 + (seed % 4);   // 35~38%
+  const seoPct     = 100 - a11yPct - simplePct;
+  const a11y   = Math.round(totalCalls * a11yPct / 100);
+  const simple = Math.round(totalCalls * simplePct / 100);
+  const seo    = totalCalls - a11y - simple;
+
+  const isToday = (from === TODAY_STR && to === TODAY_STR);
+  return {
+    days, isToday,
+    newApp:  isToday ? 3  : Math.max(1, v(Math.round(days * 1.4))),
+    newKey:  isToday ? 2  : Math.max(0, v(Math.round(days * 1.1))),
+    activeK: isToday ? 89 : Math.min(115, v(60 + Math.round(days * 0.8))),
+    calls: totalCalls,
+    a11y, simple, seo, a11yPct, simplePct, seoPct,
+  };
+}
+
+function fmtNum(n) {
+  if (n >= 1000000) return (n/1000000).toFixed(2) + 'M';
+  return n.toLocaleString('ko-KR');
+}
+
+function updateDashboard(from, to) {
+  const d    = genData(from, to);
+  const days = d.days;
+  const lbl  = days === 1 ? (from === TODAY_STR ? '오늘' : '해당일') : `${days}일간`;
+
+  // 범위 칩 & 모드 헤더
+  const rangeStr = from === to ? from : `${from} ~ ${to}`;
+  const chipTxt  = from === to
+    ? (from === TODAY_STR ? '오늘' : from)
+    : `${from} ~ ${to} (${days}일)`;
+  document.getElementById('range-chip').textContent      = '📅 ' + chipTxt;
+  document.getElementById('mode-range-label').textContent = rangeStr + (d.isToday ? ' 00:00 ~ 현재' : '');
+
+  // KPI 카드
+  document.getElementById('kpi-row').innerHTML = `
+    <div class="kpi-card anim">
+      <div class="k-icon" style="background:#EEF2FF">👥</div>
+      <div class="k-label">신규 신청자</div>
+      <div class="k-value">${fmtNum(d.newApp)}</div>
+      <div class="k-sub">${lbl} 기준</div>
+    </div>
+    <div class="kpi-card anim">
+      <div class="k-icon" style="background:#ECFDF5">🔑</div>
+      <div class="k-label">신규 발급 Key</div>
+      <div class="k-value">${fmtNum(d.newKey)}</div>
+      <div class="k-sub">${lbl} 기준</div>
+    </div>
+    <div class="kpi-card anim">
+      <div class="k-icon" style="background:#EFF6FF">✅</div>
+      <div class="k-label">활성 Key</div>
+      <div class="k-value">${fmtNum(d.activeK)}</div>
+      <div class="k-sub">${lbl} 사용</div>
+    </div>
+    <div class="kpi-card anim">
+      <div class="k-icon" style="background:#FFF8EC">⚡</div>
+      <div class="k-label">API 호출 수</div>
+      <div class="k-value">${fmtNum(d.calls)}</div>
+      <div class="k-sub">${lbl} 합계</div>
+    </div>
+    <div class="kpi-card anim">
+      <div class="k-icon" style="background:#F5F3FF">📈</div>
+      <div class="k-label">일평균 호출</div>
+      <div class="k-value">${fmtNum(Math.round(d.calls/days))}</div>
+      <div class="k-sub">회 / 일</div>
+    </div>`;
+
+  // 모드 카드
+  document.getElementById('mode-row').innerHTML = `
+    <div class="mode-card">
+      <div class="mode-name">웹 접근성 지침 준수 모드</div>
+      <div class="mode-val">${fmtNum(d.a11y)}</div>
+      <div class="mode-pct">${d.a11yPct}% · 접근성 마크업 생성</div>
+      <div class="mode-bar-w"><div class="mode-bar" style="width:${d.a11yPct}%;background:var(--accent)"></div></div>
+    </div>
+    <div class="mode-card">
+      <div class="mode-name">간소화 설명 모드</div>
+      <div class="mode-val">${fmtNum(d.simple)}</div>
+      <div class="mode-pct">${d.simplePct}% · 간략 변환</div>
+      <div class="mode-bar-w"><div class="mode-bar" style="width:${d.simplePct}%;background:#818CF8"></div></div>
+    </div>
+    <div class="mode-card">
+      <div class="mode-name">SEO/이커머스 모드</div>
+      <div class="mode-val">${fmtNum(d.seo)}</div>
+      <div class="mode-pct">${d.seoPct}% · SEO 최적화</div>
+      <div class="mode-bar-w"><div class="mode-bar" style="width:${d.seoPct}%;background:#34D399"></div></div>
+    </div>`;
+}
+
+// ── 시계 ────────────────────────────────────────────────────────────
+function updateClock() {
+  const now = new Date();
+  const pad = n => String(n).padStart(2,'0');
+  document.getElementById('clockDisplay').textContent =
+    `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+}
+updateClock();
+setInterval(updateClock, 1000);
+
+// ── 세션 타이머 ─────────────────────────────────────────────────────
+let sessionSec = 3598;
+setInterval(()=>{
+  sessionSec = Math.max(0, sessionSec-1);
+  const m = Math.floor(sessionSec/60), s = sessionSec%60;
+  document.getElementById('sessionTimer').textContent = `● ${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+}, 1000);
+
+// ── 초기화 ──────────────────────────────────────────────────────────
+document.getElementById('dateFrom').value = TODAY_STR;
+document.getElementById('dateTo').value   = TODAY_STR;
+updateDashboard(TODAY_STR, TODAY_STR);
+renderApplicants();
+renderKeys();
+</script>
+</body>
+</html>
