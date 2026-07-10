@@ -180,6 +180,22 @@ tbody tr:hover { background: #FAFBFF; }
 .ropt-desc  { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
 .num-input { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 8px 12px; font-size: 13px; color: var(--text); width: 140px; outline: none; }
 .num-input:focus { border-color: var(--accent); }
+.setting-select { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 9px 14px; font-size: 13px; color: var(--text); outline: none; cursor: pointer; min-width: 160px; }
+.setting-select:focus { border-color: var(--accent); }
+.goto-btn { font-size: 11px; font-weight: 700; color: var(--accent); background: var(--accent-light); border: none; border-radius: 5px; padding: 3px 8px; cursor: pointer; letter-spacing: -.2px; transition: background .12s; flex-shrink: 0; }
+.goto-btn:hover { background: #D8E1FD; }
+.pager { display:flex; align-items:center; justify-content:space-between; padding:12px 18px; border-top:1px solid var(--border-light); flex-wrap:wrap; gap:8px; }
+.pager-perpage { border:1px solid var(--border); border-radius:7px; padding:5px 10px; font-size:12px; color:var(--text); background:#fff; outline:none; cursor:pointer; }
+.pager-perpage:focus { border-color:var(--accent); }
+.pager-nav { display:flex; gap:3px; align-items:center; }
+.pager-btn { min-width:30px; height:30px; border-radius:7px; border:1px solid var(--border); background:#fff; font-size:12px; color:var(--text-sub); cursor:pointer; padding:0 8px; transition:background .1s, color .1s; }
+.pager-btn:hover:not([disabled]) { background:var(--accent-light); color:var(--accent); border-color:var(--accent); }
+.pager-btn.on { background:var(--accent); color:#fff; border-color:var(--accent); font-weight:700; }
+.pager-btn[disabled] { color:var(--text-muted); cursor:default; border-color:var(--border-light); background:var(--bg); }
+.sat-goto { font-size: 11px; font-weight: 700; color: #10B981; background: #D1FAE5; border: none; border-radius: 5px; padding: 3px 8px; cursor: pointer; letter-spacing: -.2px; transition: background .12s; flex-shrink: 0; }
+.sat-goto:hover { background: #A7F3D0; }
+.sat-goto-bad { color: #EF4444; background: #FEE2E2; }
+.sat-goto-bad:hover { background: #FECACA; }
 .settings-footer { padding: 14px 24px; border-top: 1px solid var(--border-light); background: #F8F9FD; display: flex; align-items: center; gap: 12px; }
 
 /* ──────────────── 사용량 셀 ──────────────── */
@@ -189,6 +205,55 @@ tbody tr:hover { background: #FAFBFF; }
 .ubar.dang { background: #EF4444; }
 .limit-select { border: 1px solid var(--border); border-radius: 6px; padding: 4px 8px; font-size: 12px; color: var(--text); background: #fff; cursor: pointer; outline: none; }
 .limit-select:focus { border-color: var(--accent); }
+.thumb-img { width: 64px; height: 48px; border-radius: 6px; object-fit: cover; cursor: pointer; border: 1px solid var(--border); transition: transform .15s, box-shadow .15s; display: block; }
+.thumb-img:hover { transform: scale(1.06); box-shadow: 0 4px 12px rgba(0,0,0,.18); }
+.at-search-bar { display: flex; gap: 12px; flex-wrap: wrap; align-items: flex-end; padding: 14px 18px; border-bottom: 1px solid var(--border-light); background: var(--bg); }
+.at-fld { display: flex; flex-direction: column; gap: 5px; }
+.at-flabel { font-size: 11px; font-weight: 600; color: var(--text-muted); letter-spacing: .3px; }
+.at-input { border: 1px solid var(--border); border-radius: 7px; padding: 6px 10px; font-size: 12px; color: var(--text); background: #fff; outline: none; }
+.at-input:focus { border-color: var(--accent); }
+.at-select { border: 1px solid var(--border); border-radius: 7px; padding: 6px 10px; font-size: 12px; color: var(--text); background: #fff; outline: none; cursor: pointer; }
+.at-select:focus { border-color: var(--accent); }
+.img-preview-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.6); z-index: 1200; align-items: center; justify-content: center; }
+.img-preview-inner { background: #fff; border-radius: 16px; padding: 24px; max-width: 600px; width: 90%; box-shadow: 0 12px 48px rgba(0,0,0,.25); }
+.img-preview-img { width: 100%; border-radius: 10px; display: block; }
+.img-preview-alt { margin-top: 14px; font-size: 13px; color: var(--text-sub); line-height: 1.6; border-top: 1px solid var(--border-light); padding-top: 12px; }
+.img-preview-close { float: right; background: none; border: none; font-size: 20px; cursor: pointer; color: var(--text-muted); line-height: 1; padding: 0; margin-left: 8px; }
+.img-preview-close:hover { color: var(--text); }
+.key-tip { position: relative; cursor: default; }
+.key-tip::after {
+  content: attr(data-key);
+  position: absolute;
+  bottom: calc(100% + 7px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1C1F2E;
+  color: #E8EAF0;
+  font-size: 11px;
+  font-family: 'SF Mono', 'Consolas', monospace;
+  padding: 5px 10px;
+  border-radius: 7px;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .15s;
+  z-index: 200;
+  box-shadow: 0 4px 14px rgba(0,0,0,.25);
+}
+.key-tip::before {
+  content: '';
+  position: absolute;
+  bottom: calc(100% + 2px);
+  left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-top-color: #1C1F2E;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .15s;
+  z-index: 200;
+}
+.key-tip:hover::after, .key-tip:hover::before { opacity: 1; }
 .key-cell  { font-family: 'Courier New', monospace; font-size: 12px; }
 .key-cell span { background: var(--bg); border: 1px solid var(--border); border-radius: 5px; padding: 2px 8px; }
 
@@ -256,6 +321,9 @@ tbody tr:hover { background: #FAFBFF; }
     <div class="nav-item" onclick="showView('apikeys', this)" data-view="apikeys">
       <span class="nav-icon">🔑</span> API Key 관리
     </div>
+    <div class="nav-item" onclick="showView('alttext', this)" data-view="alttext">
+      <span class="nav-icon">🖼️</span> 대체 텍스트 처리 현황
+    </div>
     <div class="nav-section">시스템</div>
     <div class="nav-item" onclick="showView('settings', this)" data-view="settings">
       <span class="nav-icon">⚙️</span> API 설정
@@ -306,13 +374,21 @@ tbody tr:hover { background: #FAFBFF; }
       <!-- KPI 요약 (JS 렌더링) -->
       <div class="kpi-row" id="kpi-row"></div>
 
-      <!-- 모드별 사용 현황 (JS 렌더링) -->
+      <!-- 대체 텍스트 처리 현황 (JS 렌더링) -->
       <div class="card">
         <div class="card-header">
-          <div class="card-title">모드별 사용 현황</div>
+          <div class="card-title">🖼️ 대체 텍스트 처리 현황</div>
           <span style="font-size:12px;color:var(--text-muted)" id="mode-range-label"></span>
         </div>
+        <div style="padding:12px 14px 0">
+          <div style="font-size:11px;font-weight:700;color:var(--text-muted);letter-spacing:.6px;text-transform:uppercase">모드별 사용 현황</div>
+        </div>
         <div class="mode-row" id="mode-row"></div>
+        <div style="height:1px;background:var(--border-light);margin:0 14px 0"></div>
+        <div style="padding:14px 14px 0">
+          <div style="font-size:11px;font-weight:700;color:var(--text-muted);letter-spacing:.6px;text-transform:uppercase">대체 텍스트 생성 추천 현황</div>
+        </div>
+        <div class="mode-row" id="sat-row"></div>
       </div>
     </div>
 
@@ -345,6 +421,7 @@ tbody tr:hover { background: #FAFBFF; }
           </tr></thead>
           <tbody id="appTbody"></tbody>
         </table>
+      <div id="applicantsPager"></div>
       </div>
     </div>
 
@@ -370,11 +447,12 @@ tbody tr:hover { background: #FAFBFF; }
           <table>
             <thead><tr>
               <th>API Key</th><th>이메일</th><th>발급일</th><th>상태</th>
-              <th>잔여 사용량</th><th>API 총 사용량</th><th>웹 접근성 지침 준수 모드</th><th>간소화 설명 모드</th><th>SEO/이커머스 모드</th><th>최근 사용</th><th>한도 방식</th><th>처리</th>
+              <th>잔여 사용량</th><th>API 총 사용량</th><th>웹 접근성 지침 준수 모드</th><th>간소화 설명 모드</th><th>SEO/이커머스 모드</th><th>최근 사용</th><th>활성화 기간</th><th>한도 방식</th><th>처리</th>
             </tr></thead>
             <tbody id="keyTbody"></tbody>
           </table>
         </div>
+        <div id="apikeysPager"></div>
       </div>
     </div>
 
@@ -404,17 +482,37 @@ tbody tr:hover { background: #FAFBFF; }
           </div>
           <div class="fsec">
             <div class="fsec-title">기본 사용량 한도</div>
-            <div style="font-size:12px;color:var(--text-muted);margin-bottom:16px">신규 Key 발급 시 기본으로 적용할 한도 방식을 선택합니다. API Key 관리에서 Key별로 개별 변경할 수 있습니다.</div>
+            <div style="font-size:12px;color:var(--text-muted);margin-bottom:20px">신규 Key 발급 시 기본으로 적용할 설정입니다. 아래 두 항목은 모두 필수입니다.</div>
+
+            <!-- 1. 활성화 기간 -->
+            <div class="frow" style="margin-bottom:20px">
+              <div class="flabel">API Key 활성화 기간 <span style="color:#EF4444;margin-left:2px">*</span></div>
+              <div class="fhint">발급된 Key가 유효한 기간을 설정합니다. 만료 후 자동 비활성화됩니다.</div>
+              <div style="margin-top:8px">
+                <select id="keyActivePeriod" class="setting-select" required>
+                  <option value="">기간 선택</option>
+                  <option value="1">1일</option>
+                  <option value="7">7일</option>
+                  <option value="30" selected>30일</option>
+                  <option value="90">90일</option>
+                  <option value="180">180일</option>
+                  <option value="365">365일</option>
+                  <option value="0">무제한</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- 2. AI 사용권 제공 수 -->
             <div class="frow">
-              <div class="flabel">AI 사용권 사용 방식</div>
+              <div class="flabel">AI 사용권 제공 수 <span style="color:#EF4444;margin-left:2px">*</span></div>
               <div class="radio-group" style="margin-top:8px">
                 <label class="radio-opt sel" id="limit-daily-opt" onclick="selLimit('daily')">
                   <input type="radio" name="limitMode" value="daily" checked onclick="event.stopPropagation()">
                   <div style="flex:1">
-                    <div class="ropt-title">일일 제한 (Daily Limit)</div>
-                    <div class="ropt-desc">Key당 하루 최대 API 호출 수를 제한합니다. 매일 자정에 초기화됩니다.</div>
+                    <div class="ropt-title">일일 제한</div>
+                    <div class="ropt-desc">Key당 하루 최대 호출 수를 제한합니다. 매일 자정에 초기화됩니다.</div>
                     <div id="daily-input" style="margin-top:12px;display:flex;align-items:center;gap:8px">
-                      <input type="number" class="num-input" value="50" min="0" id="dailyLimit" onclick="event.stopPropagation()">
+                      <input type="number" class="num-input" value="50" min="1" id="dailyLimit" onclick="event.stopPropagation()">
                       <span style="font-size:13px;color:var(--text-muted)">회 / 일</span>
                     </div>
                   </div>
@@ -422,10 +520,10 @@ tbody tr:hover { background: #FAFBFF; }
                 <label class="radio-opt" id="limit-total-opt" onclick="selLimit('total')">
                   <input type="radio" name="limitMode" value="total" onclick="event.stopPropagation()">
                   <div style="flex:1">
-                    <div class="ropt-title">총 사용권 (Total Grant)</div>
+                    <div class="ropt-title">총 개수 지급</div>
                     <div class="ropt-desc">Key 발급 시 사용 가능 횟수를 일괄 부여합니다. 소진 시 자동 비활성화됩니다.</div>
                     <div id="total-input" style="margin-top:12px;display:none;align-items:center;gap:8px">
-                      <input type="number" class="num-input" value="100" min="0" id="totalGrant" onclick="event.stopPropagation()">
+                      <input type="number" class="num-input" value="100" min="1" id="totalGrant" onclick="event.stopPropagation()">
                       <span style="font-size:13px;color:var(--text-muted)">회</span>
                     </div>
                   </div>
@@ -441,6 +539,82 @@ tbody tr:hover { background: #FAFBFF; }
       </div>
     </div>
 
+    <!-- ═══ 대체 텍스트 처리 현황 ═══ -->
+    <div class="view" id="view-alttext">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">🖼️ 대체 텍스트 처리 현황</div>
+          <button class="btn btn-outline btn-sm" onclick="toast('엑셀 파일 다운로드 중...','info')">📥 엑셀 다운로드</button>
+        </div>
+        <div class="at-search-bar">
+          <div class="at-fld">
+            <div class="at-flabel">처리일자</div>
+            <div style="display:flex;align-items:center;gap:6px">
+              <input type="date" id="atFrom" class="at-input" value="2026-07-07">
+              <span style="font-size:12px;color:var(--text-muted)">~</span>
+              <input type="date" id="atTo"   class="at-input" value="2026-07-09">
+            </div>
+          </div>
+          <div class="at-fld">
+            <div class="at-flabel">생성모드</div>
+            <select id="atMode" class="at-select">
+              <option value="">전체</option>
+              <option value="a11y">웹 접근성 지침 준수 모드</option>
+              <option value="simple">간소화 설명 모드</option>
+              <option value="seo">SEO/이커머스 모드</option>
+            </select>
+          </div>
+          <div class="at-fld">
+            <div class="at-flabel">만족도</div>
+            <select id="atSat" class="at-select">
+              <option value="">전체</option>
+              <option value="none">반응 없음</option>
+              <option value="추천">추천</option>
+              <option value="비추천">비추천</option>
+            </select>
+          </div>
+          <div class="at-fld">
+            <div class="at-flabel">검색어</div>
+            <input type="text" id="atSearch" class="at-input" placeholder="이메일, API Key" style="width:200px" onkeydown="if(event.key==='Enter')renderAltText()">
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="renderAltText()" style="align-self:flex-end">조회</button>
+        </div>
+        <div style="overflow-x:auto">
+          <table>
+            <thead><tr>
+              <th>No</th><th>썸네일</th><th>생성모드</th><th>alt 대체 텍스트</th><th>description</th>
+              <th>만족도</th><th>이미지 분류</th><th>API Key</th><th>생성자</th><th>처리일시</th>
+            </tr></thead>
+            <tbody id="atTbody"></tbody>
+          </table>
+        </div>
+        <div id="alttextPager"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── 이미지 미리보기 팝업 ── -->
+<div id="imgPreviewModal" class="img-preview-modal" onclick="if(event.target===this)closeImgModal()">
+  <div class="img-preview-inner" style="max-width:700px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px">
+      <div style="font-size:14px;font-weight:700;color:var(--text)">이미지 미리보기</div>
+      <button class="img-preview-close" onclick="closeImgModal()">✕</button>
+    </div>
+    <div style="display:flex;gap:22px;align-items:flex-start">
+      <img id="imgPreviewSrc" style="width:48%;border-radius:10px;flex-shrink:0;display:block" src="" alt="">
+      <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:18px">
+        <div>
+          <div style="font-size:10px;font-weight:700;color:var(--text-muted);letter-spacing:.8px;margin-bottom:7px">ALT 대체 텍스트</div>
+          <div id="imgPreviewAlt" style="font-size:13px;color:var(--text);line-height:1.7"></div>
+        </div>
+        <div id="imgPreviewDescWrap">
+          <div style="font-size:10px;font-weight:700;color:var(--text-muted);letter-spacing:.8px;margin-bottom:7px">DESCRIPTION</div>
+          <div id="imgPreviewDesc" style="font-size:13px;color:var(--text-sub);line-height:1.7"></div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -481,17 +655,17 @@ const APPLICANTS = [
   {id:12, email:'pending3@company.org',     applyAt:'2026-07-09 07:55', status:'pending',  keyId:null},
 ];
 const API_KEYS = [
-  {key:'a11y-8f3d2c1b', email:'park.jimin@webagency.com', issuedAt:'2026-07-08', status:'active',    usedToday:23, dailyLimit:50,  usedTotal:87,  totalGrant:100, lastUsed:'5분 전',   mode:'a11y',   modeUsage:{a11y:65,  simple:15,  seo:7},  limitType:'daily', limitValue:50},
-  {key:'a11y-7e1a0f9c', email:'emily.chen@techfirm.sg',   issuedAt:'2026-07-08', status:'active',    usedToday:49, dailyLimit:50,  usedTotal:91,  totalGrant:100, lastUsed:'12분 전',  mode:'simple', modeUsage:{a11y:12,  simple:71,  seo:8},  limitType:'total', limitValue:100},
-  {key:'a11y-2b4d6e8f', email:'hiroshi@e-access.jp',      issuedAt:'2026-07-07', status:'active',    usedToday:7,  dailyLimit:50,  usedTotal:142, totalGrant:200, lastUsed:'2시간 전', mode:'a11y',   modeUsage:{a11y:108, simple:28,  seo:6},  limitType:'total', limitValue:200},
-  {key:'a11y-9c3a5e7d', email:'admin@public-sector.gov',  issuedAt:'2026-07-07', status:'active',    usedToday:0,  dailyLimit:200, usedTotal:38,  totalGrant:500, lastUsed:'어제',     mode:'seo',    modeUsage:{a11y:5,   simple:4,   seo:29}, limitType:'daily', limitValue:200},
-  {key:'a11y-1f5c3b9a', email:'kim.sohee@uiagency.kr',    issuedAt:'2026-07-06', status:'active',    usedToday:50, dailyLimit:50,  usedTotal:100, totalGrant:100, lastUsed:'방금',     mode:'simple', modeUsage:{a11y:11,  simple:82,  seo:7},  limitType:'daily', limitValue:50},
-  {key:'a11y-5d9b2e6a', email:'previous@olduser.com',     issuedAt:'2026-06-15', status:'suspended', usedToday:0,  dailyLimit:50,  usedTotal:312, totalGrant:0,   lastUsed:'2주 전',   mode:'a11y',   modeUsage:{a11y:248, simple:47,  seo:17}, limitType:'daily', limitValue:50},
-  {key:'a11y-0e4c8f2d', email:'beta@earlyuser.net',       issuedAt:'2026-05-01', status:'active',    usedToday:12, dailyLimit:100, usedTotal:891, totalGrant:0,   lastUsed:'1시간 전', mode:'a11y',   modeUsage:{a11y:698, simple:152, seo:41}, limitType:'daily', limitValue:100},
+  {key:'a11y-8f3d2c1b', email:'park.jimin@webagency.com', issuedAt:'2026-07-08', status:'active',    usedToday:23, dailyLimit:50,  usedTotal:87,  totalGrant:100, lastUsed:'5분 전',   mode:'a11y',   modeUsage:{a11y:65,  simple:15,  seo:7},  limitType:'daily', limitValue:50,  activeDays:30},
+  {key:'a11y-7e1a0f9c', email:'emily.chen@techfirm.sg',   issuedAt:'2026-07-08', status:'active',    usedToday:49, dailyLimit:50,  usedTotal:91,  totalGrant:100, lastUsed:'12분 전',  mode:'simple', modeUsage:{a11y:12,  simple:71,  seo:8},  limitType:'total', limitValue:100, activeDays:90},
+  {key:'a11y-2b4d6e8f', email:'hiroshi@e-access.jp',      issuedAt:'2026-07-07', status:'active',    usedToday:7,  dailyLimit:50,  usedTotal:142, totalGrant:200, lastUsed:'2시간 전', mode:'a11y',   modeUsage:{a11y:108, simple:28,  seo:6},  limitType:'total', limitValue:200, activeDays:365},
+  {key:'a11y-9c3a5e7d', email:'admin@public-sector.gov',  issuedAt:'2026-07-07', status:'active',    usedToday:0,  dailyLimit:200, usedTotal:38,  totalGrant:500, lastUsed:'어제',     mode:'seo',    modeUsage:{a11y:5,   simple:4,   seo:29}, limitType:'daily', limitValue:200, activeDays:0},
+  {key:'a11y-1f5c3b9a', email:'kim.sohee@uiagency.kr',    issuedAt:'2026-07-06', status:'active',    usedToday:50, dailyLimit:50,  usedTotal:100, totalGrant:100, lastUsed:'방금',     mode:'simple', modeUsage:{a11y:11,  simple:82,  seo:7},  limitType:'daily', limitValue:50,  activeDays:30},
+  {key:'a11y-5d9b2e6a', email:'previous@olduser.com',     issuedAt:'2026-06-15', status:'suspended', usedToday:0,  dailyLimit:50,  usedTotal:312, totalGrant:0,   lastUsed:'2주 전',   mode:'a11y',   modeUsage:{a11y:248, simple:47,  seo:17}, limitType:'daily', limitValue:50,  activeDays:30},
+  {key:'a11y-0e4c8f2d', email:'beta@earlyuser.net',       issuedAt:'2026-05-01', status:'active',    usedToday:12, dailyLimit:100, usedTotal:891, totalGrant:0,   lastUsed:'1시간 전', mode:'a11y',   modeUsage:{a11y:698, simple:152, seo:41}, limitType:'daily', limitValue:100, activeDays:0},
 ];
 
 // ── 뷰 전환 ─────────────────────────────────────────────────────────
-const TITLES = {dashboard:'대시보드', applicants:'신청자 관리', apikeys:'API Key 관리', settings:'API 설정'};
+const TITLES = {dashboard:'대시보드', applicants:'신청자 관리', apikeys:'API Key 관리', settings:'API 설정', alttext:'대체 텍스트 처리 현황'};
 function showView(name, el) {
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(a => a.classList.remove('active'));
@@ -500,6 +674,7 @@ function showView(name, el) {
   document.getElementById('topbarTitle').textContent = TITLES[name] || name;
   if (name === 'applicants') renderApplicants();
   if (name === 'apikeys')    renderKeys();
+  if (name === 'alttext')    renderAltText();
 }
 
 // ── 뱃지 ────────────────────────────────────────────────────────────
@@ -509,23 +684,75 @@ function badge(s) {
   return `<span class="badge ${cls}">${lbl}</span>`;
 }
 
+// ── 페이징 ──────────────────────────────────────────────────────────
+const pagerState = {
+  applicants: {page:1, perPage:10},
+  apikeys:    {page:1, perPage:10},
+  alttext:    {page:1, perPage:10},
+};
+function pagerHtml(view, total) {
+  const {page, perPage} = pagerState[view];
+  const totalPages = Math.max(1, Math.ceil(total / perPage));
+  const p = Math.min(page, totalPages);
+  const nums = [];
+  for (let i = Math.max(1, p-2); i <= Math.min(totalPages, p+2); i++) nums.push(i);
+  const btn = n => `<button class="pager-btn${n===p?' on':''}" onclick="setPage('${view}',${n})">${n}</button>`;
+  return `<div class="pager">
+    <div style="display:flex;align-items:center;gap:10px">
+      <select class="pager-perpage" onchange="setPerPage('${view}',+this.value)">
+        <option value="10"  ${perPage===10 ?'selected':''}>10개씩 보기</option>
+        <option value="25"  ${perPage===25 ?'selected':''}>25개씩 보기</option>
+        <option value="100" ${perPage===100?'selected':''}>100개씩 보기</option>
+      </select>
+      <span style="font-size:12px;color:var(--text-muted)">총 <b style="color:var(--text)">${total}</b>개</span>
+    </div>
+    <div class="pager-nav">
+      <button class="pager-btn" onclick="setPage('${view}',1)" ${p<=1?'disabled':''}>«</button>
+      <button class="pager-btn" onclick="setPage('${view}',${p-1})" ${p<=1?'disabled':''}>‹</button>
+      ${nums.map(btn).join('')}
+      <button class="pager-btn" onclick="setPage('${view}',${p+1})" ${p>=totalPages?'disabled':''}>›</button>
+      <button class="pager-btn" onclick="setPage('${view}',${totalPages})" ${p>=totalPages?'disabled':''}>»</button>
+    </div>
+  </div>`;
+}
+function setPage(view, n) {
+  pagerState[view].page = Math.max(1, n);
+  if (view==='applicants') renderApplicants();
+  else if (view==='apikeys') renderKeys();
+  else renderAltText();
+}
+function setPerPage(view, n) {
+  pagerState[view].perPage = n;
+  pagerState[view].page = 1;
+  if (view==='applicants') renderApplicants();
+  else if (view==='apikeys') renderKeys();
+  else renderAltText();
+}
+
 // ── 신청자 렌더링 ────────────────────────────────────────────────────
 function renderApplicants() {
   const q = (document.getElementById('appSearch').value||'').toLowerCase();
   const sf = document.getElementById('appStatusFlt').value;
-  const rows = APPLICANTS.filter(a => (!q || a.email.toLowerCase().includes(q)) && (!sf || a.status === sf));
+  const all = APPLICANTS.filter(a => (!q || a.email.toLowerCase().includes(q)) && (!sf || a.status === sf));
   const tb = document.getElementById('appTbody');
-  if (!rows.length) { tb.innerHTML = '<tr><td colspan="6" class="empty-state">일치하는 신청자가 없습니다.</td></tr>'; return; }
+  const pg = document.getElementById('applicantsPager');
+  if (!all.length) { tb.innerHTML = '<tr><td colspan="6" class="empty-state">일치하는 신청자가 없습니다.</td></tr>'; pg.innerHTML=''; return; }
+  const {perPage} = pagerState.applicants;
+  const totalPages = Math.max(1, Math.ceil(all.length/perPage));
+  pagerState.applicants.page = Math.min(Math.max(1, pagerState.applicants.page), totalPages);
+  const start = (pagerState.applicants.page-1)*perPage;
+  const rows = all.slice(start, start+perPage);
   tb.innerHTML = rows.map(a => `<tr>
     <td style="color:var(--text-muted);font-size:12px">${a.id}</td>
     <td>${a.email}</td>
     <td style="font-size:12px;color:var(--text-muted)">${a.applyAt}</td>
     <td>${badge(a.status)}</td>
-    <td class="key-cell">${a.keyId ? `<span>${a.keyId.slice(0,8)}••••••••</span>` : '<span style="color:#C8CEDF">미발급</span>'}</td>
+    <td class="key-cell">${a.keyId ? `<span class="key-tip" data-key="${a.keyId}">${a.keyId.slice(0,8)}••••••••</span>` : '<span style="color:#C8CEDF">미발급</span>'}</td>
     <td style="white-space:nowrap">${a.status==='pending'
       ? `<button class="btn btn-success btn-sm" onclick="approveApp(${a.id})">승인</button> <button class="btn btn-danger btn-sm" onclick="rejectApp(${a.id})">거절</button>`
       : '<span style="font-size:12px;color:var(--text-muted)">처리 완료</span>'}</td>
   </tr>`).join('');
+  pg.innerHTML = pagerHtml('applicants', all.length);
 }
 function approveApp(id) {
   const a = APPLICANTS.find(x=>x.id===id);
@@ -549,15 +776,22 @@ function renderKeys() {
     (!sf || k.status === sf)
   );
   const tb = document.getElementById('keyTbody');
-  if (!rows.length) { tb.innerHTML = '<tr><td colspan="12" class="empty-state">일치하는 Key가 없습니다.</td></tr>'; return; }
-  tb.innerHTML = rows.map(k => {
+  const pg = document.getElementById('apikeysPager');
+  if (!rows.length) { tb.innerHTML = '<tr><td colspan="13" class="empty-state">일치하는 Key가 없습니다.</td></tr>'; pg.innerHTML=''; return; }
+  const {perPage: kpp} = pagerState.apikeys;
+  const kTotalPages = Math.max(1, Math.ceil(rows.length/kpp));
+  pagerState.apikeys.page = Math.min(Math.max(1, pagerState.apikeys.page), kTotalPages);
+  const kStart = (pagerState.apikeys.page-1)*kpp;
+  const allRows = rows;
+  const rows2 = allRows.slice(kStart, kStart+kpp);
+  tb.innerHTML = rows2.map(k => {
     const tp = k.dailyLimit > 0 ? Math.min(Math.round(k.usedToday/k.dailyLimit*100),100) : 0;
     const tc = tp>=100?'dang':tp>=80?'warn':'';
     const limitLabel = k.limitType==='daily'
       ? `<span style="font-size:11px;color:var(--text-muted)">일일 ${k.limitValue}회/일</span>`
       : `<span style="font-size:11px;color:var(--text-muted)">총 ${k.limitValue}회</span>`;
     return `<tr>
-      <td class="key-cell"><span>${k.key.slice(0,8)}••••••••</span></td>
+      <td class="key-cell"><span class="key-tip" data-key="${k.key}">${k.key.slice(0,8)}••••••••</span></td>
       <td>${k.email}</td>
       <td style="font-size:12px;color:var(--text-muted)">${k.issuedAt}</td>
       <td>${badge(k.status)}</td>
@@ -567,6 +801,7 @@ function renderKeys() {
       <td style="font-size:13px;color:#818CF8;font-weight:500">${k.modeUsage.simple.toLocaleString('ko-KR')}<span style="font-size:11px;font-weight:400;color:var(--text-muted);margin-left:3px">회</span></td>
       <td style="font-size:13px;color:#10B981;font-weight:500">${k.modeUsage.seo.toLocaleString('ko-KR')}<span style="font-size:11px;font-weight:400;color:var(--text-muted);margin-left:3px">회</span></td>
       <td style="font-size:12px;color:var(--text-muted)">${k.lastUsed}</td>
+      <td style="min-width:140px">${activePeriodCell(k)}</td>
       <td style="min-width:120px">
         <select class="limit-select" onchange="openLimitPopup('${k.key}', this.value, this)" data-key="${k.key}">
           <option value="daily" ${k.limitType==='daily'?'selected':''}>일일 제한</option>
@@ -581,6 +816,7 @@ function renderKeys() {
       </td>
     </tr>`;
   }).join('');
+  pg.innerHTML = pagerHtml('apikeys', allRows.length);
 }
 function suspendKey(k) {
   const x = API_KEYS.find(a=>a.key===k); if(x) x.status='suspended';
@@ -589,6 +825,134 @@ function suspendKey(k) {
 function restoreKey(k) {
   const x = API_KEYS.find(a=>a.key===k); if(x) x.status='active';
   toast(`Key ${k.slice(0,8)}•••• 활성화됨`, 'success'); renderKeys();
+}
+
+// ── 대체 텍스트 처리 현황 ──────────────────────────────────────────
+const ALT_TEXT_RECORDS = [
+  {id:1,  tc:'#4A6CF7', mode:'a11y',   alt:'파란 하늘 아래 초록 잔디밭에서 뛰어노는 아이들의 모습',                                desc:'야외 공원에서 아이들이 자유롭게 활동하는 생동감 있는 장면입니다.',                 sat:'추천',   cat:'맥락형',  apiKey:'a11y-8f3d2c1b', email:'park.jimin@webagency.com', at:'2026.07.09 14:23:05'},
+  {id:2,  tc:'#10B981', mode:'simple', alt:'회의실에서 발표 중인 직원',                                                             desc:null,                                                                              sat:'',       cat:'정보형',  apiKey:'a11y-7e1a0f9c', email:'emily.chen@techfirm.sg',   at:'2026.07.09 13:47:22'},
+  {id:3,  tc:'#F59E0B', mode:'seo',    alt:'신선한 유기농 딸기 500g, 빨간 딸기가 가득 담긴 흰 바구니',                             desc:'선명한 빨간색 딸기가 수북이 담긴 흰색 바구니 제품 사진입니다.',                   sat:'추천',   cat:'정보형',  apiKey:'a11y-2b4d6e8f', email:'hiroshi@e-access.jp',       at:'2026.07.09 12:05:44'},
+  {id:4,  tc:'#7B5CF7', mode:'a11y',   alt:'웹사이트 배경 장식용 물결 모양의 그라데이션 이미지',                                   desc:null,                                                                              sat:'',       cat:'장식형',  apiKey:'a11y-9c3a5e7d', email:'admin@public-sector.gov',  at:'2026.07.09 11:30:11'},
+  {id:5,  tc:'#EF4444', mode:'simple', alt:'검색 버튼 아이콘',                                                                      desc:null,                                                                              sat:'비추천', cat:'기능형',  apiKey:'a11y-1f5c3b9a', email:'kim.sohee@uiagency.kr',    at:'2026.07.09 10:58:37'},
+  {id:6,  tc:'#06B6D4', mode:'seo',    alt:'2026년 1분기 매출 막대 그래프, 1월 120만, 2월 145만, 3월 178만 원',                    desc:'매달 꾸준한 상승세를 보이는 1분기 매출 실적 그래프입니다.',                       sat:'추천',   cat:'그래픽형', apiKey:'a11y-0e4c8f2d', email:'beta@earlyuser.net',         at:'2026.07.08 17:42:19'},
+  {id:7,  tc:'#EC4899', mode:'a11y',   alt:'온라인 쇼핑몰 메인 배너: 여름 특가 세일 최대 50% 할인',                                desc:'여름 시즌 프로모션 배너로 할인 혜택 정보를 안내합니다.',                          sat:'추천',   cat:'복합형',  apiKey:'a11y-8f3d2c1b', email:'park.jimin@webagency.com', at:'2026.07.08 16:20:53'},
+  {id:8,  tc:'#84CC16', mode:'simple', alt:'회사 로고 이미지',                                                                      desc:null,                                                                              sat:'비추천', cat:'기능형',  apiKey:'a11y-7e1a0f9c', email:'emily.chen@techfirm.sg',   at:'2026.07.08 15:11:44'},
+  {id:9,  tc:'#F97316', mode:'seo',    alt:'화이트 미니멀 세라믹 커피잔 2P 세트, 손잡이 있는 흰색 머그컵',                         desc:'심플하고 깔끔한 화이트 세라믹 소재의 커피잔 세트 제품 이미지입니다.',             sat:'추천',   cat:'정보형',  apiKey:'a11y-2b4d6e8f', email:'hiroshi@e-access.jp',       at:'2026.07.08 14:03:28'},
+  {id:10, tc:'#6366F1', mode:'a11y',   alt:'접근성 안내 인포그래픽: 시각, 청각, 운동 장애 유형과 보조 기술 설명',                  desc:'다양한 장애 유형과 그에 맞는 보조 기술을 시각화한 인포그래픽입니다.',             sat:'추천',   cat:'복합형',  apiKey:'a11y-9c3a5e7d', email:'admin@public-sector.gov',  at:'2026.07.08 11:27:00'},
+  {id:11, tc:'#3B82F6', mode:'simple', alt:'이메일 구독 신청 폼 배경 이미지',                                                       desc:null,                                                                              sat:'',       cat:'장식형',  apiKey:'a11y-1f5c3b9a', email:'kim.sohee@uiagency.kr',    at:'2026.07.07 18:55:16'},
+  {id:12, tc:'#8B5CF6', mode:'a11y',   alt:'도서관 열람실에서 책을 읽고 있는 대학생의 집중된 모습',                                 desc:'조용한 열람실 환경에서 학습 중인 학생의 자연스러운 모습입니다.',                  sat:'추천',   cat:'맥락형',  apiKey:'a11y-0e4c8f2d', email:'beta@earlyuser.net',         at:'2026.07.07 15:33:44'},
+];
+
+function modeColor(m) { return {a11y:'#4A6CF7', simple:'#F97316', seo:'#10B981'}[m]||'#9BA4C0'; }
+
+function calcExpiry(issuedAt, activeDays) {
+  if (activeDays === 0) return null;
+  const d = new Date(issuedAt + 'T00:00:00');
+  d.setDate(d.getDate() + activeDays);
+  return d.toISOString().slice(0, 10);
+}
+function activePeriodCell(k) {
+  const fmt = s => s.replace(/-/g, '.');
+  if (k.activeDays === 0) {
+    return `<span style="font-size:11px;font-weight:700;color:#4A6CF7;background:#EEF2FF;padding:2px 7px;border-radius:5px">무제한</span>`;
+  }
+  const expiry = calcExpiry(k.issuedAt, k.activeDays);
+  const today  = new Date(TODAY_STR + 'T00:00:00');
+  const exp    = new Date(expiry + 'T00:00:00');
+  const rem    = Math.ceil((exp - today) / 86400000);
+  let badge;
+  if (rem < 0)       badge = `<span style="font-size:11px;font-weight:700;color:#fff;background:#EF4444;padding:2px 7px;border-radius:5px">만료</span>`;
+  else if (rem <= 7) badge = `<span style="font-size:11px;font-weight:700;color:#EF4444">D-${rem}</span>`;
+  else if (rem <= 30) badge = `<span style="font-size:11px;font-weight:700;color:#F59E0B">D-${rem}</span>`;
+  else               badge = `<span style="font-size:11px;color:var(--text-muted)">D-${rem}</span>`;
+  return `<div style="font-size:12px;color:var(--text-muted);line-height:1.7;white-space:nowrap">${fmt(k.issuedAt)} ~<br>${fmt(expiry)}</div><div style="margin-top:3px">${badge}</div>`;
+}
+function modeLabel(m) { return {a11y:'웹 접근성 지침 준수 모드', simple:'간소화 설명 모드', seo:'SEO/이커머스 모드'}[m]||m; }
+
+function thumbSrc(color, large) {
+  const w = large?480:80, h = large?320:60;
+  const cx = large?150:24, cy = large?120:20, r = large?38:8;
+  const pts = large
+    ? '80,310 200,180 300,230 380,160 400,310'
+    : '10,56 26,34 42,44 58,36 70,56';
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}"><rect width="${w}" height="${h}" fill="${color}" rx="${large?0:4}"/><rect x="${large?60:8}" y="${large?50:8}" width="${large?360:64}" height="${large?220:44}" rx="${large?6:3}" fill="rgba(255,255,255,0.12)"/><circle cx="${cx}" cy="${cy}" r="${r}" fill="rgba(255,255,255,0.45)"/><polygon points="${pts}" fill="rgba(255,255,255,0.28)"/></svg>`;
+  return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+}
+
+function renderAltText() {
+  const from = document.getElementById('atFrom').value;
+  const to   = document.getElementById('atTo').value;
+  const mode = document.getElementById('atMode').value;
+  const sat  = document.getElementById('atSat').value;
+  const q    = (document.getElementById('atSearch').value||'').toLowerCase();
+
+  let rows = ALT_TEXT_RECORDS.filter(r => {
+    const d = r.at.slice(0,10).replace(/\./g,'-');
+    if (from && d < from) return false;
+    if (to   && d > to)   return false;
+    if (mode && r.mode !== mode) return false;
+    if (sat === 'none') { if (r.sat !== '') return false; }
+    else if (sat) { if (r.sat !== sat) return false; }
+    if (q && !r.email.toLowerCase().includes(q) && !r.apiKey.toLowerCase().includes(q)) return false;
+    return true;
+  });
+
+  const tb = document.getElementById('atTbody');
+  const pg = document.getElementById('alttextPager');
+  if (!rows.length) { tb.innerHTML = '<tr><td colspan="10" class="empty-state">조회된 결과가 없습니다.</td></tr>'; pg.innerHTML=''; return; }
+  const {perPage: app} = pagerState.alttext;
+  const aTotalPages = Math.max(1, Math.ceil(rows.length/app));
+  pagerState.alttext.page = Math.min(Math.max(1, pagerState.alttext.page), aTotalPages);
+  const aStart = (pagerState.alttext.page-1)*app;
+  const allAtRows = rows;
+  rows = rows.slice(aStart, aStart+app);
+
+  const satBadge = s => s==='추천'
+    ? '<span style="color:#10B981;font-weight:700;font-size:12px">👍 추천</span>'
+    : s==='비추천'
+    ? '<span style="color:#EF4444;font-weight:700;font-size:12px">👎 비추천</span>'
+    : '<span style="color:var(--text-muted);font-size:12px">—</span>';
+
+  const catColor = {맥락형:'#4A6CF7', 장식형:'#9BA4C0', 기능형:'#F59E0B', 그래픽형:'#EC4899', 정보형:'#10B981', 복합형:'#8B5CF6'};
+
+  tb.innerHTML = rows.map(r => `<tr>
+    <td style="font-size:12px;color:var(--text-muted)">${r.id}</td>
+    <td><img class="thumb-img" src="${thumbSrc(r.tc,false)}" alt="${r.alt}" onclick="openImgModal(${r.id})"></td>
+    <td><span style="display:inline-block;background:${modeColor(r.mode)}1A;color:${modeColor(r.mode)};font-size:11px;font-weight:600;padding:3px 7px;border-radius:5px;white-space:nowrap">${modeLabel(r.mode)}</span></td>
+    <td style="max-width:200px;font-size:12px;line-height:1.6;color:var(--text)">${r.alt}</td>
+    <td style="max-width:180px;font-size:12px;line-height:1.6;color:var(--text-sub)">${r.desc||'<span style="color:var(--text-muted)">—</span>'}</td>
+    <td>${satBadge(r.sat)}</td>
+    <td><span style="background:${catColor[r.cat]||'#9BA4C0'}1A;color:${catColor[r.cat]||'#9BA4C0'};font-size:11px;font-weight:600;padding:3px 7px;border-radius:5px">${r.cat}</span></td>
+    <td class="key-cell"><span class="key-tip" style="font-size:12px" data-key="${r.apiKey}">${r.apiKey.slice(0,8)}••••</span></td>
+    <td style="font-size:12px;color:var(--text-sub)">${r.email}</td>
+    <td style="font-size:12px;color:var(--text-muted);white-space:nowrap">${r.at}</td>
+  </tr>`).join('');
+  pg.innerHTML = pagerHtml('alttext', allAtRows.length);
+}
+
+function goToAltTextFilter(mode, sat) {
+  document.getElementById('atMode').value = mode || '';
+  document.getElementById('atSat').value  = sat  || '';
+  const navEl = document.querySelector('[data-view="alttext"]');
+  showView('alttext', navEl);
+}
+
+function openImgModal(id) {
+  const r = ALT_TEXT_RECORDS.find(x => x.id === id);
+  if (!r) return;
+  document.getElementById('imgPreviewSrc').src = thumbSrc(r.tc, true);
+  document.getElementById('imgPreviewAlt').textContent = r.alt;
+  const descWrap = document.getElementById('imgPreviewDescWrap');
+  if (r.desc) {
+    document.getElementById('imgPreviewDesc').textContent = r.desc;
+    descWrap.style.display = 'block';
+  } else {
+    descWrap.style.display = 'none';
+  }
+  document.getElementById('imgPreviewModal').style.display = 'flex';
+}
+function closeImgModal() {
+  document.getElementById('imgPreviewModal').style.display = 'none';
 }
 
 // ── 한도 방식 팝업 ──────────────────────────────────────────────────
@@ -651,12 +1015,15 @@ function selLimit(l) {
   document.getElementById('total-input').style.display = l==='total' ? 'flex' : 'none';
 }
 function saveSettings() {
-  const issueMode  = document.querySelector('input[name="issueMode"]:checked').value;
-  const limitMode  = document.querySelector('input[name="limitMode"]:checked').value;
-  const limitVal   = limitMode==='daily'
+  const period = document.getElementById('keyActivePeriod').value;
+  if (!period) { toast('API Key 활성화 기간을 선택해주세요.', 'danger'); return; }
+  const issueMode = document.querySelector('input[name="issueMode"]:checked').value;
+  const limitMode = document.querySelector('input[name="limitMode"]:checked').value;
+  const limitVal  = limitMode==='daily'
     ? document.getElementById('dailyLimit').value + '회/일'
-    : document.getElementById('totalGrant').value + '회(총)';
-  toast(`설정 저장 완료 — ${issueMode==='auto'?'자동지급':'승인후발급'} / ${limitMode==='daily'?'일일제한':'총사용권'} ${limitVal}`, 'success');
+    : document.getElementById('totalGrant').value + '회';
+  const periodLabel = period==='0' ? '무제한' : period+'일';
+  toast(`설정 저장 완료 — ${issueMode==='auto'?'자동지급':'승인후발급'} / 활성화 ${periodLabel} / ${limitMode==='daily'?'일일제한':'총개수지급'} ${limitVal}`, 'success');
 }
 
 // ── 토스트 ──────────────────────────────────────────────────────────
@@ -783,22 +1150,69 @@ function updateDashboard(from, to) {
   // 모드 카드
   document.getElementById('mode-row').innerHTML = `
     <div class="mode-card">
-      <div class="mode-name">웹 접근성 지침 준수 모드</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <div class="mode-name" style="margin-bottom:0">웹 접근성 지침 준수 모드</div>
+        <button class="goto-btn" onclick="goToAltTextFilter('a11y','')">바로가기 →</button>
+      </div>
       <div class="mode-val">${fmtNum(d.a11y)}</div>
       <div class="mode-pct">${d.a11yPct}% · 접근성 마크업 생성</div>
       <div class="mode-bar-w"><div class="mode-bar" style="width:${d.a11yPct}%;background:var(--accent)"></div></div>
     </div>
     <div class="mode-card">
-      <div class="mode-name">간소화 설명 모드</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <div class="mode-name" style="margin-bottom:0">간소화 설명 모드</div>
+        <button class="goto-btn" onclick="goToAltTextFilter('simple','')">바로가기 →</button>
+      </div>
       <div class="mode-val">${fmtNum(d.simple)}</div>
       <div class="mode-pct">${d.simplePct}% · 간략 변환</div>
-      <div class="mode-bar-w"><div class="mode-bar" style="width:${d.simplePct}%;background:#818CF8"></div></div>
+      <div class="mode-bar-w"><div class="mode-bar" style="width:${d.simplePct}%;background:#F97316"></div></div>
     </div>
     <div class="mode-card">
-      <div class="mode-name">SEO/이커머스 모드</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <div class="mode-name" style="margin-bottom:0">SEO/이커머스 모드</div>
+        <button class="goto-btn" onclick="goToAltTextFilter('seo','')">바로가기 →</button>
+      </div>
       <div class="mode-val">${fmtNum(d.seo)}</div>
       <div class="mode-pct">${d.seoPct}% · SEO 최적화</div>
       <div class="mode-bar-w"><div class="mode-bar" style="width:${d.seoPct}%;background:#34D399"></div></div>
+    </div>`;
+
+  // 만족도 카드
+  const sc = {none:0, good:0, bad:0};
+  ALT_TEXT_RECORDS.forEach(r => {
+    if      (r.sat === '추천')   sc.good++;
+    else if (r.sat === '비추천') sc.bad++;
+    else                         sc.none++;
+  });
+  const st = sc.none + sc.good + sc.bad;
+  const pct = v => st > 0 ? Math.round(v/st*100) : 0;
+  document.getElementById('sat-row').innerHTML = `
+    <div class="mode-card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <div class="mode-name" style="margin-bottom:0">반응 없음</div>
+        <button class="goto-btn" onclick="goToAltTextFilter('','none')">바로가기 →</button>
+      </div>
+      <div class="mode-val" style="color:var(--text-muted)">${sc.none}</div>
+      <div class="mode-pct">${pct(sc.none)}% · 미응답</div>
+      <div class="mode-bar-w"><div class="mode-bar" style="width:${pct(sc.none)}%;background:#C8CEDF"></div></div>
+    </div>
+    <div class="mode-card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <div class="mode-name" style="color:#10B981;margin-bottom:0">추천</div>
+        <button class="sat-goto" onclick="goToAltTextFilter('','추천')">바로가기 →</button>
+      </div>
+      <div class="mode-val" style="color:#10B981">${sc.good}</div>
+      <div class="mode-pct">${pct(sc.good)}% · 긍정 반응</div>
+      <div class="mode-bar-w"><div class="mode-bar" style="width:${pct(sc.good)}%;background:#10B981"></div></div>
+    </div>
+    <div class="mode-card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <div class="mode-name" style="color:#EF4444;margin-bottom:0">비추천</div>
+        <button class="sat-goto sat-goto-bad" onclick="goToAltTextFilter('','비추천')">바로가기 →</button>
+      </div>
+      <div class="mode-val" style="color:#EF4444">${sc.bad}</div>
+      <div class="mode-pct">${pct(sc.bad)}% · 부정 반응</div>
+      <div class="mode-bar-w"><div class="mode-bar" style="width:${pct(sc.bad)}%;background:#EF4444"></div></div>
     </div>`;
 }
 
@@ -811,6 +1225,7 @@ function updateClock() {
 }
 updateClock();
 setInterval(updateClock, 1000);
+setPreset('today');
 
 // ── 세션 타이머 ─────────────────────────────────────────────────────
 let sessionSec = 3598;
