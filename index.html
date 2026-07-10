@@ -26,6 +26,16 @@
 }
 body { font-family: 'Apple SD Gothic Neo', '맑은 고딕', 'Noto Sans KR', system-ui, sans-serif; background: var(--bg); color: var(--text); display: flex; height: 100vh; overflow: hidden; font-size: 14px; }
 
+/* ──────────────── 체크박스 행 선택 ──────────────── */
+tr.row-selected td { background: #EEF2FF; }
+.expiry-edit-btn {
+  background: none; border: 1px solid var(--border); border-radius: 6px;
+  padding: 3px 6px; cursor: pointer; font-size: 12px; color: var(--text-muted);
+  transition: background .12s, border-color .12s;
+  flex-shrink: 0;
+}
+.expiry-edit-btn:hover { background: var(--accent-light); border-color: var(--accent); }
+
 /* ──────────────── 로그인 ──────────────── */
 #loginScreen {
   position: fixed; inset: 0; z-index: 9999;
@@ -470,7 +480,7 @@ tbody tr:hover { background: #FAFBFF; }
         <div class="mode-row" id="mode-row"></div>
         <div style="height:1px;background:var(--border-light);margin:0 14px 0"></div>
         <div style="padding:14px 14px 0">
-          <div style="font-size:11px;font-weight:700;color:var(--text-muted);letter-spacing:.6px;text-transform:uppercase">대체 텍스트 생성 추천 현황</div>
+          <div style="font-size:11px;font-weight:700;color:var(--text-muted);letter-spacing:.6px;text-transform:uppercase">대체 텍스트 생성 만족도 현황</div>
         </div>
         <div class="mode-row" id="sat-row"></div>
       </div>
@@ -527,9 +537,22 @@ tbody tr:hover { background: #FAFBFF; }
             <button class="btn btn-outline btn-sm" onclick="toast('엑셀 파일 다운로드 중...','info')">📥 엑셀 다운로드</button>
           </div>
         </div>
+        <!-- 일괄 액션 바 -->
+        <div id="keyBulkBar" style="display:none;align-items:center;gap:10px;background:#EEF2FF;border:1px solid #C7D3FD;border-radius:10px;padding:10px 14px;margin-bottom:10px;flex-wrap:wrap">
+          <span style="font-size:13px;font-weight:700;color:#4A6CF7" id="keyBulkCount">0건 선택됨</span>
+          <div id="keyAllFilteredBanner" style="display:none;font-size:12px;color:var(--text-sub)">
+            현재 페이지만 선택됐습니다.
+            <button class="btn btn-outline btn-sm" style="margin-left:6px;font-size:11px;padding:2px 8px" onclick="selectAllFilteredKeys()">조회된 전체 <b id="keyAllFilteredCount">0</b>건 모두 선택</button>
+          </div>
+          <div style="margin-left:auto;display:flex;gap:8px">
+            <button class="btn btn-primary btn-sm" onclick="openBulkExpiryModal()">📅 만료일 일괄 수정</button>
+            <button class="btn btn-outline btn-sm" onclick="clearKeySelection()">선택 해제</button>
+          </div>
+        </div>
         <div style="overflow-x:auto">
           <table>
             <thead><tr>
+              <th style="width:36px;padding:8px 6px"><input type="checkbox" id="keySelectAll" onchange="toggleAllPageKeys(this)" style="cursor:pointer;width:15px;height:15px"></th>
               <th>API Key</th><th>이메일</th><th>발급일</th><th>상태</th>
               <th>잔여 사용량</th><th>API 총 사용량</th><th>웹 접근성 지침 준수 모드</th><th>간소화 설명 모드</th><th>SEO/이커머스 모드</th><th>최근 사용</th><th>활성화 기간</th><th>한도 방식</th><th>처리</th>
             </tr></thead>
@@ -581,14 +604,13 @@ tbody tr:hover { background: #FAFBFF; }
                   <option value="90">90일</option>
                   <option value="180">180일</option>
                   <option value="365">365일</option>
-                  <option value="0">무제한</option>
                 </select>
               </div>
             </div>
 
-            <!-- 2. AI 사용권 제공 수 -->
+            <!-- 2. 크레딧 제공 수 -->
             <div class="frow">
-              <div class="flabel">AI 사용권 제공 수 <span style="color:#EF4444;margin-left:2px">*</span></div>
+              <div class="flabel">크레딧 제공 수 <span style="color:#EF4444;margin-left:2px">*</span></div>
               <div class="radio-group" style="margin-top:8px">
                 <label class="radio-opt sel" id="limit-daily-opt" onclick="selLimit('daily')">
                   <input type="radio" name="limitMode" value="daily" checked onclick="event.stopPropagation()">
@@ -653,8 +675,8 @@ tbody tr:hover { background: #FAFBFF; }
             <select id="atSat" class="at-select">
               <option value="">전체</option>
               <option value="none">반응 없음</option>
-              <option value="추천">추천</option>
-              <option value="비추천">비추천</option>
+              <option value="만족">만족</option>
+              <option value="불만족">불만족</option>
             </select>
           </div>
           <div class="at-fld">
@@ -702,6 +724,39 @@ tbody tr:hover { background: #FAFBFF; }
   </div>
 </div>
 
+<!-- ── 만료일 개별 수정 모달 ── -->
+<div id="expiryEditModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:1000;align-items:center;justify-content:center" onclick="if(event.target===this)this.style.display='none'">
+  <div style="background:#fff;border-radius:14px;box-shadow:0 8px 40px rgba(0,0,0,.18);padding:28px 28px 22px;min-width:320px;max-width:380px;width:100%">
+    <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:6px">활성화 기간 수정</div>
+    <div style="font-size:12px;color:var(--text-muted);margin-bottom:20px">Key: <code style="background:var(--bg);padding:2px 6px;border-radius:4px;font-size:11px" id="expiryEditKeyLabel"></code></div>
+    <div style="margin-bottom:18px">
+      <label style="display:block;font-size:12px;font-weight:600;color:var(--text-sub);margin-bottom:8px">새 만료일</label>
+      <input type="date" id="expiryEditDate" style="border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-size:14px;width:100%;outline:none;color:var(--text)" onkeydown="if(event.key==='Enter')saveExpiryEdit()">
+    </div>
+    <div style="display:flex;gap:8px;justify-content:flex-end">
+      <button class="btn btn-outline btn-sm" onclick="document.getElementById('expiryEditModal').style.display='none'">취소</button>
+      <button class="btn btn-primary btn-sm" onclick="saveExpiryEdit()">저장</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── 만료일 일괄 수정 모달 ── -->
+<div id="bulkExpiryModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:1000;align-items:center;justify-content:center" onclick="if(event.target===this)this.style.display='none'">
+  <div style="background:#fff;border-radius:14px;box-shadow:0 8px 40px rgba(0,0,0,.18);padding:28px 28px 22px;min-width:320px;max-width:400px;width:100%">
+    <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:6px">만료일 일괄 수정</div>
+    <div style="font-size:12px;color:var(--text-muted);margin-bottom:20px"><b id="bulkExpiryCount" style="color:var(--accent)">0</b>개 Key의 만료일을 동일하게 변경합니다.</div>
+    <div style="margin-bottom:18px">
+      <label style="display:block;font-size:12px;font-weight:600;color:var(--text-sub);margin-bottom:8px">새 만료일</label>
+      <input type="date" id="bulkExpiryDate" style="border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-size:14px;width:100%;outline:none;color:var(--text)" onkeydown="if(event.key==='Enter')saveBulkExpiry()">
+    </div>
+    <div style="background:#FEF3C7;border-radius:8px;padding:10px 12px;margin-bottom:18px;font-size:12px;color:#92400E">⚠️ 선택된 모든 Key의 만료일이 변경됩니다. 신중하게 확인 후 저장해주세요.</div>
+    <div style="display:flex;gap:8px;justify-content:flex-end">
+      <button class="btn btn-outline btn-sm" onclick="document.getElementById('bulkExpiryModal').style.display='none'">취소</button>
+      <button class="btn btn-primary btn-sm" onclick="saveBulkExpiry()">저장</button>
+    </div>
+  </div>
+</div>
+
 <!-- ── 한도 방식 변경 팝업 ── -->
 <div id="limitModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:1000;align-items:center;justify-content:center">
   <div style="background:#fff;border-radius:14px;box-shadow:0 8px 40px rgba(0,0,0,.18);padding:28px 28px 22px;min-width:320px;max-width:380px;width:100%">
@@ -739,13 +794,13 @@ const APPLICANTS = [
   {id:12, email:'pending3@company.org',     applyAt:'2026-07-09 07:55', status:'pending',  keyId:null},
 ];
 const API_KEYS = [
-  {key:'a11y-8f3d2c1b', email:'park.jimin@webagency.com', issuedAt:'2026-07-08', status:'active',    usedToday:23, dailyLimit:50,  usedTotal:87,  totalGrant:100, lastUsed:'5분 전',   mode:'a11y',   modeUsage:{a11y:65,  simple:15,  seo:7},  limitType:'daily', limitValue:50,  activeDays:30},
-  {key:'a11y-7e1a0f9c', email:'emily.chen@techfirm.sg',   issuedAt:'2026-07-08', status:'active',    usedToday:49, dailyLimit:50,  usedTotal:91,  totalGrant:100, lastUsed:'12분 전',  mode:'simple', modeUsage:{a11y:12,  simple:71,  seo:8},  limitType:'total', limitValue:100, activeDays:90},
-  {key:'a11y-2b4d6e8f', email:'hiroshi@e-access.jp',      issuedAt:'2026-07-07', status:'active',    usedToday:7,  dailyLimit:50,  usedTotal:142, totalGrant:200, lastUsed:'2시간 전', mode:'a11y',   modeUsage:{a11y:108, simple:28,  seo:6},  limitType:'total', limitValue:200, activeDays:365},
-  {key:'a11y-9c3a5e7d', email:'admin@public-sector.gov',  issuedAt:'2026-07-07', status:'active',    usedToday:0,  dailyLimit:200, usedTotal:38,  totalGrant:500, lastUsed:'어제',     mode:'seo',    modeUsage:{a11y:5,   simple:4,   seo:29}, limitType:'daily', limitValue:200, activeDays:0},
-  {key:'a11y-1f5c3b9a', email:'kim.sohee@uiagency.kr',    issuedAt:'2026-07-06', status:'active',    usedToday:50, dailyLimit:50,  usedTotal:100, totalGrant:100, lastUsed:'방금',     mode:'simple', modeUsage:{a11y:11,  simple:82,  seo:7},  limitType:'daily', limitValue:50,  activeDays:30},
-  {key:'a11y-5d9b2e6a', email:'previous@olduser.com',     issuedAt:'2026-06-15', status:'suspended', usedToday:0,  dailyLimit:50,  usedTotal:312, totalGrant:0,   lastUsed:'2주 전',   mode:'a11y',   modeUsage:{a11y:248, simple:47,  seo:17}, limitType:'daily', limitValue:50,  activeDays:30},
-  {key:'a11y-0e4c8f2d', email:'beta@earlyuser.net',       issuedAt:'2026-05-01', status:'active',    usedToday:12, dailyLimit:100, usedTotal:891, totalGrant:0,   lastUsed:'1시간 전', mode:'a11y',   modeUsage:{a11y:698, simple:152, seo:41}, limitType:'daily', limitValue:100, activeDays:0},
+  {key:'a11y-8f3d2c1b', email:'park.jimin@webagency.com', issuedAt:'2026-07-08', status:'active',    usedToday:23, dailyLimit:50,  usedTotal:87,  totalGrant:100, lastUsed:'5분 전',   mode:'a11y',   modeUsage:{a11y:65,  simple:15,  seo:7},  limitType:'daily', limitValue:50,  expiryDate:'2026-08-07'},
+  {key:'a11y-7e1a0f9c', email:'emily.chen@techfirm.sg',   issuedAt:'2026-07-08', status:'active',    usedToday:49, dailyLimit:50,  usedTotal:91,  totalGrant:100, lastUsed:'12분 전',  mode:'simple', modeUsage:{a11y:12,  simple:71,  seo:8},  limitType:'total', limitValue:100, expiryDate:'2026-10-06'},
+  {key:'a11y-2b4d6e8f', email:'hiroshi@e-access.jp',      issuedAt:'2026-07-07', status:'active',    usedToday:7,  dailyLimit:50,  usedTotal:142, totalGrant:200, lastUsed:'2시간 전', mode:'a11y',   modeUsage:{a11y:108, simple:28,  seo:6},  limitType:'total', limitValue:200, expiryDate:'2027-07-07'},
+  {key:'a11y-9c3a5e7d', email:'admin@public-sector.gov',  issuedAt:'2026-07-07', status:'active',    usedToday:0,  dailyLimit:200, usedTotal:38,  totalGrant:500, lastUsed:'어제',     mode:'seo',    modeUsage:{a11y:5,   simple:4,   seo:29}, limitType:'daily', limitValue:200, expiryDate:'2027-07-07'},
+  {key:'a11y-1f5c3b9a', email:'kim.sohee@uiagency.kr',    issuedAt:'2026-07-06', status:'active',    usedToday:50, dailyLimit:50,  usedTotal:100, totalGrant:100, lastUsed:'방금',     mode:'simple', modeUsage:{a11y:11,  simple:82,  seo:7},  limitType:'daily', limitValue:50,  expiryDate:'2026-08-05'},
+  {key:'a11y-5d9b2e6a', email:'previous@olduser.com',     issuedAt:'2026-06-15', status:'suspended', usedToday:0,  dailyLimit:50,  usedTotal:312, totalGrant:0,   lastUsed:'2주 전',   mode:'a11y',   modeUsage:{a11y:248, simple:47,  seo:17}, limitType:'daily', limitValue:50,  expiryDate:'2026-07-15'},
+  {key:'a11y-0e4c8f2d', email:'beta@earlyuser.net',       issuedAt:'2026-05-01', status:'active',    usedToday:12, dailyLimit:100, usedTotal:891, totalGrant:0,   lastUsed:'1시간 전', mode:'a11y',   modeUsage:{a11y:698, simple:152, seo:41}, limitType:'daily', limitValue:100, expiryDate:'2027-05-01'},
 ];
 
 // ── 뷰 전환 ─────────────────────────────────────────────────────────
@@ -852,29 +907,33 @@ function rejectApp(id) {
 }
 
 // ── API Key 렌더링 ──────────────────────────────────────────────────
+let keySelState = { selected: new Set(), allFiltered: false, filteredKeys: [] };
+
 function renderKeys() {
   const q  = (document.getElementById('keySearch').value||'').toLowerCase();
   const sf = document.getElementById('keyStatusFlt').value;
-  const rows = API_KEYS.filter(k =>
+  const allRows = API_KEYS.filter(k =>
     (!q  || k.email.toLowerCase().includes(q) || k.key.toLowerCase().includes(q)) &&
     (!sf || k.status === sf)
   );
+  keySelState.filteredKeys = allRows;
   const tb = document.getElementById('keyTbody');
   const pg = document.getElementById('apikeysPager');
-  if (!rows.length) { tb.innerHTML = '<tr><td colspan="13" class="empty-state">일치하는 Key가 없습니다.</td></tr>'; pg.innerHTML=''; return; }
+  if (!allRows.length) { tb.innerHTML = '<tr><td colspan="14" class="empty-state">일치하는 Key가 없습니다.</td></tr>'; pg.innerHTML=''; return; }
   const {perPage: kpp} = pagerState.apikeys;
-  const kTotalPages = Math.max(1, Math.ceil(rows.length/kpp));
+  const kTotalPages = Math.max(1, Math.ceil(allRows.length/kpp));
   pagerState.apikeys.page = Math.min(Math.max(1, pagerState.apikeys.page), kTotalPages);
   const kStart = (pagerState.apikeys.page-1)*kpp;
-  const allRows = rows;
   const rows2 = allRows.slice(kStart, kStart+kpp);
   tb.innerHTML = rows2.map(k => {
+    const checked = keySelState.selected.has(k.key) || keySelState.allFiltered;
     const tp = k.dailyLimit > 0 ? Math.min(Math.round(k.usedToday/k.dailyLimit*100),100) : 0;
     const tc = tp>=100?'dang':tp>=80?'warn':'';
     const limitLabel = k.limitType==='daily'
       ? `<span style="font-size:11px;color:var(--text-muted)">일일 ${k.limitValue}회/일</span>`
       : `<span style="font-size:11px;color:var(--text-muted)">총 ${k.limitValue}회</span>`;
-    return `<tr>
+    return `<tr class="${checked?'row-selected':''}">
+      <td style="padding:8px 6px;text-align:center"><input type="checkbox" class="key-row-check" data-key="${k.key}" ${checked?'checked':''} onchange="toggleKeyRow('${k.key}',this)" style="cursor:pointer;width:15px;height:15px"></td>
       <td class="key-cell"><span class="key-tip" data-key="${k.key}">${k.key.slice(0,8)}••••••••</span></td>
       <td>${k.email}</td>
       <td style="font-size:12px;color:var(--text-muted)">${k.issuedAt}</td>
@@ -882,10 +941,10 @@ function renderKeys() {
       <td style="min-width:90px"><div style="font-size:12px">${k.usedToday} / ${k.dailyLimit||'∞'}</div>${k.dailyLimit>0?`<div class="ubar-wrap"><div class="ubar ${tc}" style="width:${tp}%"></div></div>`:''}</td>
       <td style="font-size:13px;font-weight:600;color:var(--text)">${k.usedTotal.toLocaleString('ko-KR')}<span style="font-size:11px;font-weight:400;color:var(--text-muted);margin-left:3px">회</span></td>
       <td style="font-size:13px;color:#4A6CF7;font-weight:500">${k.modeUsage.a11y.toLocaleString('ko-KR')}<span style="font-size:11px;font-weight:400;color:var(--text-muted);margin-left:3px">회</span></td>
-      <td style="font-size:13px;color:#818CF8;font-weight:500">${k.modeUsage.simple.toLocaleString('ko-KR')}<span style="font-size:11px;font-weight:400;color:var(--text-muted);margin-left:3px">회</span></td>
+      <td style="font-size:13px;color:#F97316;font-weight:500">${k.modeUsage.simple.toLocaleString('ko-KR')}<span style="font-size:11px;font-weight:400;color:var(--text-muted);margin-left:3px">회</span></td>
       <td style="font-size:13px;color:#10B981;font-weight:500">${k.modeUsage.seo.toLocaleString('ko-KR')}<span style="font-size:11px;font-weight:400;color:var(--text-muted);margin-left:3px">회</span></td>
       <td style="font-size:12px;color:var(--text-muted)">${k.lastUsed}</td>
-      <td style="min-width:140px">${activePeriodCell(k)}</td>
+      <td style="min-width:160px">${activePeriodCell(k)}</td>
       <td style="min-width:120px">
         <select class="limit-select" onchange="openLimitPopup('${k.key}', this.value, this)" data-key="${k.key}">
           <option value="daily" ${k.limitType==='daily'?'selected':''}>일일 제한</option>
@@ -901,6 +960,11 @@ function renderKeys() {
     </tr>`;
   }).join('');
   pg.innerHTML = pagerHtml('apikeys', allRows.length);
+  // 헤더 체크박스 상태 동기화
+  const allChecked = rows2.length > 0 && rows2.every(k => keySelState.selected.has(k.key) || keySelState.allFiltered);
+  const sa = document.getElementById('keySelectAll');
+  if (sa) sa.checked = allChecked;
+  updateKeyBulkBar();
 }
 function suspendKey(k) {
   const x = API_KEYS.find(a=>a.key===k); if(x) x.status='suspended';
@@ -913,43 +977,39 @@ function restoreKey(k) {
 
 // ── 대체 텍스트 처리 현황 ──────────────────────────────────────────
 const ALT_TEXT_RECORDS = [
-  {id:1,  tc:'#4A6CF7', mode:'a11y',   alt:'파란 하늘 아래 초록 잔디밭에서 뛰어노는 아이들의 모습',                                desc:'야외 공원에서 아이들이 자유롭게 활동하는 생동감 있는 장면입니다.',                 sat:'추천',   cat:'맥락형',  apiKey:'a11y-8f3d2c1b', email:'park.jimin@webagency.com', at:'2026.07.09 14:23:05'},
+  {id:1,  tc:'#4A6CF7', mode:'a11y',   alt:'파란 하늘 아래 초록 잔디밭에서 뛰어노는 아이들의 모습',                                desc:'야외 공원에서 아이들이 자유롭게 활동하는 생동감 있는 장면입니다.',                 sat:'만족',   cat:'맥락형',  apiKey:'a11y-8f3d2c1b', email:'park.jimin@webagency.com', at:'2026.07.09 14:23:05'},
   {id:2,  tc:'#10B981', mode:'simple', alt:'회의실에서 발표 중인 직원',                                                             desc:null,                                                                              sat:'',       cat:'정보형',  apiKey:'a11y-7e1a0f9c', email:'emily.chen@techfirm.sg',   at:'2026.07.09 13:47:22'},
-  {id:3,  tc:'#F59E0B', mode:'seo',    alt:'신선한 유기농 딸기 500g, 빨간 딸기가 가득 담긴 흰 바구니',                             desc:'선명한 빨간색 딸기가 수북이 담긴 흰색 바구니 제품 사진입니다.',                   sat:'추천',   cat:'정보형',  apiKey:'a11y-2b4d6e8f', email:'hiroshi@e-access.jp',       at:'2026.07.09 12:05:44'},
+  {id:3,  tc:'#F59E0B', mode:'seo',    alt:'신선한 유기농 딸기 500g, 빨간 딸기가 가득 담긴 흰 바구니',                             desc:'선명한 빨간색 딸기가 수북이 담긴 흰색 바구니 제품 사진입니다.',                   sat:'만족',   cat:'정보형',  apiKey:'a11y-2b4d6e8f', email:'hiroshi@e-access.jp',       at:'2026.07.09 12:05:44'},
   {id:4,  tc:'#7B5CF7', mode:'a11y',   alt:'웹사이트 배경 장식용 물결 모양의 그라데이션 이미지',                                   desc:null,                                                                              sat:'',       cat:'장식형',  apiKey:'a11y-9c3a5e7d', email:'admin@public-sector.gov',  at:'2026.07.09 11:30:11'},
-  {id:5,  tc:'#EF4444', mode:'simple', alt:'검색 버튼 아이콘',                                                                      desc:null,                                                                              sat:'비추천', cat:'기능형',  apiKey:'a11y-1f5c3b9a', email:'kim.sohee@uiagency.kr',    at:'2026.07.09 10:58:37'},
-  {id:6,  tc:'#06B6D4', mode:'seo',    alt:'2026년 1분기 매출 막대 그래프, 1월 120만, 2월 145만, 3월 178만 원',                    desc:'매달 꾸준한 상승세를 보이는 1분기 매출 실적 그래프입니다.',                       sat:'추천',   cat:'그래픽형', apiKey:'a11y-0e4c8f2d', email:'beta@earlyuser.net',         at:'2026.07.08 17:42:19'},
-  {id:7,  tc:'#EC4899', mode:'a11y',   alt:'온라인 쇼핑몰 메인 배너: 여름 특가 세일 최대 50% 할인',                                desc:'여름 시즌 프로모션 배너로 할인 혜택 정보를 안내합니다.',                          sat:'추천',   cat:'복합형',  apiKey:'a11y-8f3d2c1b', email:'park.jimin@webagency.com', at:'2026.07.08 16:20:53'},
-  {id:8,  tc:'#84CC16', mode:'simple', alt:'회사 로고 이미지',                                                                      desc:null,                                                                              sat:'비추천', cat:'기능형',  apiKey:'a11y-7e1a0f9c', email:'emily.chen@techfirm.sg',   at:'2026.07.08 15:11:44'},
-  {id:9,  tc:'#F97316', mode:'seo',    alt:'화이트 미니멀 세라믹 커피잔 2P 세트, 손잡이 있는 흰색 머그컵',                         desc:'심플하고 깔끔한 화이트 세라믹 소재의 커피잔 세트 제품 이미지입니다.',             sat:'추천',   cat:'정보형',  apiKey:'a11y-2b4d6e8f', email:'hiroshi@e-access.jp',       at:'2026.07.08 14:03:28'},
-  {id:10, tc:'#6366F1', mode:'a11y',   alt:'접근성 안내 인포그래픽: 시각, 청각, 운동 장애 유형과 보조 기술 설명',                  desc:'다양한 장애 유형과 그에 맞는 보조 기술을 시각화한 인포그래픽입니다.',             sat:'추천',   cat:'복합형',  apiKey:'a11y-9c3a5e7d', email:'admin@public-sector.gov',  at:'2026.07.08 11:27:00'},
+  {id:5,  tc:'#EF4444', mode:'simple', alt:'검색 버튼 아이콘',                                                                      desc:null,                                                                              sat:'불만족', cat:'기능형',  apiKey:'a11y-1f5c3b9a', email:'kim.sohee@uiagency.kr',    at:'2026.07.09 10:58:37'},
+  {id:6,  tc:'#06B6D4', mode:'seo',    alt:'2026년 1분기 매출 막대 그래프, 1월 120만, 2월 145만, 3월 178만 원',                    desc:'매달 꾸준한 상승세를 보이는 1분기 매출 실적 그래프입니다.',                       sat:'만족',   cat:'그래픽형', apiKey:'a11y-0e4c8f2d', email:'beta@earlyuser.net',         at:'2026.07.08 17:42:19'},
+  {id:7,  tc:'#EC4899', mode:'a11y',   alt:'온라인 쇼핑몰 메인 배너: 여름 특가 세일 최대 50% 할인',                                desc:'여름 시즌 프로모션 배너로 할인 혜택 정보를 안내합니다.',                          sat:'만족',   cat:'복합형',  apiKey:'a11y-8f3d2c1b', email:'park.jimin@webagency.com', at:'2026.07.08 16:20:53'},
+  {id:8,  tc:'#84CC16', mode:'simple', alt:'회사 로고 이미지',                                                                      desc:null,                                                                              sat:'불만족', cat:'기능형',  apiKey:'a11y-7e1a0f9c', email:'emily.chen@techfirm.sg',   at:'2026.07.08 15:11:44'},
+  {id:9,  tc:'#F97316', mode:'seo',    alt:'화이트 미니멀 세라믹 커피잔 2P 세트, 손잡이 있는 흰색 머그컵',                         desc:'심플하고 깔끔한 화이트 세라믹 소재의 커피잔 세트 제품 이미지입니다.',             sat:'만족',   cat:'정보형',  apiKey:'a11y-2b4d6e8f', email:'hiroshi@e-access.jp',       at:'2026.07.08 14:03:28'},
+  {id:10, tc:'#6366F1', mode:'a11y',   alt:'접근성 안내 인포그래픽: 시각, 청각, 운동 장애 유형과 보조 기술 설명',                  desc:'다양한 장애 유형과 그에 맞는 보조 기술을 시각화한 인포그래픽입니다.',             sat:'만족',   cat:'복합형',  apiKey:'a11y-9c3a5e7d', email:'admin@public-sector.gov',  at:'2026.07.08 11:27:00'},
   {id:11, tc:'#3B82F6', mode:'simple', alt:'이메일 구독 신청 폼 배경 이미지',                                                       desc:null,                                                                              sat:'',       cat:'장식형',  apiKey:'a11y-1f5c3b9a', email:'kim.sohee@uiagency.kr',    at:'2026.07.07 18:55:16'},
-  {id:12, tc:'#8B5CF6', mode:'a11y',   alt:'도서관 열람실에서 책을 읽고 있는 대학생의 집중된 모습',                                 desc:'조용한 열람실 환경에서 학습 중인 학생의 자연스러운 모습입니다.',                  sat:'추천',   cat:'맥락형',  apiKey:'a11y-0e4c8f2d', email:'beta@earlyuser.net',         at:'2026.07.07 15:33:44'},
+  {id:12, tc:'#8B5CF6', mode:'a11y',   alt:'도서관 열람실에서 책을 읽고 있는 대학생의 집중된 모습',                                 desc:'조용한 열람실 환경에서 학습 중인 학생의 자연스러운 모습입니다.',                  sat:'만족',   cat:'맥락형',  apiKey:'a11y-0e4c8f2d', email:'beta@earlyuser.net',         at:'2026.07.07 15:33:44'},
 ];
 
 function modeColor(m) { return {a11y:'#4A6CF7', simple:'#F97316', seo:'#10B981'}[m]||'#9BA4C0'; }
 
-function calcExpiry(issuedAt, activeDays) {
-  if (activeDays === 0) return null;
-  const d = new Date(issuedAt + 'T00:00:00');
-  d.setDate(d.getDate() + activeDays);
-  return d.toISOString().slice(0, 10);
-}
 function activePeriodCell(k) {
   const fmt = s => s.replace(/-/g, '.');
-  if (k.activeDays === 0) {
-    return `<span style="font-size:11px;font-weight:700;color:#4A6CF7;background:#EEF2FF;padding:2px 7px;border-radius:5px">무제한</span>`;
-  }
-  const expiry = calcExpiry(k.issuedAt, k.activeDays);
-  const today  = new Date(TODAY_STR + 'T00:00:00');
-  const exp    = new Date(expiry + 'T00:00:00');
-  const rem    = Math.ceil((exp - today) / 86400000);
-  let badge;
-  if (rem < 0)       badge = `<span style="font-size:11px;font-weight:700;color:#fff;background:#EF4444;padding:2px 7px;border-radius:5px">만료</span>`;
-  else if (rem <= 7) badge = `<span style="font-size:11px;font-weight:700;color:#EF4444">D-${rem}</span>`;
-  else if (rem <= 30) badge = `<span style="font-size:11px;font-weight:700;color:#F59E0B">D-${rem}</span>`;
-  else               badge = `<span style="font-size:11px;color:var(--text-muted)">D-${rem}</span>`;
-  return `<div style="font-size:12px;color:var(--text-muted);line-height:1.7;white-space:nowrap">${fmt(k.issuedAt)} ~<br>${fmt(expiry)}</div><div style="margin-top:3px">${badge}</div>`;
+  const today = new Date(TODAY_STR + 'T00:00:00');
+  const exp   = new Date(k.expiryDate + 'T00:00:00');
+  const rem   = Math.ceil((exp - today) / 86400000);
+  let dBadge;
+  if (rem < 0)        dBadge = `<span style="font-size:11px;font-weight:700;color:#fff;background:#EF4444;padding:2px 6px;border-radius:5px">만료</span>`;
+  else if (rem <= 7)  dBadge = `<span style="font-size:11px;font-weight:700;color:#EF4444">D-${rem}</span>`;
+  else if (rem <= 30) dBadge = `<span style="font-size:11px;font-weight:700;color:#F59E0B">D-${rem}</span>`;
+  else                dBadge = `<span style="font-size:11px;color:var(--text-muted)">D-${rem}</span>`;
+  return `<div style="display:flex;align-items:center;gap:6px">
+    <div>
+      <div style="font-size:12px;color:var(--text-muted);line-height:1.7;white-space:nowrap">${fmt(k.issuedAt)} ~<br>${fmt(k.expiryDate)}</div>
+      <div style="margin-top:2px">${dBadge}</div>
+    </div>
+    <button class="expiry-edit-btn" onclick="openExpiryEdit('${k.key}')" title="만료일 수정">✏️</button>
+  </div>`;
 }
 function modeLabel(m) { return {a11y:'웹 접근성 지침 준수 모드', simple:'간소화 설명 모드', seo:'SEO/이커머스 모드'}[m]||m; }
 
@@ -991,10 +1051,10 @@ function renderAltText() {
   const allAtRows = rows;
   rows = rows.slice(aStart, aStart+app);
 
-  const satBadge = s => s==='추천'
-    ? '<span style="color:#10B981;font-weight:700;font-size:12px">👍 추천</span>'
-    : s==='비추천'
-    ? '<span style="color:#EF4444;font-weight:700;font-size:12px">👎 비추천</span>'
+  const satBadge = s => s==='만족'
+    ? '<span style="color:#10B981;font-weight:700;font-size:12px">👍 만족</span>'
+    : s==='불만족'
+    ? '<span style="color:#EF4444;font-weight:700;font-size:12px">👎 불만족</span>'
     : '<span style="color:var(--text-muted);font-size:12px">—</span>';
 
   const catColor = {맥락형:'#4A6CF7', 장식형:'#9BA4C0', 기능형:'#F59E0B', 그래픽형:'#EC4899', 정보형:'#10B981', 복합형:'#8B5CF6'};
@@ -1106,8 +1166,7 @@ function saveSettings() {
   const limitVal  = limitMode==='daily'
     ? document.getElementById('dailyLimit').value + '회/일'
     : document.getElementById('totalGrant').value + '회';
-  const periodLabel = period==='0' ? '무제한' : period+'일';
-  toast(`설정 저장 완료 — ${issueMode==='auto'?'자동지급':'승인후발급'} / 활성화 ${periodLabel} / ${limitMode==='daily'?'일일제한':'총개수지급'} ${limitVal}`, 'success');
+  toast(`설정 저장 완료 — ${issueMode==='auto'?'자동지급':'승인후발급'} / 활성화 ${period}일 / ${limitMode==='daily'?'일일제한':'총개수지급'} ${limitVal}`, 'success');
 }
 
 // ── 토스트 ──────────────────────────────────────────────────────────
@@ -1264,8 +1323,8 @@ function updateDashboard(from, to) {
   // 만족도 카드
   const sc = {none:0, good:0, bad:0};
   ALT_TEXT_RECORDS.forEach(r => {
-    if      (r.sat === '추천')   sc.good++;
-    else if (r.sat === '비추천') sc.bad++;
+    if      (r.sat === '만족')   sc.good++;
+    else if (r.sat === '불만족') sc.bad++;
     else                         sc.none++;
   });
   const st = sc.none + sc.good + sc.bad;
@@ -1282,8 +1341,8 @@ function updateDashboard(from, to) {
     </div>
     <div class="mode-card">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-        <div class="mode-name" style="color:#10B981;margin-bottom:0">추천</div>
-        <button class="sat-goto" onclick="goToAltTextFilter('','추천')">바로가기 →</button>
+        <div class="mode-name" style="color:#10B981;margin-bottom:0">만족</div>
+        <button class="sat-goto" onclick="goToAltTextFilter('','만족')">바로가기 →</button>
       </div>
       <div class="mode-val" style="color:#10B981">${sc.good}</div>
       <div class="mode-pct">${pct(sc.good)}% · 긍정 반응</div>
@@ -1291,8 +1350,8 @@ function updateDashboard(from, to) {
     </div>
     <div class="mode-card">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-        <div class="mode-name" style="color:#EF4444;margin-bottom:0">비추천</div>
-        <button class="sat-goto sat-goto-bad" onclick="goToAltTextFilter('','비추천')">바로가기 →</button>
+        <div class="mode-name" style="color:#EF4444;margin-bottom:0">불만족</div>
+        <button class="sat-goto sat-goto-bad" onclick="goToAltTextFilter('','불만족')">바로가기 →</button>
       </div>
       <div class="mode-val" style="color:#EF4444">${sc.bad}</div>
       <div class="mode-pct">${pct(sc.bad)}% · 부정 반응</div>
@@ -1310,6 +1369,108 @@ function updateClock() {
 updateClock();
 setInterval(updateClock, 1000);
 setPreset('today');
+
+// ── 체크박스 선택 관리 ──────────────────────────────────────────────
+function toggleKeyRow(key, el) {
+  if (el.checked) keySelState.selected.add(key);
+  else { keySelState.selected.delete(key); keySelState.allFiltered = false; }
+  updateKeyBulkBar();
+  const allCbs = document.querySelectorAll('.key-row-check');
+  const sa = document.getElementById('keySelectAll');
+  if (sa) sa.checked = allCbs.length > 0 && [...allCbs].every(c => c.checked);
+}
+
+function toggleAllPageKeys(el) {
+  document.querySelectorAll('.key-row-check').forEach(cb => {
+    cb.checked = el.checked;
+    if (el.checked) keySelState.selected.add(cb.dataset.key);
+    else keySelState.selected.delete(cb.dataset.key);
+  });
+  if (!el.checked) keySelState.allFiltered = false;
+  updateKeyBulkBar();
+}
+
+function selectAllFilteredKeys() {
+  keySelState.allFiltered = true;
+  keySelState.filteredKeys.forEach(k => keySelState.selected.add(k.key));
+  document.querySelectorAll('.key-row-check').forEach(cb => cb.checked = true);
+  const sa = document.getElementById('keySelectAll');
+  if (sa) sa.checked = true;
+  updateKeyBulkBar();
+}
+
+function clearKeySelection() {
+  keySelState.selected.clear();
+  keySelState.allFiltered = false;
+  document.querySelectorAll('.key-row-check').forEach(cb => cb.checked = false);
+  const sa = document.getElementById('keySelectAll');
+  if (sa) sa.checked = false;
+  updateKeyBulkBar();
+}
+
+function updateKeyBulkBar() {
+  const count = keySelState.allFiltered ? keySelState.filteredKeys.length : keySelState.selected.size;
+  const bar = document.getElementById('keyBulkBar');
+  if (!bar) return;
+  if (count === 0) { bar.style.display = 'none'; return; }
+  bar.style.display = 'flex';
+  document.getElementById('keyBulkCount').textContent = `${count}건 선택됨`;
+  const allCbs = document.querySelectorAll('.key-row-check');
+  const allPageChecked = allCbs.length > 0 && [...allCbs].every(c => c.checked);
+  const banner = document.getElementById('keyAllFilteredBanner');
+  if (allPageChecked && !keySelState.allFiltered && keySelState.filteredKeys.length > keySelState.selected.size) {
+    banner.style.display = 'block';
+    document.getElementById('keyAllFilteredCount').textContent = keySelState.filteredKeys.length;
+  } else {
+    banner.style.display = 'none';
+  }
+}
+
+// ── 만료일 개별 수정 ────────────────────────────────────────────────
+function openExpiryEdit(key) {
+  const k = API_KEYS.find(x => x.key === key);
+  if (!k) return;
+  const m = document.getElementById('expiryEditModal');
+  m.querySelector('#expiryEditKeyLabel').textContent = k.key;
+  const di = m.querySelector('#expiryEditDate');
+  di.value = k.expiryDate;
+  di.min = TODAY_STR;
+  m.dataset.key = key;
+  m.style.display = 'flex';
+}
+
+function saveExpiryEdit() {
+  const m = document.getElementById('expiryEditModal');
+  const newDate = m.querySelector('#expiryEditDate').value;
+  if (!newDate) { toast('만료일을 선택해주세요.', 'danger'); return; }
+  const k = API_KEYS.find(x => x.key === m.dataset.key);
+  if (k) k.expiryDate = newDate;
+  m.style.display = 'none';
+  renderKeys();
+  toast('만료일이 수정되었습니다.', 'success');
+}
+
+// ── 만료일 일괄 수정 ────────────────────────────────────────────────
+function openBulkExpiryModal() {
+  const count = keySelState.allFiltered ? keySelState.filteredKeys.length : keySelState.selected.size;
+  document.getElementById('bulkExpiryCount').textContent = count;
+  document.getElementById('bulkExpiryDate').value = '';
+  document.getElementById('bulkExpiryDate').min = TODAY_STR;
+  document.getElementById('bulkExpiryModal').style.display = 'flex';
+}
+
+function saveBulkExpiry() {
+  const newDate = document.getElementById('bulkExpiryDate').value;
+  if (!newDate) { toast('만료일을 선택해주세요.', 'danger'); return; }
+  const keys = keySelState.allFiltered
+    ? keySelState.filteredKeys.map(k => k.key)
+    : [...keySelState.selected];
+  keys.forEach(key => { const k = API_KEYS.find(x => x.key === key); if (k) k.expiryDate = newDate; });
+  document.getElementById('bulkExpiryModal').style.display = 'none';
+  clearKeySelection();
+  renderKeys();
+  toast(`${keys.length}개 Key의 만료일이 수정되었습니다.`, 'success');
+}
 
 function tryLogin() {
   const id = document.getElementById('loginId').value.trim();
