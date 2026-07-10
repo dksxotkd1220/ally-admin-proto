@@ -26,6 +26,64 @@
 }
 body { font-family: 'Apple SD Gothic Neo', '맑은 고딕', 'Noto Sans KR', system-ui, sans-serif; background: var(--bg); color: var(--text); display: flex; height: 100vh; overflow: hidden; font-size: 14px; }
 
+/* ──────────────── 로그인 ──────────────── */
+#loginScreen {
+  position: fixed; inset: 0; z-index: 9999;
+  background: linear-gradient(135deg, #1C1F2E 0%, #2A2F4A 50%, #1C1F2E 100%);
+  display: flex; align-items: center; justify-content: center;
+}
+#loginScreen.hidden { display: none; }
+.login-box {
+  width: 400px;
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 20px;
+  padding: 44px 40px 40px;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 24px 64px rgba(0,0,0,.4);
+}
+.login-logo { display: flex; align-items: center; gap: 10px; margin-bottom: 32px; }
+.login-logo-icon {
+  width: 40px; height: 40px;
+  background: linear-gradient(135deg, #4A6CF7, #7B5CF7);
+  border-radius: 11px; display: flex; align-items: center; justify-content: center;
+  color: #fff; font-size: 16px; font-weight: 900; letter-spacing: -1px; flex-shrink: 0;
+}
+.login-logo-name { font-size: 20px; font-weight: 800; color: #fff; }
+.login-logo-name span { color: #4A6CF7; }
+.login-logo-badge {
+  display: inline-block; background: rgba(74,108,247,.25); color: #818CF8;
+  font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 5px; margin-left: 5px; vertical-align: 2px;
+}
+.login-title { font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 6px; }
+.login-sub   { font-size: 13px; color: rgba(255,255,255,.4); margin-bottom: 28px; }
+.login-field { margin-bottom: 16px; }
+.login-field label { display: block; font-size: 12px; font-weight: 600; color: rgba(255,255,255,.5); margin-bottom: 7px; letter-spacing: .3px; }
+.login-input {
+  width: 100%; padding: 12px 14px;
+  background: rgba(255,255,255,.07);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 10px; color: #fff; font-size: 14px; outline: none;
+  transition: border-color .15s, background .15s;
+  font-family: inherit;
+}
+.login-input::placeholder { color: rgba(255,255,255,.25); }
+.login-input:focus { border-color: #4A6CF7; background: rgba(74,108,247,.08); }
+.login-error {
+  font-size: 12px; color: #F87171; margin-top: -8px; margin-bottom: 16px;
+  display: none;
+}
+.login-error.show { display: block; }
+.login-btn {
+  width: 100%; padding: 13px;
+  background: #4A6CF7; border: none; border-radius: 10px;
+  color: #fff; font-size: 15px; font-weight: 700; cursor: pointer;
+  font-family: inherit; margin-top: 8px;
+  transition: background .15s, transform .1s;
+}
+.login-btn:hover  { background: #3555D8; }
+.login-btn:active { transform: scale(.98); }
+
 /* ──────────────── 사이드바 ──────────────── */
 .sidebar { width: var(--sidebar-w); background: var(--sidebar-bg); border-right: 1px solid var(--border); display: flex; flex-direction: column; flex-shrink: 0; }
 
@@ -295,6 +353,32 @@ tbody tr:hover { background: #FAFBFF; }
 </style>
 </head>
 <body>
+
+<!-- 로그인 화면 -->
+<div id="loginScreen">
+  <div class="login-box">
+    <div class="login-logo">
+      <div class="login-logo-icon">A<span style="font-size:10px">11</span>Y</div>
+      <div>
+        <div class="login-logo-name">A11Y<span>.so</span><span class="login-logo-badge">admin</span></div>
+      </div>
+    </div>
+    <div class="login-title">관리자 로그인</div>
+    <div class="login-sub">글로벌 관리자 시스템에 오신 것을 환영합니다.</div>
+    <div class="login-field">
+      <label>아이디</label>
+      <input type="text" id="loginId" class="login-input" placeholder="아이디를 입력하세요"
+             onkeydown="if(event.key==='Enter')document.getElementById('loginPw').focus()">
+    </div>
+    <div class="login-field">
+      <label>비밀번호</label>
+      <input type="password" id="loginPw" class="login-input" placeholder="비밀번호를 입력하세요"
+             onkeydown="if(event.key==='Enter')tryLogin()">
+    </div>
+    <div class="login-error" id="loginError">아이디 또는 비밀번호가 올바르지 않습니다.</div>
+    <button class="login-btn" onclick="tryLogin()">로그인</button>
+  </div>
+</div>
 
 <div class="toast-wrap" id="toastWrap"></div>
 
@@ -1226,6 +1310,20 @@ function updateClock() {
 updateClock();
 setInterval(updateClock, 1000);
 setPreset('today');
+
+function tryLogin() {
+  const id = document.getElementById('loginId').value.trim();
+  const pw = document.getElementById('loginPw').value;
+  const err = document.getElementById('loginError');
+  if (id === 'admin' && pw === '1234') {
+    document.getElementById('loginScreen').classList.add('hidden');
+    err.classList.remove('show');
+  } else {
+    err.classList.add('show');
+    document.getElementById('loginPw').value = '';
+    document.getElementById('loginPw').focus();
+  }
+}
 
 // ── 세션 타이머 ─────────────────────────────────────────────────────
 let sessionSec = 3598;
