@@ -181,8 +181,8 @@ nav { flex: 1; padding: 10px 8px; overflow-y: auto; }
 .quick-link .ql-arrow { margin-left: auto; color: var(--text-muted); font-size: 12px; }
 
 /* KPI 카드 행 */
-.kpi-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 16px; }
-.kpi-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow-sm); padding: 16px 18px; }
+.kpi-row { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; margin-bottom: 16px; }
+.kpi-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow-sm); padding: 14px 14px; }
 .kpi-card .k-label { font-size: 11px; color: var(--text-muted); font-weight: 600; margin-bottom: 8px; text-transform: uppercase; letter-spacing: .3px; }
 .kpi-card .k-value { font-size: 26px; font-weight: 800; color: var(--text); line-height: 1; }
 .kpi-card .k-sub { font-size: 11px; color: var(--text-muted); margin-top: 5px; }
@@ -344,7 +344,7 @@ tbody tr:hover { background: #FAFBFF; }
 @keyframes tin { from { transform: translateX(16px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
 
 .empty-state { text-align: center; padding: 44px 24px; color: var(--text-muted); font-size: 13px; }
-@media (max-width:1100px) { .kpi-row { grid-template-columns: repeat(3,1fr); } }
+@media (max-width:1200px) { .kpi-row { grid-template-columns: repeat(3,1fr); } }
 
 /* ──────────────── 날짜 범위 바 ──────────────── */
 .date-range-bar { background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow-sm); padding: 11px 16px; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
@@ -616,10 +616,10 @@ tbody tr:hover { background: #FAFBFF; }
                   <input type="radio" name="limitMode" value="daily" checked onclick="event.stopPropagation()">
                   <div style="flex:1">
                     <div class="ropt-title">일일 제한</div>
-                    <div class="ropt-desc">Key당 하루 최대 호출 수를 제한합니다. 매일 자정에 초기화됩니다.</div>
+                    <div class="ropt-desc">Key당 일일 크레딧 제공량을 부여합니다. 매일 자정에 초기화됩니다.</div>
                     <div id="daily-input" style="margin-top:12px;display:flex;align-items:center;gap:8px">
                       <input type="number" class="num-input" value="50" min="1" id="dailyLimit" onclick="event.stopPropagation()">
-                      <span style="font-size:13px;color:var(--text-muted)">회 / 일</span>
+                      <span style="font-size:13px;color:var(--text-muted)">크레딧 / 일</span>
                     </div>
                   </div>
                 </label>
@@ -627,10 +627,10 @@ tbody tr:hover { background: #FAFBFF; }
                   <input type="radio" name="limitMode" value="total" onclick="event.stopPropagation()">
                   <div style="flex:1">
                     <div class="ropt-title">총 개수 지급</div>
-                    <div class="ropt-desc">Key 발급 시 사용 가능 횟수를 일괄 부여합니다. 소진 시 자동 비활성화됩니다.</div>
+                    <div class="ropt-desc">Key 발급 시 사용 가능한 크레딧을 일괄 부여합니다.</div>
                     <div id="total-input" style="margin-top:12px;display:none;align-items:center;gap:8px">
                       <input type="number" class="num-input" value="100" min="1" id="totalGrant" onclick="event.stopPropagation()">
-                      <span style="font-size:13px;color:var(--text-muted)">회</span>
+                      <span style="font-size:13px;color:var(--text-muted)">크레딧</span>
                     </div>
                   </div>
                 </label>
@@ -689,7 +689,7 @@ tbody tr:hover { background: #FAFBFF; }
           <table>
             <thead><tr>
               <th>No</th><th>썸네일</th><th>생성모드</th><th>alt 대체 텍스트</th><th>description</th>
-              <th>만족도</th><th>이미지 분류</th><th>API Key</th><th>생성자</th><th>처리일시</th>
+              <th>크레딧</th><th>만족도</th><th>이미지 분류</th><th>API Key</th><th>생성자</th><th>처리일시</th>
             </tr></thead>
             <tbody id="atTbody"></tbody>
           </table>
@@ -977,18 +977,18 @@ function restoreKey(k) {
 
 // ── 대체 텍스트 처리 현황 ──────────────────────────────────────────
 const ALT_TEXT_RECORDS = [
-  {id:1,  tc:'#4A6CF7', mode:'a11y',   alt:'파란 하늘 아래 초록 잔디밭에서 뛰어노는 아이들의 모습',                                desc:'야외 공원에서 아이들이 자유롭게 활동하는 생동감 있는 장면입니다.',                 sat:'만족',   cat:'맥락형',  apiKey:'a11y-8f3d2c1b', email:'park.jimin@webagency.com', at:'2026.07.09 14:23:05'},
-  {id:2,  tc:'#10B981', mode:'simple', alt:'회의실에서 발표 중인 직원',                                                             desc:null,                                                                              sat:'',       cat:'정보형',  apiKey:'a11y-7e1a0f9c', email:'emily.chen@techfirm.sg',   at:'2026.07.09 13:47:22'},
-  {id:3,  tc:'#F59E0B', mode:'seo',    alt:'신선한 유기농 딸기 500g, 빨간 딸기가 가득 담긴 흰 바구니',                             desc:'선명한 빨간색 딸기가 수북이 담긴 흰색 바구니 제품 사진입니다.',                   sat:'만족',   cat:'정보형',  apiKey:'a11y-2b4d6e8f', email:'hiroshi@e-access.jp',       at:'2026.07.09 12:05:44'},
-  {id:4,  tc:'#7B5CF7', mode:'a11y',   alt:'웹사이트 배경 장식용 물결 모양의 그라데이션 이미지',                                   desc:null,                                                                              sat:'',       cat:'장식형',  apiKey:'a11y-9c3a5e7d', email:'admin@public-sector.gov',  at:'2026.07.09 11:30:11'},
-  {id:5,  tc:'#EF4444', mode:'simple', alt:'검색 버튼 아이콘',                                                                      desc:null,                                                                              sat:'불만족', cat:'기능형',  apiKey:'a11y-1f5c3b9a', email:'kim.sohee@uiagency.kr',    at:'2026.07.09 10:58:37'},
-  {id:6,  tc:'#06B6D4', mode:'seo',    alt:'2026년 1분기 매출 막대 그래프, 1월 120만, 2월 145만, 3월 178만 원',                    desc:'매달 꾸준한 상승세를 보이는 1분기 매출 실적 그래프입니다.',                       sat:'만족',   cat:'그래픽형', apiKey:'a11y-0e4c8f2d', email:'beta@earlyuser.net',         at:'2026.07.08 17:42:19'},
-  {id:7,  tc:'#EC4899', mode:'a11y',   alt:'온라인 쇼핑몰 메인 배너: 여름 특가 세일 최대 50% 할인',                                desc:'여름 시즌 프로모션 배너로 할인 혜택 정보를 안내합니다.',                          sat:'만족',   cat:'복합형',  apiKey:'a11y-8f3d2c1b', email:'park.jimin@webagency.com', at:'2026.07.08 16:20:53'},
-  {id:8,  tc:'#84CC16', mode:'simple', alt:'회사 로고 이미지',                                                                      desc:null,                                                                              sat:'불만족', cat:'기능형',  apiKey:'a11y-7e1a0f9c', email:'emily.chen@techfirm.sg',   at:'2026.07.08 15:11:44'},
-  {id:9,  tc:'#F97316', mode:'seo',    alt:'화이트 미니멀 세라믹 커피잔 2P 세트, 손잡이 있는 흰색 머그컵',                         desc:'심플하고 깔끔한 화이트 세라믹 소재의 커피잔 세트 제품 이미지입니다.',             sat:'만족',   cat:'정보형',  apiKey:'a11y-2b4d6e8f', email:'hiroshi@e-access.jp',       at:'2026.07.08 14:03:28'},
-  {id:10, tc:'#6366F1', mode:'a11y',   alt:'접근성 안내 인포그래픽: 시각, 청각, 운동 장애 유형과 보조 기술 설명',                  desc:'다양한 장애 유형과 그에 맞는 보조 기술을 시각화한 인포그래픽입니다.',             sat:'만족',   cat:'복합형',  apiKey:'a11y-9c3a5e7d', email:'admin@public-sector.gov',  at:'2026.07.08 11:27:00'},
-  {id:11, tc:'#3B82F6', mode:'simple', alt:'이메일 구독 신청 폼 배경 이미지',                                                       desc:null,                                                                              sat:'',       cat:'장식형',  apiKey:'a11y-1f5c3b9a', email:'kim.sohee@uiagency.kr',    at:'2026.07.07 18:55:16'},
-  {id:12, tc:'#8B5CF6', mode:'a11y',   alt:'도서관 열람실에서 책을 읽고 있는 대학생의 집중된 모습',                                 desc:'조용한 열람실 환경에서 학습 중인 학생의 자연스러운 모습입니다.',                  sat:'만족',   cat:'맥락형',  apiKey:'a11y-0e4c8f2d', email:'beta@earlyuser.net',         at:'2026.07.07 15:33:44'},
+  {id:1,  tc:'#4A6CF7', mode:'a11y',   alt:'파란 하늘 아래 초록 잔디밭에서 뛰어노는 아이들의 모습',                                desc:'야외 공원에서 아이들이 자유롭게 활동하는 생동감 있는 장면입니다.',                 sat:'만족',   cat:'맥락형',  credits:1, apiKey:'a11y-8f3d2c1b', email:'park.jimin@webagency.com', at:'2026.07.09 14:23:05'},
+  {id:2,  tc:'#10B981', mode:'simple', alt:'회의실에서 발표 중인 직원',                                                             desc:null,                                                                              sat:'',       cat:'정보형',  credits:1, apiKey:'a11y-7e1a0f9c', email:'emily.chen@techfirm.sg',   at:'2026.07.09 13:47:22'},
+  {id:3,  tc:'#F59E0B', mode:'seo',    alt:'신선한 유기농 딸기 500g, 빨간 딸기가 가득 담긴 흰 바구니',                             desc:'선명한 빨간색 딸기가 수북이 담긴 흰색 바구니 제품 사진입니다.',                   sat:'만족',   cat:'정보형',  credits:1, apiKey:'a11y-2b4d6e8f', email:'hiroshi@e-access.jp',       at:'2026.07.09 12:05:44'},
+  {id:4,  tc:'#7B5CF7', mode:'a11y',   alt:'웹사이트 배경 장식용 물결 모양의 그라데이션 이미지',                                   desc:null,                                                                              sat:'',       cat:'장식형',  credits:1, apiKey:'a11y-9c3a5e7d', email:'admin@public-sector.gov',  at:'2026.07.09 11:30:11'},
+  {id:5,  tc:'#EF4444', mode:'simple', alt:'검색 버튼 아이콘',                                                                      desc:null,                                                                              sat:'불만족', cat:'기능형',  credits:1, apiKey:'a11y-1f5c3b9a', email:'kim.sohee@uiagency.kr',    at:'2026.07.09 10:58:37'},
+  {id:6,  tc:'#06B6D4', mode:'seo',    alt:'2026년 1분기 매출 막대 그래프, 1월 120만, 2월 145만, 3월 178만 원',                    desc:'매달 꾸준한 상승세를 보이는 1분기 매출 실적 그래프입니다.',                       sat:'만족',   cat:'그래픽형', credits:1, apiKey:'a11y-0e4c8f2d', email:'beta@earlyuser.net',         at:'2026.07.08 17:42:19'},
+  {id:7,  tc:'#EC4899', mode:'a11y',   alt:'온라인 쇼핑몰 메인 배너: 여름 특가 세일 최대 50% 할인',                                desc:'여름 시즌 프로모션 배너로 할인 혜택 정보를 안내합니다.',                          sat:'만족',   cat:'복합형',  credits:2, apiKey:'a11y-8f3d2c1b', email:'park.jimin@webagency.com', at:'2026.07.08 16:20:53'},
+  {id:8,  tc:'#84CC16', mode:'simple', alt:'회사 로고 이미지',                                                                      desc:null,                                                                              sat:'불만족', cat:'기능형',  credits:1, apiKey:'a11y-7e1a0f9c', email:'emily.chen@techfirm.sg',   at:'2026.07.08 15:11:44'},
+  {id:9,  tc:'#F97316', mode:'seo',    alt:'화이트 미니멀 세라믹 커피잔 2P 세트, 손잡이 있는 흰색 머그컵',                         desc:'심플하고 깔끔한 화이트 세라믹 소재의 커피잔 세트 제품 이미지입니다.',             sat:'만족',   cat:'정보형',  credits:1, apiKey:'a11y-2b4d6e8f', email:'hiroshi@e-access.jp',       at:'2026.07.08 14:03:28'},
+  {id:10, tc:'#6366F1', mode:'a11y',   alt:'접근성 안내 인포그래픽: 시각, 청각, 운동 장애 유형과 보조 기술 설명',                  desc:'다양한 장애 유형과 그에 맞는 보조 기술을 시각화한 인포그래픽입니다.',             sat:'만족',   cat:'복합형',  credits:3, apiKey:'a11y-9c3a5e7d', email:'admin@public-sector.gov',  at:'2026.07.08 11:27:00'},
+  {id:11, tc:'#3B82F6', mode:'simple', alt:'이메일 구독 신청 폼 배경 이미지',                                                       desc:null,                                                                              sat:'',       cat:'장식형',  credits:1, apiKey:'a11y-1f5c3b9a', email:'kim.sohee@uiagency.kr',    at:'2026.07.07 18:55:16'},
+  {id:12, tc:'#8B5CF6', mode:'a11y',   alt:'도서관 열람실에서 책을 읽고 있는 대학생의 집중된 모습',                                 desc:'조용한 열람실 환경에서 학습 중인 학생의 자연스러운 모습입니다.',                  sat:'만족',   cat:'맥락형',  credits:1, apiKey:'a11y-0e4c8f2d', email:'beta@earlyuser.net',         at:'2026.07.07 15:33:44'},
 ];
 
 function modeColor(m) { return {a11y:'#4A6CF7', simple:'#F97316', seo:'#10B981'}[m]||'#9BA4C0'; }
@@ -1043,7 +1043,7 @@ function renderAltText() {
 
   const tb = document.getElementById('atTbody');
   const pg = document.getElementById('alttextPager');
-  if (!rows.length) { tb.innerHTML = '<tr><td colspan="10" class="empty-state">조회된 결과가 없습니다.</td></tr>'; pg.innerHTML=''; return; }
+  if (!rows.length) { tb.innerHTML = '<tr><td colspan="11" class="empty-state">조회된 결과가 없습니다.</td></tr>'; pg.innerHTML=''; return; }
   const {perPage: app} = pagerState.alttext;
   const aTotalPages = Math.max(1, Math.ceil(rows.length/app));
   pagerState.alttext.page = Math.min(Math.max(1, pagerState.alttext.page), aTotalPages);
@@ -1065,6 +1065,7 @@ function renderAltText() {
     <td><span style="display:inline-block;background:${modeColor(r.mode)}1A;color:${modeColor(r.mode)};font-size:11px;font-weight:600;padding:3px 7px;border-radius:5px;white-space:nowrap">${modeLabel(r.mode)}</span></td>
     <td style="max-width:200px;font-size:12px;line-height:1.6;color:var(--text)">${r.alt}</td>
     <td style="max-width:180px;font-size:12px;line-height:1.6;color:var(--text-sub)">${r.desc||'<span style="color:var(--text-muted)">—</span>'}</td>
+    <td style="text-align:center;font-size:13px;font-weight:600;color:var(--text)">${r.credits}</td>
     <td>${satBadge(r.sat)}</td>
     <td><span style="background:${catColor[r.cat]||'#9BA4C0'}1A;color:${catColor[r.cat]||'#9BA4C0'};font-size:11px;font-weight:600;padding:3px 7px;border-radius:5px">${r.cat}</span></td>
     <td class="key-cell"><span class="key-tip" style="font-size:12px" data-key="${r.apiKey}">${r.apiKey.slice(0,8)}••••</span></td>
@@ -1113,8 +1114,8 @@ function openLimitPopup(keyId, newType, selectEl) {
 
   document.getElementById('limitPopupKey').textContent = keyId.slice(0,8) + '••••';
   const isDaily = newType === 'daily';
-  document.getElementById('limitPopupLabel').textContent = isDaily ? '하루 최대 호출 수' : '총 부여 횟수';
-  document.getElementById('limitPopupUnit').textContent  = isDaily ? '회 / 일' : '회';
+  document.getElementById('limitPopupLabel').textContent = isDaily ? '일일 크레딧 제공량' : '총 크레딧 지급량';
+  document.getElementById('limitPopupUnit').textContent  = isDaily ? '크레딧 / 일' : '크레딧';
   document.getElementById('limitPopupValue').value = k.limitValue;
   document.getElementById('limitPopupTypeHidden').value = newType;
   document.getElementById('limitModal').style.display = 'flex';
@@ -1235,6 +1236,7 @@ function genData(from, to) {
     newKey:  isToday ? 2  : Math.max(0, v(Math.round(days * 1.1))),
     activeK: isToday ? 89 : Math.min(115, v(60 + Math.round(days * 0.8))),
     calls: totalCalls,
+    credits: Math.round(totalCalls * (1.1 + (seed % 5) * 0.02)),
     a11y, simple, seo, a11yPct, simplePct, seoPct,
   };
 }
@@ -1276,6 +1278,12 @@ function updateDashboard(from, to) {
       <div class="k-label">활성 Key</div>
       <div class="k-value">${fmtNum(d.activeK)}</div>
       <div class="k-sub">${lbl} 사용</div>
+    </div>
+    <div class="kpi-card anim">
+      <div class="k-icon" style="background:#FFF0F0">💎</div>
+      <div class="k-label">크레딧 소모량</div>
+      <div class="k-value">${fmtNum(d.credits)}</div>
+      <div class="k-sub">${lbl} 합계</div>
     </div>
     <div class="kpi-card anim">
       <div class="k-icon" style="background:#FFF8EC">⚡</div>
