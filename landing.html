@@ -265,6 +265,26 @@
   .auto-panel .toggle-row{margin-top:0;border:none;border-bottom:1px solid #EEF1F5}
   .auto-panel .toggle-row:last-child{border-bottom:none}
   .fpic-auto .tg{background:var(--fblue)}
+  /* WP 미디어 라이브러리 목업 */
+  .wp-media-mock{background:#fff;border:1px solid var(--mist);border-radius:12px;overflow:hidden;width:100%;box-shadow:0 8px 24px -12px rgba(15,19,24,.16)}
+  .wpm-header{display:flex;align-items:center;gap:5px;padding:9px 12px;background:#f5f7fa;border-bottom:1px solid var(--mist)}
+  .wpm-dot{width:9px;height:9px;border-radius:50%;display:inline-block;flex:none}
+  .wpm-dot.r{background:#ff5f57}.wpm-dot.y{background:#febc2e}.wpm-dot.g{background:#28c840}
+  .wpm-title{flex:1;font-size:11.5px;font-weight:600;color:var(--muted);margin-left:6px}
+  .wpm-wp{font-family:"IBM Plex Mono",monospace;font-size:10px;padding:1px 7px;border-radius:4px;background:#0073aa;color:#fff;letter-spacing:.04em}
+  .wpm-item{display:flex;gap:10px;padding:11px 12px;border-bottom:1px solid #f0f2f5}
+  .wpm-item:last-child{border-bottom:none}
+  .wpm-thumb{width:40px;height:40px;border-radius:6px;flex:none}
+  .wpm-info{flex:1;min-width:0}
+  .wpm-name{font-size:11.5px;font-weight:600;color:var(--ink);margin-bottom:5px;line-height:1}
+  .wpm-row{display:flex;align-items:center;gap:6px;margin-bottom:4px}
+  .wpm-lbl{font-size:10.5px;color:var(--muted)}
+  .wpm-tag{font-family:"IBM Plex Mono",monospace;font-size:9.5px;padding:1px 6px;border-radius:99px;letter-spacing:.04em}
+  .wpm-tag.done{background:#eef7f6;color:var(--teal)}
+  .wpm-tag.gen{background:#fef9e7;color:#92600a}
+  .wpm-alt{font-size:11px;color:var(--muted);line-height:1.45;font-family:"IBM Plex Mono",monospace}
+  .wpm-skel{height:9px;background:#e8edf2;border-radius:99px;width:75%;animation:skel-pulse 1.6s ease-in-out infinite}
+  @keyframes skel-pulse{0%,100%{opacity:1}50%{opacity:.35}}
   /* editor */
   .fpic-ed{padding:0 24px 28px;width:100%;box-sizing:border-box}
   .ed2{background:#fff;border-radius:14px;box-shadow:0 16px 40px -24px rgba(15,19,24,.45);padding:14px;display:grid;grid-template-columns:96px 1fr;gap:14px;width:100%;box-sizing:border-box;text-align:left}
@@ -575,17 +595,38 @@
             <h3>한 번만 설정하면, 알아서 돌아갑니다.</h3>
             <p class="fbody">워드프레스에 새 이미지가 올라오는 순간 자동으로 대체텍스트를 생성합니다. 설정 후에는 별도 작업 없이 새 이미지가 계속 처리됩니다.</p>
           </div>
-          <div class="fpic fpic-auto" role="img" aria-label="자동화 파이프라인: 수집, AI 진단, AI 처리, 배포. 자동 수집과 자동 생성이 켜진 상태.">
-            <div class="orbit">
-              <img class="frobot2" src="svc/p122.png" alt="" aria-hidden="true">
-              <span class="node-c na">수집</span>
-              <span class="node-c nb">AI<br>진단</span>
-              <span class="node-c nc">AI<br>처리</span>
-              <span class="node-c nd">배포</span>
+          <div class="fpic fpic-auto" role="img" aria-label="워드프레스 미디어 라이브러리: 이미지 업로드 시 앨리가 자동으로 대체텍스트를 생성합니다.">
+            <div class="wp-media-mock">
+              <div class="wpm-header">
+                <span class="wpm-dot r"></span><span class="wpm-dot y"></span><span class="wpm-dot g"></span>
+                <span class="wpm-title">미디어 라이브러리</span>
+                <span class="wpm-wp">WP</span>
+              </div>
+              <div class="wpm-item">
+                <div class="wpm-thumb" style="background:linear-gradient(135deg,#1746c4,#0e2f8f)" aria-hidden="true"></div>
+                <div class="wpm-info">
+                  <p class="wpm-name">product_hero.jpg</p>
+                  <div class="wpm-row">
+                    <span class="wpm-lbl">대체 텍스트</span>
+                    <span class="wpm-tag done">A11Y 자동 생성</span>
+                  </div>
+                  <p class="wpm-alt">"제품 소개 화면. 파란 배경에 흰색 로고와 핵심 기능 3가지가 나열되어 있습니다."</p>
+                </div>
+              </div>
+              <div class="wpm-item">
+                <div class="wpm-thumb" style="background:linear-gradient(135deg,#0c4a4d,#14a3a8)" aria-hidden="true"></div>
+                <div class="wpm-info">
+                  <p class="wpm-name">team_photo.jpg</p>
+                  <div class="wpm-row">
+                    <span class="wpm-lbl">대체 텍스트</span>
+                    <span class="wpm-tag gen">생성 중</span>
+                  </div>
+                  <div class="wpm-skel" aria-hidden="true"></div>
+                </div>
+              </div>
             </div>
             <div class="auto-panel">
-              <div class="toggle-row"><span>새 이미지 자동 수집 · 매주</span><span class="tg" aria-hidden="true"></span></div>
-              <div class="toggle-row"><span>새 이미지에 대체텍스트 자동 생성</span><span class="tg" aria-hidden="true"></span></div>
+              <div class="toggle-row"><span>새 이미지 업로드 시 자동 생성</span><span class="tg" aria-hidden="true"></span></div>
             </div>
           </div>
         </article>
