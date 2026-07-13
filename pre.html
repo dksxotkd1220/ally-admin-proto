@@ -50,20 +50,29 @@
   .hero .cta-row{margin-top:34px;display:flex;gap:14px;flex-wrap:wrap}
   .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center}
   @media (max-width:900px){.hero-grid{grid-template-columns:1fr;gap:40px}}
-  .readout{background:var(--surface);border:1px solid var(--mist);border-radius:16px;padding:22px;box-shadow:0 18px 50px -28px rgba(17,22,31,.4)}
+  .readout{background:var(--surface);border:1px solid var(--mist);border-radius:20px;padding:24px;box-shadow:0 20px 56px -28px rgba(17,22,31,.18)}
   .readout figure{margin:0}
-  .sample{width:100%;height:auto;border-radius:10px;background:#0f3a3c;display:block}
-  .read-label{font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;margin:18px 0 8px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-  .tag{font-family:"IBM Plex Mono",monospace;font-size:11px;padding:2px 8px;border-radius:999px;letter-spacing:.02em}
-  .tag.bad{background:#fbe6db;color:var(--signal)}
+  .sample{width:100%;height:auto;border-radius:12px;background:#fff;display:block;border:1px solid var(--mist)}
+  .rout-chart-head{display:flex;align-items:center;gap:8px;padding:10px 14px 0;margin-bottom:-4px}
+  .rout-chart-icon{width:28px;height:28px;border-radius:7px;background:#EAF2FE;display:flex;align-items:center;justify-content:center;flex:none}
+  .rout-chart-icon svg{width:16px;height:16px}
+  .rout-chart-title{font-size:13px;font-weight:600;color:var(--ink);flex:1}
+  .rout-chart-badge{font-family:"IBM Plex Mono",monospace;font-size:10px;padding:3px 8px;border-radius:999px;background:#EAF2FE;color:#005EFF;letter-spacing:.04em;white-space:nowrap}
+  .read-label{font-size:13px;font-weight:600;color:var(--ink);margin:18px 0 8px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .tag{font-family:"IBM Plex Mono",monospace;font-size:10.5px;padding:2px 8px;border-radius:999px;letter-spacing:.02em}
+  .tag.bad{background:#fde8e4;color:#b0320e}
   .tag.good{background:#d7f0ef;color:var(--teal)}
-  .read-body{font-family:"IBM Plex Mono",monospace;font-size:13px;line-height:1.55;background:#f3f5f7;border:1px solid var(--mist);border-radius:10px;padding:12px 14px;color:#26303d}
-  .read-body.bad{border-left:3px solid var(--signal)}
-  .read-body.good{border-left:3px solid var(--teal)}
-  .read-note{font-size:12.5px;color:var(--muted);margin-top:7px;line-height:1.45}
-  .mini-table{width:100%;border-collapse:collapse;margin-top:6px;font-size:12.5px}
-  .mini-table th,.mini-table td{border:1px solid var(--mist);padding:4px 8px;text-align:left}
-  .mini-table th{background:#e9eef1}
+  .read-body{font-family:"IBM Plex Mono",monospace;font-size:13px;line-height:1.55;border-radius:12px;padding:14px 16px;color:#26303d;position:relative}
+  .read-body.bad{background:#fff8f6;border:1.5px solid #fac5b4}
+  .read-body.good{background:#f2faf9;border:1.5px solid #b8e8e3}
+  .rout-note-inline{font-family:"Inter","Apple SD Gothic Neo",sans-serif;font-size:12px;color:#86442c;margin-top:8px;line-height:1.5}
+  .rout-check{position:absolute;top:12px;right:12px;width:22px;height:22px;border-radius:50%;background:var(--teal);display:flex;align-items:center;justify-content:center}
+  .rout-check svg{width:12px;height:12px;stroke:#fff;stroke-width:2.5;fill:none}
+  .read-note{font-size:12px;color:var(--teal);margin-top:8px;line-height:1.45;display:flex;align-items:flex-start;gap:6px}
+  .read-note svg{width:15px;height:15px;stroke:var(--teal);stroke-width:2;fill:none;flex:none;margin-top:1px}
+  .mini-table{width:100%;border-collapse:collapse;margin-top:8px;font-size:12px}
+  .mini-table th,.mini-table td{border:1px solid #cce8e5;padding:5px 8px;text-align:left}
+  .mini-table th{background:#e4f4f2;color:var(--teal);font-weight:600}
   .band-ink{background:var(--ink);color:#fff}
   .band-ink h2{color:#fff}.band-ink .eyebrow{color:var(--teal-bright)}.band-ink .lead{color:#aeb8c4}
   .pain h2{font-size:clamp(26px,4.2vw,44px);max-width:22ch}
@@ -385,32 +394,59 @@
     </div>
 
     <div class="readout reveal" aria-label="같은 이미지를 두 방식으로 설명했을 때 비교">
+
+      <div class="rout-chart-head">
+        <div class="rout-chart-icon" aria-hidden="true">
+          <svg viewBox="0 0 16 16" fill="none" stroke="#005EFF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="9" width="3" height="5" rx="0.5"/><rect x="6.5" y="6" width="3" height="8" rx="0.5"/><rect x="11" y="3" width="3" height="11" rx="0.5"/>
+          </svg>
+        </div>
+        <span class="rout-chart-title">분기별 수익률 (%)</span>
+        <span class="rout-chart-badge">정보 그래프 · 명확 비중</span>
+      </div>
       <figure>
-        <svg class="sample" viewBox="0 0 360 150" role="img" aria-label="예시 이미지: 분기별 수익률 막대그래프. 1분기 12%, 2분기 9%, 3분기 17%, 4분기 14%.">
-          <rect width="360" height="150" fill="#0f3a3c"/>
-          <text x="16" y="26" fill="#9fe3e0" font-family="IBM Plex Mono" font-size="11">분기별 수익률(%)</text>
-          <g font-family="IBM Plex Mono" font-size="10" fill="#cdeceb">
-            <rect x="40" y="78" width="38" height="50" fill="#14a3a8"/><text x="50" y="142">1Q</text><text x="48" y="72">12</text>
-            <rect x="110" y="92" width="38" height="36" fill="#14a3a8"/><text x="118" y="142">2Q</text><text x="120" y="86">9</text>
-            <rect x="180" y="58" width="38" height="70" fill="#36c6c2"/><text x="188" y="142">3Q</text><text x="186" y="52">17</text>
-            <rect x="250" y="70" width="38" height="58" fill="#14a3a8"/><text x="258" y="142">4Q</text><text x="256" y="64">14</text>
+        <svg class="sample" viewBox="0 0 360 148" role="img" aria-label="예시 이미지: 분기별 수익률 막대그래프. 1분기 12%, 2분기 9%, 3분기 17%, 4분기 14%.">
+          <rect width="360" height="148" fill="#fff"/>
+          <g stroke="#f0f2f5" stroke-width="1">
+            <line x1="38" y1="16" x2="344" y2="16"/><line x1="38" y1="56" x2="344" y2="56"/><line x1="38" y1="96" x2="344" y2="96"/>
           </g>
+          <g font-family="IBM Plex Mono" font-size="10" fill="#9AA3AF" text-anchor="end">
+            <text x="32" y="19">20</text><text x="32" y="59">10</text><text x="32" y="99">0</text>
+          </g>
+          <rect x="58" y="52" width="44" height="44" fill="#3B82F6" rx="4"/>
+          <rect x="138" y="68" width="44" height="28" fill="#3B82F6" rx="4"/>
+          <rect x="218" y="28" width="44" height="68" fill="#2563EB" rx="4"/>
+          <rect x="298" y="40" width="44" height="56" fill="#3B82F6" rx="4"/>
+          <g font-family="IBM Plex Mono" font-size="11" fill="#374151" text-anchor="middle" font-weight="600">
+            <text x="80" y="46">12</text><text x="160" y="62">9</text><text x="240" y="22">17</text><text x="320" y="34">14</text>
+          </g>
+          <g font-family="IBM Plex Mono" font-size="11" fill="#6B7280" text-anchor="middle">
+            <text x="80" y="116">1Q</text><text x="160" y="116">2Q</text><text x="240" y="116">3Q</text><text x="320" y="116">4Q</text>
+          </g>
+          <line x1="38" y1="100" x2="344" y2="100" stroke="#e5e7eb" stroke-width="1"/>
         </svg>
       </figure>
 
-      <p class="read-label">보통 AI가 만드는 설명 <span class="tag bad">검색용 · 정보 빠짐</span></p>
-      <div class="read-body bad">"분기별 수익률 막대그래프"</div>
-      <p class="read-note">→ 화면을 못 보는 고객은 '막대그래프'라는 말만 듣습니다. 소송에서 흔히 지적되는 바로 그 지점이에요.</p>
+      <p class="read-label">보통 사람이 만드는 설명 <span class="tag bad">모호함 · 정보 비중</span></p>
+      <div class="read-body bad">
+        "분기별 수익률 막대그래프"
+        <p class="rout-note-inline">→ 화면을 못 보는 고객은 '막대그래프'라는 말만 듣습니다. 소송에서 흔히 지적되는 바로 그 지점이에요.</p>
+      </div>
 
       <p class="read-label">앨리가 만드는 설명 <span class="tag good">정보 그대로 · 빠짐없이</span></p>
       <div class="read-body good">
+        <span class="rout-check" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
         "막대그래프, 분기별 수익률:"
         <table class="mini-table" aria-hidden="true">
           <tr><th>1Q</th><th>2Q</th><th>3Q</th><th>4Q</th></tr>
           <tr><td>12%</td><td>9%</td><td>17%</td><td>14%</td></tr>
         </table>
       </div>
-      <p class="read-note">→ 1·2·3·4분기 수치까지 그대로 들립니다.</p>
+      <p class="read-note">
+        <svg viewBox="0 0 15 15"><path d="M2 7.5l3.5 3.5 7-7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        1·2·3·4분기 수치까지 그대로 들립니다.
+      </p>
+
     </div>
   </div>
 </section>
