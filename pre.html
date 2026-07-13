@@ -333,7 +333,7 @@
   .wp-step .snum{width:34px;height:34px;border-radius:999px;background:#EAF2FE;color:#005EFF;font-family:"IBM Plex Mono",monospace;font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;flex:none}
   .wp-step h3{font-size:18px;font-weight:700;color:var(--ink)}
   .wp-step p{font-size:14.5px;color:var(--muted);line-height:1.6}
-  .wp-shot{margin-top:auto;aspect-ratio:16/10;border-radius:12px;border:1.5px dashed var(--mist);background:#f7f9fb;display:flex;align-items:center;justify-content:center;color:#9AA3AF;font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.03em;text-align:center;padding:12px}
+  .wp-shot{margin-top:auto;width:100%;aspect-ratio:16/10;border-radius:12px;display:block;object-fit:cover}
 
   /* --- 설문 레이어 팝업 --- */
   .survey-ov{position:fixed;inset:0;z-index:200;background:rgba(9,12,18,.6);backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;visibility:hidden;transition:opacity .18s ease}
@@ -410,7 +410,7 @@
           <span class="rout-chart-badge">정보 그래프 · 명확 비중</span>
         </div>
         <figure>
-          <svg class="sample" viewBox="0 0 360 148" role="img" aria-label="예시 이미지: 분기별 수익률 막대그래프. 1분기 12%, 2분기 9%, 3분기 17%, 4분기 14%.">
+          <svg class="sample" viewBox="0 0 360 128" role="img" aria-label="예시 이미지: 분기별 수익률 막대그래프. 1분기 12%, 2분기 9%, 3분기 17%, 4분기 14%.">
             <rect width="360" height="148" fill="#fff"/>
             <g stroke="#f0f2f5" stroke-width="1">
               <line x1="38" y1="16" x2="344" y2="16"/><line x1="38" y1="56" x2="344" y2="56"/><line x1="38" y1="96" x2="344" y2="96"/>
@@ -819,19 +819,19 @@
         <div class="snum">1</div>
         <h3>플러그인 설치</h3>
         <p>워드프레스 관리자 → 플러그인 → 새로 추가에서 <b>"A11Y"</b>를 검색해 설치하세요. 또는 .zip 파일을 직접 업로드해도 됩니다.</p>
-        <div class="wp-shot">스크린샷 자리<br>플러그인 검색 화면</div>
+        <img class="wp-shot" src="image1.png" alt="워드프레스 플러그인 검색 화면">
       </div>
       <div class="wp-step">
         <div class="snum">2</div>
         <h3>API 키 입력</h3>
         <p>플러그인 설정 화면을 열고, 위에서 발급받은 <b>API 키</b>를 붙여넣은 뒤 저장하세요.</p>
-        <div class="wp-shot">스크린샷 자리<br>API 키 입력 화면</div>
+        <img class="wp-shot" src="image2.png" alt="API 키 입력 화면">
       </div>
       <div class="wp-step">
         <div class="snum">3</div>
         <h3>활성화 &amp; 자동 생성</h3>
         <p>플러그인을 활성화하면 사이트 이미지를 자동으로 스캔해 대체 텍스트를 생성하기 시작합니다.</p>
-        <div class="wp-shot">스크린샷 자리<br>활성화 · 생성 현황</div>
+        <img class="wp-shot" src="image3.png" alt="활성화 및 자동 생성 현황">
       </div>
     </div>
   </div>
