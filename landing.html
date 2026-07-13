@@ -52,21 +52,22 @@
   @media (max-width:900px){.hero-grid{grid-template-columns:1fr;gap:40px}}
   .readout{background:var(--surface);border:1px solid var(--mist);border-radius:20px;padding:24px;box-shadow:0 20px 56px -28px rgba(17,22,31,.18)}
   .readout figure{margin:0}
-  .sample{width:100%;height:auto;border-radius:12px;background:#fff;display:block;border:1px solid var(--mist)}
-  /* chart header */
-  .rout-chart-head{display:flex;align-items:center;gap:8px;padding:10px 14px 0;margin-bottom:-4px}
+  /* chart widget box */
+  .rout-chart-box{border:1px solid var(--mist);border-radius:14px;overflow:hidden;background:#fff}
+  .rout-chart-head{display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid var(--mist)}
   .rout-chart-icon{width:28px;height:28px;border-radius:7px;background:#EAF2FE;display:flex;align-items:center;justify-content:center;flex:none}
   .rout-chart-icon svg{width:16px;height:16px}
   .rout-chart-title{font-size:13px;font-weight:600;color:var(--ink);flex:1}
   .rout-chart-badge{font-family:"IBM Plex Mono",monospace;font-size:10px;padding:3px 8px;border-radius:999px;background:#EAF2FE;color:#005EFF;letter-spacing:.04em;white-space:nowrap}
+  .sample{width:100%;height:auto;display:block;background:#fff;border:none}
   /* comparison blocks */
-  .read-label{font-size:13px;font-weight:600;color:var(--ink);margin:18px 0 8px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .read-label{font-size:13px;font-weight:600;color:var(--ink);margin:16px 0 6px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
   .tag{font-family:"IBM Plex Mono",monospace;font-size:10.5px;padding:2px 8px;border-radius:999px;letter-spacing:.02em}
   .tag.bad{background:#fde8e4;color:#b0320e}
   .tag.good{background:#d7f0ef;color:var(--teal)}
-  .read-body{font-family:"IBM Plex Mono",monospace;font-size:13px;line-height:1.55;border-radius:12px;padding:14px 16px;color:#26303d;position:relative}
+  .read-body{font-family:"IBM Plex Mono",monospace;font-size:13px;line-height:1.55;border-radius:12px;padding:12px 14px;color:#26303d;position:relative}
   .read-body.bad{background:#fff8f6;border:1.5px solid #fac5b4}
-  .read-body.good{background:#f2faf9;border:1.5px solid #b8e8e3}
+  .read-body.good{background:#f2faf9;border:1.5px solid #b8e8e3;padding-right:44px}
   .rout-note-inline{font-family:"Inter","Apple SD Gothic Neo",sans-serif;font-size:12px;color:#86442c;margin-top:8px;line-height:1.5}
   .rout-check{position:absolute;top:12px;right:12px;width:22px;height:22px;border-radius:50%;background:var(--teal);display:flex;align-items:center;justify-content:center}
   .rout-check svg{width:12px;height:12px;stroke:#fff;stroke-width:2.5;fill:none}
@@ -391,17 +392,18 @@
 
     <div class="readout reveal" aria-label="같은 이미지를 두 방식으로 설명했을 때 비교">
 
-      <!-- 차트 헤더 + SVG -->
-      <div class="rout-chart-head">
-        <div class="rout-chart-icon" aria-hidden="true">
-          <svg viewBox="0 0 16 16" fill="none" stroke="#005EFF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="2" y="9" width="3" height="5" rx="0.5"/><rect x="6.5" y="6" width="3" height="8" rx="0.5"/><rect x="11" y="3" width="3" height="11" rx="0.5"/>
-          </svg>
+      <!-- 차트 위젯 -->
+      <div class="rout-chart-box">
+        <div class="rout-chart-head">
+          <div class="rout-chart-icon" aria-hidden="true">
+            <svg viewBox="0 0 16 16" fill="none" stroke="#005EFF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="9" width="3" height="5" rx="0.5"/><rect x="6.5" y="6" width="3" height="8" rx="0.5"/><rect x="11" y="3" width="3" height="11" rx="0.5"/>
+            </svg>
+          </div>
+          <span class="rout-chart-title">분기별 수익률 (%)</span>
+          <span class="rout-chart-badge">정보 그래프 · 명확 비중</span>
         </div>
-        <span class="rout-chart-title">분기별 수익률 (%)</span>
-        <span class="rout-chart-badge">정보 그래프 · 명확 비중</span>
-      </div>
-      <figure>
+        <figure>
         <svg class="sample" viewBox="0 0 360 148" role="img" aria-label="예시 이미지: 분기별 수익률 막대그래프. 1분기 12%, 2분기 9%, 3분기 17%, 4분기 14%.">
           <rect width="360" height="148" fill="#fff"/>
           <!-- 그리드 -->
@@ -430,7 +432,8 @@
           <!-- X축 선 -->
           <line x1="38" y1="100" x2="344" y2="100" stroke="#e5e7eb" stroke-width="1"/>
         </svg>
-      </figure>
+        </figure>
+      </div>
 
       <!-- 나쁜 예 -->
       <p class="read-label">보통 사람이 만드는 설명 <span class="tag bad">모호함 · 정보 비중</span></p>
