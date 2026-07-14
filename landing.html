@@ -110,6 +110,9 @@
   .takeaway{margin-top:26px;background:#eef7f6;border:1px solid #cfe7e5;border-left:4px solid var(--teal);border-radius:12px;padding:20px 22px}
   .takeaway h3{font-family:"Bricolage Grotesque","Apple SD Gothic Neo";font-weight:700;font-size:15px;color:var(--teal);margin-bottom:8px;letter-spacing:0}
   .takeaway p{font-size:15px;color:var(--ink);line-height:1.65}
+  .takeaway-list{list-style:none;padding:0;margin:6px 0 10px;display:flex;flex-direction:column;gap:5px}
+  .takeaway-list li{display:grid;grid-template-columns:1.8em 1fr;font-size:15px;color:var(--ink);line-height:1.65}
+  .takeaway-list .tnum{font-weight:700}
   .sources{margin-top:16px}
   .sources summary{font-family:"IBM Plex Mono";font-size:12px;color:var(--muted);cursor:pointer}
   .sources ul{margin:10px 0 0;padding-left:18px;color:var(--muted);font-size:13px;line-height:1.6}
@@ -597,7 +600,12 @@
 
     <div class="takeaway">
       <h3>소송을 받은 입장이라면</h3>
-      <p>두 가지가 중요합니다. ① 지적된 문제(이미지 속 정보 누락)를 <strong>실제로 채우는가</strong>, ② 무엇을 언제 고쳤는지 <strong>기록으로 남아</strong> '성의 있게 시정했다'를 보여줄 수 있는가. 앨리는 이 두 가지에 맞춰져 있습니다. 가격은 A사, 전체 자동 적용 속도는 B사가 앞서지만, '제대로 고치고 증빙으로 남기는 것'이 목적이라면 앨리가 다릅니다. <span style="color:var(--muted)">(단, 어떤 도구도 소송을 완전히 막아주지는 못합니다.)</span></p>
+      <p>두 가지가 중요합니다.</p>
+      <ul class="takeaway-list">
+        <li><span class="tnum">①</span><span>지적된 문제(이미지 속 정보 누락)를 <strong>실제로 채우는가</strong></span></li>
+        <li><span class="tnum">②</span><span>무엇을 언제 고쳤는지 <strong>기록으로 남아</strong> '성의 있게 시정했다'를 보여줄 수 있는가</span></li>
+      </ul>
+      <p>앨리는 이 두 가지에 맞춰져 있습니다. 가격은 A사, 전체 자동 적용 속도는 B사가 앞서지만, '제대로 고치고 증빙으로 남기는 것'이 목적이라면 앨리가 다릅니다. <span style="color:var(--muted)">(단, 어떤 도구도 소송을 완전히 막아주지는 못합니다.)</span></p>
     </div>
 
     <details class="sources" hidden style="display:none">
