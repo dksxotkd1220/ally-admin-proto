@@ -219,6 +219,7 @@
   .out .otag{font-family:"IBM Plex Mono";font-size:11px;padding:2px 8px;border-radius:99px;align-self:flex-start}
   .out .otag.g{background:#d7f0ef;color:var(--teal)}
   .out .otag.b{background:#fbe6db;color:var(--signal)}
+  .out .otag.w{background:#EEF2FF;color:#4338CA}
   .out .obody{font-family:"IBM Plex Mono";font-size:12px;line-height:1.5;background:#f3f5f7;border:1px solid var(--mist);border-radius:9px;padding:10px 12px;color:#26303d}
   .out.win .obody{background:#fff}
   table.cmp thead th .thv{display:block;font-family:"Inter","Apple SD Gothic Neo";font-weight:400;font-size:12px;color:var(--muted);margin-top:6px;line-height:1.4}
@@ -231,6 +232,7 @@
   .cmp .out.win{border-color:#005EFF;background:#EAF2FE}
   .cmp .out.win .nm{color:#005EFF}
   .cmp .out .otag.g{background:#DBEAFE;color:#005EFF}
+  .cmp .out .otag.w{background:#EEF2FF;color:#4338CA}
   .cmp table.cmp thead th.us{background:#EAF2FE;color:#005EFF}
   .cmp table.cmp thead th.us .thv{color:#005EFF}
   .cmp table.cmp td.us{background:#F2F7FF}
@@ -503,7 +505,10 @@
     <div class="out-grid">
       <div class="out win">
         <div class="nm">앨리(A11Y)</div>
-        <span class="otag g">정보 빠짐없이</span>
+        <div style="display:flex;gap:6px;flex-wrap:wrap">
+          <span class="otag g">정보 빠짐없이</span>
+          <span class="otag w">WCAG 2.2 기준</span>
+        </div>
         <div class="obody">"2026 AI 혁신 컨퍼런스 포스터. 장소 investment center, 일시 6/20(금) 14:00–16:00. 프로그램:"
           <table class="ed-table" aria-hidden="true">
             <tr><th>시간</th><th>주요 내용</th></tr>
@@ -511,6 +516,7 @@
             <tr><td>14:00–14:15</td><td>업무협약식</td></tr>
           </table>
         </div>
+        <p style="font-size:12px;color:#4338CA;margin:0;line-height:1.5">웹 접근성 국제 표준(WCAG 2.2)에 맞게 생성된 설명이에요.</p>
       </div>
       <div class="out">
         <div class="nm">A사</div>
