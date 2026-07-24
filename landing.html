@@ -161,6 +161,15 @@
   .notify-band .field input{background:#fff;color:var(--ink);border-color:var(--mist)}
   .notify-band .field input::placeholder{color:#b0bac6}
   .notify-band .field input:focus-visible{border-color:var(--teal)}
+  .upcoming-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:32px auto 0;max-width:720px}
+  @media (max-width:640px){.upcoming-grid{grid-template-columns:1fr}}
+  .ucard{background:#fff;border:1px solid var(--mist);border-radius:14px;padding:20px;text-align:left;display:flex;flex-direction:column;gap:9px}
+  .ucard-icon{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex:none}
+  .ucard-icon svg{width:18px;height:18px}
+  .ucard-label{font-family:"Bricolage Grotesque","Apple SD Gothic Neo";font-weight:700;font-size:15px;color:var(--ink)}
+  .ucard-desc{font-size:13px;color:var(--muted);line-height:1.55;flex:1}
+  .ucard-badge{align-self:flex-start;font-family:"IBM Plex Mono";font-size:10px;padding:2px 9px;border-radius:99px;background:#f0f0f4;color:#999;letter-spacing:.04em}
+  /* 알림 신청 설문 팝업 - survey-ov 스타일 재활용 */
 
   /* --- v5: 서비스 기능 카드 + 효율 + FAQ --- */
   .hero-note{margin-top:16px;font-size:14px;color:var(--muted)}
@@ -924,7 +933,42 @@
     <p class="eyebrow">워드프레스 이외 플랫폼 지원</p>
     <h2 id="notify-h" style="font-size:clamp(24px,3.5vw,38px)">아직 워드프레스를 사용하지 않으시나요?</h2>
     <p class="lead" style="margin:14px auto 0;max-width:48ch">지금은 워드프레스 플러그인만 지원하고 있어요. 이메일을 남겨두시면 새 플랫폼 지원 소식을 가장 먼저 알려드립니다.</p>
-    <form id="notifyForm" novalidate style="margin:28px auto 0;max-width:420px;display:flex;flex-direction:column;gap:0">
+
+    <!-- 예정 기능 카드 -->
+    <div class="upcoming-grid">
+      <div class="ucard">
+        <div class="ucard-icon" style="background:#EAF2FE">
+          <svg viewBox="0 0 18 18" fill="none" stroke="#005EFF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="9" cy="9" r="7"/><path d="M9 2c0 0-3 3-3 7s3 7 3 7"/><path d="M2 9h14"/>
+          </svg>
+        </div>
+        <div class="ucard-label">URL 스캔</div>
+        <div class="ucard-desc">사이트 주소만 입력하면 이미지를 자동으로 감지해 대체 텍스트를 생성합니다.</div>
+        <span class="ucard-badge">출시 예정</span>
+      </div>
+      <div class="ucard">
+        <div class="ucard-icon" style="background:#F0F4FF">
+          <svg viewBox="0 0 18 18" fill="none" stroke="#4338CA" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 13V5a2 2 0 0 1 2-2h6l4 4v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/><path d="M11 3v4h4"/><path d="M9 8v5m-2-2 2 2 2-2"/>
+          </svg>
+        </div>
+        <div class="ucard-label">이미지 업로드</div>
+        <div class="ucard-desc">이미지 파일을 직접 업로드하면 즉시 대체 텍스트를 만들어 드립니다.</div>
+        <span class="ucard-badge">출시 예정</span>
+      </div>
+      <div class="ucard">
+        <div class="ucard-icon" style="background:#FEF3E2">
+          <svg viewBox="0 0 18 18" fill="none" stroke="#D97706" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2 6a2 2 0 0 1 2-2h3l2 2h5a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6Z"/>
+          </svg>
+        </div>
+        <div class="ucard-label">폴더 업로드</div>
+        <div class="ucard-desc">프로젝트 폴더를 통째로 올리면 이미지 전체를 한번에 일괄 처리합니다.</div>
+        <span class="ucard-badge">출시 예정</span>
+      </div>
+    </div>
+
+    <form id="notifyForm" novalidate style="margin:32px auto 0;max-width:420px;display:flex;flex-direction:column;gap:0">
       <div class="field" style="flex:1 1 100%">
         <label for="notify-email" style="text-align:left">이메일 주소</label>
         <input id="notify-email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="you@company.com" required>
@@ -936,6 +980,23 @@
     </form>
   </div>
 </section>
+
+<!-- 알림 신청 설문 팝업 -->
+<div class="survey-ov" id="notifyOv" role="dialog" aria-modal="true" aria-labelledby="nv-title" hidden>
+  <div class="survey-modal">
+    <button class="sv-x" type="button" id="notifyOvClose" aria-label="닫기">×</button>
+    <h3 id="nv-title">출시 알림 신청</h3>
+    <p class="sv-lead">어떤 기능이 가장 기대되세요? (선택)</p>
+    <div class="sv-email">이메일 주소 · <b id="notifyOvEmail"></b></div>
+    <div class="sv-opts" id="notifyOpts">
+      <label class="sv-opt"><input type="radio" name="nv-feat" value="URL 스캔"><span>URL 스캔 — 주소 입력만으로 자동 감지</span></label>
+      <label class="sv-opt"><input type="radio" name="nv-feat" value="이미지 업로드"><span>이미지 업로드 — 파일 직접 업로드</span></label>
+      <label class="sv-opt"><input type="radio" name="nv-feat" value="폴더 업로드"><span>폴더 업로드 — 프로젝트 폴더 일괄 처리</span></label>
+      <label class="sv-opt"><input type="radio" name="nv-feat" value="기타 플랫폼 연동"><span>기타 플랫폼 연동</span></label>
+    </div>
+    <button class="btn sv-cta" type="button" id="notifyOvSubmit">신청 완료</button>
+  </div>
+</div>
 
 </main>
 
@@ -1063,24 +1124,57 @@
     });
   })();
 
-  // --- 출시 알림 신청 폼 ---
+  // --- 출시 알림 신청 폼 + 설문 팝업 ---
   (function(){
     var form = document.getElementById('notifyForm');
     if(!form) return;
     var emailIn = document.getElementById('notify-email');
     var msg = document.getElementById('notifyMsg');
+    var pendingEmail = null;
     var STORE = 'ally_notify_emails';
     function load(){ try{ return JSON.parse(localStorage.getItem(STORE)) || []; }catch(e){ return []; } }
     function save(arr){ try{ localStorage.setItem(STORE, JSON.stringify(arr)); }catch(e){} }
+
+    // 설문 팝업
+    var ov = document.getElementById('notifyOv');
+    var opts = document.getElementById('notifyOpts');
+    function openOv(){
+      ov.hidden = false;
+      requestAnimationFrame(function(){ ov.classList.add('open'); });
+      document.body.style.overflow = 'hidden';
+    }
+    function closeOv(){
+      ov.classList.remove('open');
+      document.body.style.overflow = '';
+      setTimeout(function(){ ov.hidden = true; }, 200);
+    }
+    document.getElementById('notifyOvClose').addEventListener('click', closeOv);
+    ov.addEventListener('click', function(e){ if(e.target === ov) closeOv(); });
+    document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && !ov.hidden) closeOv(); });
+    opts.addEventListener('change', function(){
+      opts.querySelectorAll('.sv-opt').forEach(function(l){ l.classList.toggle('sel', l.querySelector('input').checked); });
+    });
+
     form.addEventListener('submit', function(e){
       e.preventDefault();
       var email = emailIn.value.trim().toLowerCase();
       if(!isEmail(email)){ msg.textContent = '이메일 주소를 정확히 입력해 주세요.'; msg.style.color='#c2410c'; return; }
+      pendingEmail = email;
+      document.getElementById('notifyOvEmail').textContent = email;
+      opts.querySelectorAll('.sv-opt').forEach(function(l){ l.classList.remove('sel'); });
+      opts.querySelectorAll('input').forEach(function(i){ i.checked = false; });
+      openOv();
+    });
+
+    document.getElementById('notifyOvSubmit').addEventListener('click', function(){
+      if(!pendingEmail) return;
       var arr = load();
-      if(arr.indexOf(email) < 0){ arr.push(email); save(arr); }
+      if(arr.indexOf(pendingEmail) < 0){ arr.push(pendingEmail); save(arr); }
+      closeOv();
       msg.textContent = '신청이 완료되었어요. 소식이 생기면 가장 먼저 알려드릴게요.';
       msg.style.color = 'var(--teal)';
       form.reset();
+      pendingEmail = null;
     });
   })();
 </script>
