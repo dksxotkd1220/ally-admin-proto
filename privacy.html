@@ -10,62 +10,75 @@
 <style>
   :root{
     --ink:#11161F;--paper:#F4F6F8;--surface:#fff;--mist:#E1E7EC;
-    --teal:#0C6B70;--teal-bright:#14A3A8;--muted:#586271;--maxw:720px;
+    --teal:#0C6B70;--teal-bright:#14A3A8;--muted:#586271;--maxw:680px;
   }
   *{box-sizing:border-box}
   html{scroll-behavior:smooth}
-  body{margin:0;background:var(--paper);color:var(--ink);
+  body{margin:0;background:var(--surface);color:var(--ink);
     font-family:"Inter",system-ui,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
-    font-size:16px;line-height:1.75;-webkit-font-smoothing:antialiased}
-  h1,h2,h3{font-family:"Bricolage Grotesque","Apple SD Gothic Neo",sans-serif;line-height:1.18;letter-spacing:-.02em;margin:0}
+    font-size:16px;line-height:1.8;-webkit-font-smoothing:antialiased}
+  h1,h2,h3{font-family:"Bricolage Grotesque","Apple SD Gothic Neo",sans-serif;line-height:1.2;letter-spacing:-.02em;margin:0}
   p{margin:0}
   a{color:var(--teal)}
   a:hover{text-decoration:underline}
   :focus-visible{outline:3px solid var(--teal-bright);outline-offset:3px;border-radius:4px}
 
+  /* Header */
+  .site-header{border-bottom:1px solid var(--mist);padding:0 24px}
+  .site-header .inner{max-width:var(--maxw);margin:0 auto;height:58px;display:flex;align-items:center;gap:10px}
+  .back-link{font-size:14px;color:var(--muted);display:flex;align-items:center;gap:5px;text-decoration:none}
+  .back-link:hover{color:var(--ink)}
+  .back-link svg{width:15px;height:15px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+  .h-sep{color:var(--mist);font-size:18px}
+  .h-brand{font-family:"Bricolage Grotesque";font-weight:800;font-size:17px;color:var(--ink)}
+
   /* Layout */
-  .site-header{background:rgba(244,246,248,.9);backdrop-filter:blur(10px);border-bottom:1px solid var(--mist);position:sticky;top:0;z-index:10}
-  .site-header .inner{max-width:var(--maxw);margin:0 auto;padding:0 24px;height:60px;display:flex;align-items:center;gap:12px}
-  .logo{font-family:"Bricolage Grotesque";font-weight:800;font-size:18px;letter-spacing:-.02em;color:var(--ink);text-decoration:none;display:flex;align-items:center;gap:8px}
-  .logo .dot{width:9px;height:9px;border-radius:50%;background:var(--teal-bright);display:inline-block}
-  .logo-sep{color:var(--mist);font-size:18px;font-weight:300}
-  .logo-label{font-size:14px;font-weight:500;color:var(--muted)}
   main{max-width:var(--maxw);margin:0 auto;padding:56px 24px 96px}
 
-  /* Doc header */
-  .doc-eyebrow{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin-bottom:14px}
-  .doc-title{font-size:clamp(26px,4vw,38px);font-weight:800}
-  .doc-meta{margin-top:16px;font-size:14px;color:var(--muted);display:flex;gap:24px;flex-wrap:wrap}
-  .doc-meta span{display:flex;align-items:center;gap:6px}
-  .divider{border:none;border-top:1px solid var(--mist);margin:36px 0}
+  /* Doc intro */
+  .doc-tag{display:inline-block;font-family:"IBM Plex Mono";font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);background:#f0f8f7;border:1px solid #c5e8e6;border-radius:99px;padding:3px 11px;margin-bottom:18px}
+  h1.doc-title{font-size:clamp(28px,4.5vw,42px);font-weight:800}
+  .doc-updated{margin-top:10px;font-size:13px;color:var(--muted);font-family:"IBM Plex Mono"}
+
+  /* TL;DR */
+  .tldr{background:#f6fbfa;border:1.5px solid #b8e8e3;border-radius:14px;padding:24px 26px;margin-top:36px}
+  .tldr-head{font-weight:700;font-size:14px;color:var(--teal);margin-bottom:12px;display:flex;align-items:center;gap:7px}
+  .tldr-head svg{width:16px;height:16px;stroke:var(--teal);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+  .tldr-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:6px}
+  .tldr-list li{font-size:14px;color:#26303d;display:flex;gap:8px;line-height:1.6}
+  .tldr-list li::before{content:"✓";color:var(--teal);font-weight:700;flex:none}
 
   /* Sections */
-  section{margin-top:40px}
-  section:first-of-type{margin-top:0}
-  .sec-num{font-family:"IBM Plex Mono";font-size:11px;color:var(--teal);letter-spacing:.1em;margin-bottom:8px}
-  h2.sec-h{font-size:18px;font-weight:700;margin-bottom:14px;color:var(--ink)}
-  p.body{color:#374151;font-size:15px;line-height:1.75;margin-top:8px}
-  p.body+p.body{margin-top:10px}
+  .sections{margin-top:52px;display:flex;flex-direction:column;gap:44px}
+  .sec{}
+  h2.sec-h{font-size:19px;font-weight:700;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--mist)}
+  .body{color:#374151;font-size:15px;line-height:1.8}
+  .body+.body{margin-top:10px}
 
   /* Table */
-  .tbl-wrap{overflow-x:auto;margin-top:16px;border:1px solid var(--mist);border-radius:12px}
-  table{width:100%;border-collapse:collapse;min-width:480px;font-size:14px}
-  th{background:#f4f6f8;font-weight:600;color:var(--ink);text-align:left;padding:11px 14px;border-bottom:1px solid var(--mist)}
-  td{padding:11px 14px;vertical-align:top;border-bottom:1px solid var(--mist);color:#374151;line-height:1.6}
+  .tbl-wrap{overflow-x:auto;margin-top:14px;border:1px solid var(--mist);border-radius:10px}
+  table{width:100%;border-collapse:collapse;min-width:420px;font-size:14px}
+  th{background:#fafbfc;font-weight:600;color:var(--ink);text-align:left;padding:10px 14px;border-bottom:1px solid var(--mist)}
+  td{padding:10px 14px;vertical-align:top;border-bottom:1px solid var(--mist);color:#374151;line-height:1.6}
   tr:last-child td{border-bottom:none}
-  td.label{font-weight:600;color:var(--ink);white-space:nowrap}
+  td strong{font-weight:600;color:var(--ink)}
 
   /* List */
-  ul.doc-list{list-style:none;padding:0;margin:12px 0 0;display:flex;flex-direction:column;gap:7px}
-  ul.doc-list li{display:flex;gap:10px;font-size:15px;color:#374151;line-height:1.65}
-  ul.doc-list li::before{content:"–";color:var(--teal);flex:none;font-weight:600}
+  ul.doc-list{list-style:none;padding:0;margin:12px 0 0;display:flex;flex-direction:column;gap:6px}
+  ul.doc-list li{display:flex;gap:10px;font-size:15px;color:#374151;line-height:1.7}
+  ul.doc-list li::before{content:"–";color:var(--teal);flex:none;font-weight:600;margin-top:1px}
 
-  /* Info box */
-  .info-box{background:#f0f8f7;border:1px solid #c5e8e6;border-radius:10px;padding:16px 18px;margin-top:16px;font-size:14px;color:var(--teal);line-height:1.6}
-  .info-box strong{color:var(--teal);font-weight:600}
+  /* Highlight box */
+  .note{background:#f9fafb;border-left:3px solid var(--teal-bright);border-radius:0 8px 8px 0;padding:14px 16px;margin-top:14px;font-size:14px;color:#374151;line-height:1.65}
+  .note strong{color:var(--ink)}
+
+  /* Contact card */
+  .contact-card{margin-top:16px;border:1px solid var(--mist);border-radius:10px;padding:18px 20px;font-size:14px;display:flex;flex-direction:column;gap:6px;color:#374151}
+  .contact-card .row{display:flex;gap:8px}
+  .contact-card .label{font-weight:600;color:var(--ink);min-width:60px}
 
   /* Footer */
-  footer{border-top:1px solid var(--mist);padding:32px 24px;text-align:center;font-size:13px;color:var(--muted)}
+  footer{border-top:1px solid var(--mist);padding:28px 24px;text-align:center;font-size:13px;color:var(--muted)}
   footer a{color:var(--muted)}
 </style>
 </head>
@@ -73,201 +86,161 @@
 
 <header class="site-header">
   <div class="inner">
-    <a class="logo" href="landing.html">
-      <img src="a11yrogo.png" alt="A11Y.so" style="height:24px;width:auto;display:block">
+    <a class="back-link" href="landing.html">
+      <svg viewBox="0 0 16 16"><path d="m10 4-4 4 4 4"/></svg>
+      돌아가기
     </a>
-    <span class="logo-sep">|</span>
-    <span class="logo-label">개인정보처리방침</span>
+    <span class="h-sep">|</span>
+    <span class="h-brand">A11Y.so</span>
   </div>
 </header>
 
 <main>
-  <p class="doc-eyebrow">Privacy Policy</p>
+  <span class="doc-tag">Privacy Policy</span>
   <h1 class="doc-title">개인정보처리방침</h1>
-  <div class="doc-meta">
-    <span>공지일자: 2026년 07월 24일</span>
-    <span>시행일자: 2026년 07월 24일</span>
+  <p class="doc-updated">최종 업데이트: 2026년 7월 24일</p>
+
+  <!-- TL;DR -->
+  <div class="tldr">
+    <div class="tldr-head">
+      <svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><path d="M8 7v4M8 5h.01"/></svg>
+      한 줄 요약
+    </div>
+    <ul class="tldr-list">
+      <li>이메일 주소와 워드프레스 사이트 URL만 수집합니다.</li>
+      <li>수집한 정보를 제3자에게 팔거나 넘기지 않습니다.</li>
+      <li>언제든지 삭제 요청을 하면 즉시 처리합니다.</li>
+      <li>마케팅 메일을 받고 싶지 않으면 언제든 수신 거부할 수 있습니다.</li>
+      <li>문의는 <a href="mailto:a11y@inseq.co.kr">a11y@inseq.co.kr</a> 로 보내주세요.</li>
+    </ul>
   </div>
-  <p class="body" style="margin-top:20px">주식회사 인시퀀스(이하 "회사")는 A11Y 글로벌 서비스(이하 "서비스")를 운영하며, 개인정보 보호법 등 관련 법령을 준수합니다. 이 방침은 서비스 이용 과정에서 수집되는 개인정보를 어떻게 처리하는지 안내합니다.</p>
 
-  <hr class="divider">
+  <div class="sections">
 
-  <!-- 1 -->
-  <section>
-    <p class="sec-num">01</p>
-    <h2 class="sec-h">개인정보의 수집 및 이용 목적</h2>
-    <p class="body">회사는 다음의 목적을 위해 개인정보를 수집·이용합니다.</p>
-    <ul class="doc-list">
-      <li>API 키 발급 및 계정 식별 (이메일이 곧 계정입니다. 별도 회원가입은 없습니다)</li>
-      <li>이메일 인증 링크(매직 링크) 발송</li>
-      <li>발급된 API 키와 워드프레스 사이트 연결·관리</li>
-      <li>서비스 공지 및 주요 변경사항 안내</li>
-      <li>출시 알림 및 신규 플랫폼 지원 소식 안내 (별도 동의자에 한함)</li>
-      <li>서비스 개선을 위한 통계 분석</li>
-    </ul>
-  </section>
+    <!-- 1. 우리가 수집하는 정보 -->
+    <section class="sec">
+      <h2 class="sec-h">우리가 수집하는 정보</h2>
+      <p class="body">A11Y.so는 서비스 제공에 필요한 최소한의 정보만 수집합니다.</p>
+      <div class="tbl-wrap">
+        <table>
+          <thead>
+            <tr><th>정보</th><th>수집 시점</th><th>이유</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>이메일 주소</strong></td>
+              <td>API 키 발급 신청 시</td>
+              <td>계정 식별 및 인증 링크 발송. 이메일이 곧 계정이며, 별도 비밀번호는 없습니다.</td>
+            </tr>
+            <tr>
+              <td><strong>워드프레스 사이트 URL</strong></td>
+              <td>API 키 발급 신청 시</td>
+              <td>발급된 API 키를 특정 사이트에 연결하고 무단 사용을 방지하기 위해 사용합니다.</td>
+            </tr>
+            <tr>
+              <td><strong>이메일 주소</strong></td>
+              <td>출시 알림 신청 시</td>
+              <td>새 플랫폼 지원 등 서비스 소식 발송. 언제든 수신 거부할 수 있습니다.</td>
+            </tr>
+            <tr>
+              <td><strong>접속 기록</strong> (IP, 브라우저, 접속 일시)</td>
+              <td>서비스 이용 중 자동 수집</td>
+              <td>보안, 오류 분석, 서비스 개선. 1년 후 자동 삭제됩니다.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note">
+        얼리 액세스 기간에는 결제 정보를 수집하지 않습니다. 정식 요금제 출시 시 별도로 안내하고 동의를 받아 처리합니다.
+      </div>
+    </section>
 
-  <!-- 2 -->
-  <section>
-    <p class="sec-num">02</p>
-    <h2 class="sec-h">수집하는 개인정보 항목 및 보유 기간</h2>
-    <div class="tbl-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>수집 목적</th>
-            <th>수집 항목</th>
-            <th>보유 기간</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="label">API 키 발급·계정 관리</td>
-            <td>이메일 주소, 워드프레스 사이트 URL</td>
-            <td>삭제 요청 시까지</td>
-          </tr>
-          <tr>
-            <td class="label">출시 알림 신청</td>
-            <td>이메일 주소, 기대 기능 선택값 (선택)</td>
-            <td>수신 거부 또는 삭제 요청 시까지</td>
-          </tr>
-          <tr>
-            <td class="label">제품 업데이트·마케팅 수신</td>
-            <td>이메일 주소</td>
-            <td>수신 거부 또는 삭제 요청 시까지</td>
-          </tr>
-          <tr>
-            <td class="label">서비스 이용 기록 (자동 수집)</td>
-            <td>IP 주소, 접속 일시, 브라우저 정보</td>
-            <td>1년</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <p class="body" style="margin-top:14px">얼리 액세스 기간 동안 결제 정보는 수집하지 않습니다. 정식 요금제 출시 시 별도로 동의를 받아 처리합니다.</p>
-  </section>
+    <!-- 2. 수집한 정보의 사용 방식 -->
+    <section class="sec">
+      <h2 class="sec-h">수집한 정보의 사용 방식</h2>
+      <ul class="doc-list">
+        <li>API 키를 발급하고 해당 사이트에 연결·관리하기 위해 사용합니다.</li>
+        <li>이메일 인증 링크(매직 링크)를 발송하기 위해 사용합니다.</li>
+        <li>서비스 공지, 중요 변경사항, 보안 알림을 발송하기 위해 사용합니다.</li>
+        <li>동의한 경우에 한해 제품 업데이트·접근성 관련 소식을 보냅니다.</li>
+        <li>서비스 품질 개선을 위한 익명화된 통계 분석에 활용합니다.</li>
+      </ul>
+    </section>
 
-  <!-- 3 -->
-  <section>
-    <p class="sec-num">03</p>
-    <h2 class="sec-h">만 14세 미만 아동의 개인정보</h2>
-    <p class="body">서비스는 만 14세 미만 아동(일부 국가 기준 만 16세 미만)을 대상으로 하지 않습니다. 아동의 개인정보가 수집된 사실을 인지한 경우 해당 정보를 즉시 삭제합니다.</p>
-  </section>
+    <!-- 3. 정보 공유 -->
+    <section class="sec">
+      <h2 class="sec-h">정보를 공유하는 경우</h2>
+      <p class="body">우리는 귀하의 정보를 팔지 않습니다. 아래의 경우에만 제한적으로 공유합니다.</p>
+      <ul class="doc-list">
+        <li><strong>인프라 파트너:</strong> 서버 운영을 위해 Oracle Cloud(서울 리전)를 사용합니다. 귀하의 데이터는 Oracle의 인프라에 저장되며, Oracle은 당사의 지시에 따라서만 데이터를 처리합니다.</li>
+        <li><strong>법적 의무:</strong> 법원 명령, 수사 영장 등 적법한 법령 요청이 있는 경우 요청 범위 내에서만 제공합니다.</li>
+      </ul>
+      <p class="body" style="margin-top:12px">위 두 가지 외에는 어떤 경우에도 귀하의 개인정보를 제3자와 공유하지 않습니다.</p>
+    </section>
 
-  <!-- 4 -->
-  <section>
-    <p class="sec-num">04</p>
-    <h2 class="sec-h">개인정보의 제3자 제공</h2>
-    <p class="body">회사는 원칙적으로 이용자의 개인정보를 제3자에게 제공하지 않습니다. 다만, 다음의 경우는 예외입니다.</p>
-    <ul class="doc-list">
-      <li>이용자가 사전에 동의한 경우</li>
-      <li>법령에 따른 수사기관의 적법한 요청이 있는 경우 (영장 기재 범위 내에 한함)</li>
-    </ul>
-  </section>
+    <!-- 4. 데이터 보관 -->
+    <section class="sec">
+      <h2 class="sec-h">데이터 보관 기간</h2>
+      <p class="body">우리는 서비스 제공에 필요한 기간 동안만 정보를 보관합니다.</p>
+      <ul class="doc-list">
+        <li>API 키 계정 정보(이메일·사이트 URL)는 삭제 요청 시 즉시 파기합니다.</li>
+        <li>마케팅·출시 알림 수신자 정보는 수신 거부 요청 시 즉시 제거합니다.</li>
+        <li>자동 수집된 접속 기록은 1년 후 자동 삭제됩니다.</li>
+      </ul>
+    </section>
 
-  <!-- 5 -->
-  <section>
-    <p class="sec-num">05</p>
-    <h2 class="sec-h">개인정보 처리 위탁</h2>
-    <p class="body">회사는 서비스 운영을 위해 다음 업체에 개인정보 처리 일부를 위탁합니다.</p>
-    <div class="tbl-wrap">
-      <table>
-        <thead>
-          <tr><th>수탁업체</th><th>위탁 업무</th><th>보유 기간</th></tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="label">Oracle Cloud</td>
-            <td>클라우드 인프라 운영 (서울 리전)</td>
-            <td>위탁 계약 종료 시까지</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <p class="body" style="margin-top:12px">회사는 위탁 계약 시 개인정보 보호법에 따른 필요 사항을 명시하고 수탁자를 감독합니다.</p>
-  </section>
+    <!-- 5. 귀하의 권리 -->
+    <section class="sec">
+      <h2 class="sec-h">귀하의 권리</h2>
+      <p class="body">귀하는 언제든지 아래 권리를 행사할 수 있습니다.</p>
+      <ul class="doc-list">
+        <li><strong>열람:</strong> 우리가 보유한 귀하의 정보를 확인할 수 있습니다.</li>
+        <li><strong>수정:</strong> 잘못된 정보를 정정할 수 있습니다.</li>
+        <li><strong>삭제:</strong> 계정과 관련 데이터 전체를 삭제 요청할 수 있습니다.</li>
+        <li><strong>처리 제한:</strong> 특정 목적의 데이터 처리를 중단 요청할 수 있습니다.</li>
+        <li><strong>수신 거부:</strong> 마케팅 이메일은 수신 거부 링크 또는 이메일로 언제든 중단할 수 있습니다.</li>
+        <li><strong>이의 제기:</strong> 거주 지역의 개인정보 보호 감독기관에 불만을 신고할 수 있습니다.</li>
+      </ul>
+      <div class="note">
+        <strong>요청 방법:</strong> <a href="mailto:a11y@inseq.co.kr">a11y@inseq.co.kr</a> 로 이메일을 보내주세요. 10영업일 이내에 처리합니다.
+      </div>
+    </section>
 
-  <!-- 6 -->
-  <section>
-    <p class="sec-num">06</p>
-    <h2 class="sec-h">개인정보의 파기</h2>
-    <p class="body">보유 기간이 경과하거나 처리 목적이 달성된 경우 개인정보를 지체 없이 파기합니다. 전자적 파일은 복구 불가능한 방식으로 영구 삭제하며, 종이 문서는 분쇄 또는 소각합니다. 법령에 따라 보존이 필요한 경우 별도로 분리하여 보관합니다.</p>
-  </section>
+    <!-- 6. 보안 -->
+    <section class="sec">
+      <h2 class="sec-h">보안</h2>
+      <p class="body">우리는 귀하의 정보를 보호하기 위해 다음 조치를 취합니다.</p>
+      <ul class="doc-list">
+        <li>이메일 전송과 API 통신은 TLS 암호화를 적용합니다.</li>
+        <li>API 키와 개인정보는 암호화하여 저장합니다.</li>
+        <li>내부 접근 권한을 필요 최소한으로 제한하고 정기적으로 검토합니다.</li>
+        <li>보안 취약점을 발견하셨다면 <a href="mailto:a11y@inseq.co.kr">a11y@inseq.co.kr</a> 로 알려주세요.</li>
+      </ul>
+    </section>
 
-  <!-- 7 -->
-  <section>
-    <p class="sec-num">07</p>
-    <h2 class="sec-h">정보주체의 권리와 행사 방법</h2>
-    <p class="body">이용자는 언제든지 다음의 권리를 행사할 수 있습니다.</p>
-    <ul class="doc-list">
-      <li>개인정보 열람 및 사본 요청</li>
-      <li>잘못된 정보의 정정 요청</li>
-      <li>개인정보 삭제(계정 및 API 키 삭제) 요청</li>
-      <li>마케팅 수신 동의 철회</li>
-      <li>개인정보 처리 정지 요청</li>
-    </ul>
-    <div class="info-box">
-      <strong>요청 방법</strong><br>
-      이메일 <a href="mailto:a11y@inseq.co.kr">a11y@inseq.co.kr</a> 로 문의해 주세요. 요청 접수 후 10영업일 이내에 처리합니다.
-    </div>
-  </section>
+    <!-- 7. 아동 -->
+    <section class="sec">
+      <h2 class="sec-h">아동 개인정보</h2>
+      <p class="body">A11Y.so는 만 16세 미만 아동을 대상으로 하지 않으며, 의도적으로 아동의 개인정보를 수집하지 않습니다. 아동의 정보가 수집된 사실을 알게 된 경우 즉시 삭제합니다.</p>
+    </section>
 
-  <!-- 8 -->
-  <section>
-    <p class="sec-num">08</p>
-    <h2 class="sec-h">개인정보의 안전성 확보 조치</h2>
-    <ul class="doc-list">
-      <li>개인정보 및 API 키는 암호화하여 저장·관리합니다</li>
-      <li>이메일 전송 구간은 TLS 암호화를 적용합니다</li>
-      <li>접근 권한을 담당자로 최소화하고 정기적으로 점검합니다</li>
-      <li>접속 기록을 보관하고 위변조를 방지합니다</li>
-      <li>보안 프로그램을 설치하고 주기적으로 갱신·점검합니다</li>
-    </ul>
-  </section>
+    <!-- 8. 방침 변경 -->
+    <section class="sec">
+      <h2 class="sec-h">방침 변경</h2>
+      <p class="body">이 방침을 변경할 경우, 변경 내용을 이 페이지에 게시하고 업데이트 날짜를 표시합니다. 개인정보 처리 방식에 중요한 변경이 있을 때는 등록된 이메일로 사전 안내합니다.</p>
+    </section>
 
-  <!-- 9 -->
-  <section>
-    <p class="sec-num">09</p>
-    <h2 class="sec-h">쿠키 및 자동 수집 정보</h2>
-    <p class="body">서비스는 이용 편의 및 보안을 위해 쿠키와 유사 기술을 사용할 수 있습니다. 브라우저 설정에서 쿠키를 거부할 수 있으나, 일부 기능(매직 링크 인증 등) 이용이 제한될 수 있습니다.</p>
-    <p class="body">접속 IP, 접속 일시, 브라우저 종류 등 서비스 이용 기록은 보안 및 오류 분석 목적으로 자동 수집됩니다.</p>
-  </section>
+    <!-- 9. 문의 -->
+    <section class="sec">
+      <h2 class="sec-h">문의</h2>
+      <p class="body">개인정보 처리에 관한 질문이나 요청이 있으시면 아래로 연락해 주세요.</p>
+      <div class="contact-card">
+        <div class="row"><span class="label">이메일</span><a href="mailto:a11y@inseq.co.kr">a11y@inseq.co.kr</a></div>
+        <div class="row"><span class="label">담당자</span><span>임미선, 주식회사 인시퀀스</span></div>
+      </div>
+    </section>
 
-  <!-- 10 -->
-  <section>
-    <p class="sec-num">10</p>
-    <h2 class="sec-h">개인정보 보호책임자</h2>
-    <div class="tbl-wrap">
-      <table>
-        <tbody>
-          <tr><td class="label">책임자</td><td>임미선 (A11Y 창업자 겸 대표)</td></tr>
-          <tr><td class="label">이메일</td><td><a href="mailto:a11y@inseq.co.kr">a11y@inseq.co.kr</a></td></tr>
-          <tr><td class="label">회사명</td><td>주식회사 인시퀀스</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
-
-  <!-- 11 -->
-  <section>
-    <p class="sec-num">11</p>
-    <h2 class="sec-h">권익침해 구제 방법</h2>
-    <p class="body">개인정보 침해와 관련한 불만이 있는 경우 아래 기관에 신고하실 수 있습니다.</p>
-    <ul class="doc-list">
-      <li>개인정보침해신고센터: <a href="tel:118">118</a> / privacy.kisa.or.kr</li>
-      <li>개인정보 분쟁조정위원회: <a href="tel:18336972">1833-6972</a> / www.kopico.go.kr</li>
-      <li>대검찰청 사이버수사과: <a href="tel:1301">1301</a></li>
-      <li>경찰청 사이버수사국: <a href="tel:182">182</a></li>
-    </ul>
-  </section>
-
-  <!-- 12 -->
-  <section>
-    <p class="sec-num">12</p>
-    <h2 class="sec-h">개인정보처리방침의 변경</h2>
-    <p class="body">이 방침은 법령·서비스 변경에 따라 수정될 수 있습니다. 중요한 변경이 있는 경우 시행 30일 전에 서비스 화면 또는 이메일을 통해 공지합니다.</p>
-    <p class="body" style="margin-top:10px"><strong>공지일자:</strong> 2026년 07월 24일 &nbsp;|&nbsp; <strong>시행일자:</strong> 2026년 07월 24일</p>
-  </section>
+  </div>
 </main>
 
 <footer>
