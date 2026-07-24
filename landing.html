@@ -154,6 +154,13 @@
     .js .reveal{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease}
     .js .reveal.is-visible{opacity:1;transform:none}
   }
+  .nav-actions{display:flex;gap:10px;align-items:center}
+  @media (max-width:480px){.nav-actions .btn-ghost{display:none}}
+  .notify-band{background:#f0f8f7;border-top:1px solid var(--mist);border-bottom:1px solid var(--mist)}
+  .notify-band .field label{color:var(--muted)}
+  .notify-band .field input{background:#fff;color:var(--ink);border-color:var(--mist)}
+  .notify-band .field input::placeholder{color:#b0bac6}
+  .notify-band .field input:focus-visible{border-color:var(--teal)}
 
   /* --- v5: 서비스 기능 카드 + 효율 + FAQ --- */
   .hero-note{margin-top:16px;font-size:14px;color:var(--muted)}
@@ -373,7 +380,10 @@
 <header class="site">
   <div class="wrap nav">
     <a class="logo" href="#top" aria-label="A11Y.so"><img src="a11yrogo.png" alt="A11Y.so" style="height:28px;width:auto;display:block"></a>
-    <a class="btn btn-primary" href="#apikey" style="background-color: rgb(0, 94, 255)">API 키 발급받기</a>
+    <div class="nav-actions">
+      <a class="btn btn-ghost" href="#notify">출시 알림 신청</a>
+      <a class="btn btn-primary" href="#apikey" style="background-color:rgb(0,94,255)">API 키 발급받기</a>
+    </div>
   </div>
 </header>
 
@@ -740,12 +750,16 @@
       <!-- STEP 1: 이메일 입력 -->
       <div data-astep="form">
         <p class="eyebrow" style="color:#5b9bff">얼리 액세스 · API 키 발급</p>
-        <h2 id="api-h" style="margin-left:auto;margin-right:auto">이메일만 입력하면<br>API 키를 바로 드려요.</h2>
-        <p class="lead" style="margin:14px auto 0;max-width:52ch">회원가입은 필요 없어요. 입력하신 이메일이 곧 계정이 됩니다.<br>보내드린 메일의 링크를 누르면 이 화면에서 API 키를 발급받고, 얼리 액세스 기간 동안 발급된 키는 한도에 맞게 사용할 수 있습니다.</p>
+        <h2 id="api-h" style="margin-left:auto;margin-right:auto">이메일과 사이트 URL을 입력하면<br>API 키를 바로 드려요.</h2>
+        <p class="lead" style="margin:14px auto 0;max-width:52ch">회원가입은 필요 없어요. 발급된 API 키는 입력하신 사이트에 연결됩니다. 얼리 액세스 기간 동안 발급된 키는 한도에 맞게 사용할 수 있어요.</p>
         <form id="apiForm" novalidate style="margin:28px auto 0;max-width:460px;flex-direction:column;gap:0">
           <div class="field" style="flex:1 1 100%">
             <label for="api-email" style="text-align:left">이메일 주소</label>
             <input id="api-email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="you@company.com" required>
+          </div>
+          <div class="field" style="flex:1 1 100%;margin-top:14px">
+            <label for="api-url" style="text-align:left">워드프레스 사이트 URL</label>
+            <input id="api-url" name="site_url" type="url" inputmode="url" placeholder="https://your-site.com" required>
           </div>
           <div class="consent">
             <label><input type="checkbox" id="api-c1" required><span><span class="req">[필수]</span> <a href="#" onclick="return false">이용약관</a> 및 <a href="#" onclick="return false">개인정보 처리방침</a>에 동의합니다.</span></label>
@@ -797,6 +811,7 @@
     <h3 id="sv-title">앨리 API Key 받기</h3>
     <p class="sv-lead">아래 입력된 이메일로 앨리 API Key를 보내드립니다.</p>
     <div class="sv-email">이메일 주소 · <b id="surveyEmail"></b></div>
+    <div class="sv-email" style="margin-top:6px">사이트 URL · <b id="surveySite" style="word-break:break-all"></b></div>
     <p class="sv-q">앨리를 사용하는 주된 목적이 어떻게 될까요?</p>
     <div class="sv-opts" id="surveyOpts">
       <label class="sv-opt"><input type="radio" name="sv-purpose" value="웹 접근성 개선"><span>웹 접근성 개선</span></label>
@@ -856,6 +871,25 @@
   </div>
 </section>
 
+<!-- 출시 알림 신청 -->
+<section class="section notify-band" id="notify" aria-labelledby="notify-h">
+  <div class="wrap reveal" style="text-align:center">
+    <p class="eyebrow">워드프레스 이외 플랫폼 지원</p>
+    <h2 id="notify-h" style="font-size:clamp(24px,3.5vw,38px)">아직 워드프레스를 사용하지 않으시나요?</h2>
+    <p class="lead" style="margin:14px auto 0;max-width:48ch">지금은 워드프레스 플러그인만 지원하고 있어요. 이메일을 남겨두시면 새 플랫폼 지원 소식을 가장 먼저 알려드립니다.</p>
+    <form id="notifyForm" novalidate style="margin:28px auto 0;max-width:420px;display:flex;flex-direction:column;gap:0">
+      <div class="field" style="flex:1 1 100%">
+        <label for="notify-email" style="text-align:left">이메일 주소</label>
+        <input id="notify-email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="you@company.com" required>
+      </div>
+      <div style="margin-top:16px">
+        <button class="btn" type="submit" style="width:100%;justify-content:center;color:#fff;background:var(--teal)">출시 알림 신청</button>
+      </div>
+      <p class="formmsg" id="notifyMsg" role="status" aria-live="polite" style="margin-top:12px;font-size:14px"></p>
+    </form>
+  </div>
+</section>
+
 </main>
 
 <footer class="site">
@@ -893,10 +927,11 @@
       return 'ally_live_' + hex;
     }
 
-    var pending = null; // { email, key, isNew }
+    var pending = null; // { email, url, key, isNew }
 
     var form = document.getElementById('apiForm');
     var emailIn = document.getElementById('api-email');
+    var urlIn = document.getElementById('api-url');
     var c1 = document.getElementById('api-c1');
     var msg = document.getElementById('apiMsg');
 
@@ -904,14 +939,18 @@
       e.preventDefault();
       var email = emailIn.value.trim().toLowerCase();
       if(!isEmail(email)){ msg.textContent = '이메일 주소를 정확히 입력해 주세요.'; return; }
+      var siteUrl = urlIn.value.trim();
+      if(!siteUrl){ msg.textContent = '워드프레스 사이트 URL을 입력해 주세요.'; return; }
+      try{ new URL(siteUrl); }catch(e){ msg.textContent = '사이트 URL 형식을 확인해 주세요. (https://로 시작)'; return; }
       if(!c1.checked){ msg.textContent = '필수 약관에 동의해 주세요.'; return; }
       msg.textContent = '';
       var map = load();
       var isNew = !map[email];
       var key = isNew ? genKey() : map[email];
-      pending = { email: email, key: key, isNew: isNew };
+      pending = { email: email, url: siteUrl, key: key, isNew: isNew };
       // 설문 팝업 열기
       document.getElementById('surveyEmail').textContent = email;
+      document.getElementById('surveySite').textContent = siteUrl;
       openSurvey();
     });
 
@@ -974,6 +1013,27 @@
         var t = document.createElement('textarea'); t.value = val; document.body.appendChild(t); t.select();
         try{ document.execCommand('copy'); }catch(e){} document.body.removeChild(t); done();
       }
+    });
+  })();
+
+  // --- 출시 알림 신청 폼 ---
+  (function(){
+    var form = document.getElementById('notifyForm');
+    if(!form) return;
+    var emailIn = document.getElementById('notify-email');
+    var msg = document.getElementById('notifyMsg');
+    var STORE = 'ally_notify_emails';
+    function load(){ try{ return JSON.parse(localStorage.getItem(STORE)) || []; }catch(e){ return []; } }
+    function save(arr){ try{ localStorage.setItem(STORE, JSON.stringify(arr)); }catch(e){} }
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      var email = emailIn.value.trim().toLowerCase();
+      if(!isEmail(email)){ msg.textContent = '이메일 주소를 정확히 입력해 주세요.'; msg.style.color='#c2410c'; return; }
+      var arr = load();
+      if(arr.indexOf(email) < 0){ arr.push(email); save(arr); }
+      msg.textContent = '신청이 완료되었어요. 소식이 생기면 가장 먼저 알려드릴게요.';
+      msg.style.color = 'var(--teal)';
+      form.reset();
     });
   })();
 </script>
