@@ -817,13 +817,9 @@
             <label for="api-url" style="text-align:left">워드프레스 사이트 URL</label>
             <input id="api-url" name="site_url" type="url" inputmode="url" placeholder="https://your-site.com" required>
           </div>
-          <div class="consent">
-            <label><input type="checkbox" id="api-c1" required><span><span class="req">[필수]</span> <a href="terms.html" target="_blank">이용약관</a> 및 <a href="privacy.html" target="_blank">개인정보 처리방침</a>에 동의합니다.</span></label>
-            <label><input type="checkbox" id="api-c2"><span><span class="opt">[선택]</span> 제품 업데이트와 접근성 소식을 이메일로 받겠습니다.</span></label>
-          </div>
           <div style="margin-top:20px">
             <button class="btn" type="submit" style="width:100%;justify-content:center;color:#fff;background:#005EFF">API 키 발급받기</button>
-            <p style="margin:10px 0 0;font-size:12.5px;color:#8894a6;text-align:center">※ 정식 요금제가 출시될 경우 미리 안내 드립니다.</p>
+            <p style="margin:10px 0 0;font-size:12.5px;color:#8894a6;text-align:center">신청하면 <a href="privacy.html" target="_blank" style="color:#8db6ff">개인정보처리방침</a>에 동의하는 것으로 간주합니다.</p>
           </div>
           <p class="formmsg" id="apiMsg" role="status" aria-live="polite" style="color:#ff9c85"></p>
         </form>
@@ -1040,7 +1036,6 @@
     var form = document.getElementById('apiForm');
     var emailIn = document.getElementById('api-email');
     var urlIn = document.getElementById('api-url');
-    var c1 = document.getElementById('api-c1');
     var msg = document.getElementById('apiMsg');
 
     form.addEventListener('submit', function(e){
@@ -1050,7 +1045,6 @@
       var siteUrl = urlIn.value.trim();
       if(!siteUrl){ msg.textContent = '워드프레스 사이트 URL을 입력해 주세요.'; return; }
       try{ new URL(siteUrl); }catch(e){ msg.textContent = '사이트 URL 형식을 확인해 주세요. (https://로 시작)'; return; }
-      if(!c1.checked){ msg.textContent = '필수 약관에 동의해 주세요.'; return; }
       msg.textContent = '';
       var map = load();
       var isNew = !map[email];
