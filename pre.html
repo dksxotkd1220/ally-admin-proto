@@ -40,7 +40,8 @@
   .btn-ghost:hover{border-color:var(--ink)}
   .btn-light{background:#fff;color:var(--ink)}
   header.site{position:sticky;top:0;z-index:50;background:rgba(244,246,248,.85);backdrop-filter:blur(10px);border-bottom:1px solid var(--mist)}
-  .nav{display:flex;align-items:center;justify-content:space-between;height:68px}
+  .nav{display:flex;align-items:center;justify-content:flex-start;height:68px;gap:6px}
+  .nav-sep{width:1px;height:18px;background:var(--mist);margin:0 6px;flex:none}
   .logo{font-family:"Bricolage Grotesque";font-weight:800;font-size:22px;letter-spacing:-.02em;display:flex;align-items:center;gap:9px;color:var(--ink)}
   .logo:hover{text-decoration:none}
   .logo .dot{width:11px;height:11px;border-radius:50%;background:var(--teal-bright);display:inline-block}
@@ -397,6 +398,7 @@
 <header class="site">
   <div class="wrap nav">
     <a class="logo" href="landing.html" aria-label="A11Y.so"><img src="a11yrogo.png" alt="A11Y.so" style="height:28px;width:auto;display:block"></a>
+    <div class="nav-sep" aria-hidden="true"></div>
     <nav class="nav-menu" aria-label="주요 메뉴">
       <a class="nav-item" href="landing.html">워드프레스</a>
       <a class="nav-item" href="general.html">일반 사용자</a>
