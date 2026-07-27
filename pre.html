@@ -378,6 +378,10 @@
   .sv-close{position:absolute;top:0;right:0}
   .survey-modal .sv-x{position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:999px;border:0;background:#F1F3F6;color:#586274;font-size:18px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center}
   .survey-modal{position:relative}
+  .nav-menu{display:flex;gap:4px;align-items:center}
+  .nav-item{font-weight:600;font-size:15px;color:var(--muted);padding:8px 16px;border-radius:8px;transition:color .15s,background .15s;text-decoration:none}
+  .nav-item:hover{color:var(--ink);background:rgba(0,0,0,.05);text-decoration:none}
+  .nav-item.active{color:var(--ink)}
 </style>
 <template id="__bundler_thumbnail" data-bg-color="#F4F6F8">
   <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
@@ -392,8 +396,11 @@
 
 <header class="site">
   <div class="wrap nav">
-    <a class="logo" href="#top" aria-label="A11Y.so"><img src="a11yrogo.png" alt="A11Y.so" style="height:28px;width:auto;display:block"></a>
-    <a class="btn btn-primary" href="#apikey" style="background-color: rgb(0, 94, 255)">출시 알림 받기</a>
+    <a class="logo" href="landing.html" aria-label="A11Y.so"><img src="a11yrogo.png" alt="A11Y.so" style="height:28px;width:auto;display:block"></a>
+    <nav class="nav-menu" aria-label="주요 메뉴">
+      <a class="nav-item" href="landing.html">워드프레스</a>
+      <a class="nav-item" href="general.html">일반 사용자</a>
+    </nav>
   </div>
 </header>
 

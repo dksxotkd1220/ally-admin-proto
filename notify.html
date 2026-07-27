@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>앨리 · 출시 알림 신청</title>
+<script>document.documentElement.classList.add('js');</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#11161F;--paper:#F4F6F8;--surface:#FFFFFF;--mist:#E1E7EC;
+    --teal:#0C6B70;--teal-bright:#14A3A8;--muted:#586271;--maxw:560px;
+    --fblue:#005EFF;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--ink);color:#fff;
+    font-family:"Inter",system-ui,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased;
+    min-height:100vh;display:flex;flex-direction:column;}
+  h1,h2,h3{font-family:"Bricolage Grotesque","Inter","Apple SD Gothic Neo",sans-serif;line-height:1.12;letter-spacing:-0.02em;margin:0}
+  p{margin:0}
+  a{color:var(--teal-bright);text-decoration:none}
+  a:hover{text-decoration:underline}
+  :focus-visible{outline:3px solid var(--teal-bright);outline-offset:3px;border-radius:4px}
+  .skip{position:absolute;left:-999px;top:0;background:#fff;color:var(--ink);padding:12px 18px;z-index:100}
+  .skip:focus{left:12px;top:12px}
+
+  /* Header */
+  header{padding:24px 32px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.08)}
+  .logo{display:flex;align-items:center;gap:9px;text-decoration:none}
+  .logo img{height:26px;width:auto;display:block;filter:brightness(0) invert(1)}
+  .back-link{font-size:14px;color:rgba(255,255,255,.5);display:flex;align-items:center;gap:6px;transition:color .15s}
+  .back-link:hover{color:#fff;text-decoration:none}
+
+  /* Main */
+  main{flex:1;display:flex;align-items:center;justify-content:center;padding:48px 24px}
+  .card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:24px;padding:48px 40px;width:100%;max-width:var(--maxw)}
+  @media (max-width:600px){.card{padding:32px 24px;border-radius:16px}}
+
+  /* Content */
+  .eyebrow{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--teal-bright);margin:0 0 16px}
+  .card h1{font-size:clamp(28px,4vw,38px);font-weight:800;color:#fff;margin-bottom:14px}
+  .card .desc{font-size:15.5px;color:#aeb8c4;line-height:1.65;margin-bottom:32px}
+
+  /* Features preview chips */
+  .features{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:32px}
+  .feat-chip{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:99px;padding:6px 14px;font-size:13px;color:rgba(255,255,255,.7)}
+  .feat-chip svg{width:13px;height:13px;stroke:var(--teal-bright);stroke-width:2;fill:none;flex:none}
+
+  /* Form */
+  .form-group{display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
+  .form-group label{font-size:13px;color:#cfd7e0}
+  .form-group input{padding:14px 16px;border-radius:12px;border:1.5px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);color:#fff;font-size:15px;font-family:"Inter","Apple SD Gothic Neo";transition:border-color .15s}
+  .form-group input::placeholder{color:rgba(255,255,255,.3)}
+  .form-group input:focus-visible{border-color:var(--teal-bright);outline:none;background:rgba(255,255,255,.08)}
+  .form-group input.error{border-color:#FF6B6B}
+
+  /* Purpose options */
+  .purpose-label{font-size:13px;color:#cfd7e0;margin-bottom:10px}
+  .purpose-opts{display:flex;flex-direction:column;gap:8px;margin-bottom:24px}
+  .purpose-opt{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.04);border:1.5px solid rgba(255,255,255,.1);border-radius:10px;padding:11px 14px;font-size:14px;color:rgba(255,255,255,.8);cursor:pointer;transition:all .15s}
+  .purpose-opt:hover{border-color:rgba(255,255,255,.25)}
+  .purpose-opt input{width:16px;height:16px;flex:none;accent-color:var(--fblue);cursor:pointer}
+  .purpose-opt.sel{border-color:var(--fblue);background:rgba(0,94,255,.12)}
+
+  /* Submit */
+  .submit-btn{width:100%;padding:16px;border-radius:12px;background:var(--fblue);color:#fff;border:0;font-size:16px;font-weight:600;font-family:"Inter","Apple SD Gothic Neo";cursor:pointer;transition:background .15s,transform .12s}
+  .submit-btn:hover{background:#0051e0;transform:translateY(-1px)}
+  .consent-note{margin-top:10px;font-size:12.5px;color:rgba(255,255,255,.35);text-align:center}
+  .consent-note a{color:rgba(255,255,255,.5)}
+  .form-msg{margin-top:16px;font-size:14px;min-height:1.4em;text-align:center}
+
+  /* Done state */
+  .done-state{display:none;text-align:center;padding:16px 0}
+  .done-icon{width:64px;height:64px;border-radius:999px;background:rgba(58,208,122,.1);border:1px solid rgba(58,208,122,.25);display:flex;align-items:center;justify-content:center;margin:0 auto 24px}
+  .done-icon svg{width:28px;height:28px;stroke:#3ad07a;stroke-width:2.5;fill:none}
+  .done-state h2{font-size:clamp(22px,3.5vw,30px);color:#fff;margin-bottom:12px}
+  .done-state p{font-size:15px;color:#aeb8c4;line-height:1.65}
+  .done-links{display:flex;gap:12px;justify-content:center;margin-top:24px;flex-wrap:wrap}
+  .done-link{font-size:14px;color:rgba(255,255,255,.5);padding:8px 16px;border:1px solid rgba(255,255,255,.12);border-radius:8px;transition:all .15s}
+  .done-link:hover{color:#fff;border-color:rgba(255,255,255,.3);text-decoration:none}
+
+  /* Footer */
+  footer{padding:24px 32px;border-top:1px solid rgba(255,255,255,.08);text-align:center;font-size:13px;color:rgba(255,255,255,.25)}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">본문 바로가기</a>
+
+<header>
+  <a class="logo" href="landing.html" aria-label="A11Y.so 홈으로">
+    <img src="a11yrogo.png" alt="A11Y.so">
+  </a>
+  <a class="back-link" href="general.html">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8.5 3 4.5 7l4 4"/></svg>
+    일반 사용자 페이지로
+  </a>
+</header>
+
+<main id="main">
+  <div class="card">
+
+    <!-- Form state -->
+    <div id="formState">
+      <p class="eyebrow">얼리 액세스 · 출시 알림</p>
+      <h1>출시되면 가장 먼저<br>알려드릴게요.</h1>
+      <p class="desc">URL 스캔, 이미지 업로드, 폴더 업로드, 플랫폼 연결 — 일반 사용자를 위한 앨리 기능이 출시될 때 이메일로 바로 안내드립니다.</p>
+
+      <div class="features" aria-label="출시 예정 기능">
+        <span class="feat-chip">
+          <svg viewBox="0 0 14 14"><circle cx="7" cy="7" r="5"/><path d="M7 2s-2 2-2 5 2 5 2 5"/><path d="M2 7h10"/></svg>
+          URL 스캔
+        </span>
+        <span class="feat-chip">
+          <svg viewBox="0 0 14 14"><rect x="2" y="2" width="10" height="10" rx="2"/><circle cx="5" cy="5" r="1"/><path d="m2 9.5 3-2.5 2.5 2.5 2-1.5L12 10"/></svg>
+          이미지 업로드
+        </span>
+        <span class="feat-chip">
+          <svg viewBox="0 0 14 14"><path d="M2 5a1 1 0 0 1 1-1h3l1 1h4a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5Z"/></svg>
+          폴더 업로드
+        </span>
+        <span class="feat-chip">
+          <svg viewBox="0 0 14 14"><rect x="1" y="2" width="5" height="10" rx="1.5"/><rect x="8" y="2" width="5" height="10" rx="1.5"/><path d="M6 6h2M6 8.5h2"/></svg>
+          플랫폼 연결
+        </span>
+      </div>
+
+      <div class="form-group">
+        <label for="notif-email">이메일 주소 <span style="color:#ff9c85">*</span></label>
+        <input id="notif-email" type="email" placeholder="you@company.com" autocomplete="email" required>
+      </div>
+
+      <p class="purpose-label">어떤 기능이 가장 기대되세요? <span style="color:rgba(255,255,255,.4)">(선택)</span></p>
+      <div class="purpose-opts" id="purposeOpts">
+        <label class="purpose-opt">
+          <input type="radio" name="purpose" value="URL 스캔">
+          <span>URL 스캔 — 주소 입력으로 자동 대체 텍스트 생성</span>
+        </label>
+        <label class="purpose-opt">
+          <input type="radio" name="purpose" value="이미지/폴더 업로드">
+          <span>이미지/폴더 업로드 — 파일 직접 처리</span>
+        </label>
+        <label class="purpose-opt">
+          <input type="radio" name="purpose" value="플랫폼 연결">
+          <span>플랫폼 연결 — Shopify, Wix 등 CMS 연동</span>
+        </label>
+        <label class="purpose-opt">
+          <input type="radio" name="purpose" value="기타">
+          <span>기타 / 아직 모르겠어요</span>
+        </label>
+      </div>
+
+      <button class="submit-btn" type="button" id="notifSubmit">출시 알림 신청하기</button>
+      <p class="consent-note">신청하면 <a href="privacy.html" target="_blank">개인정보처리방침</a>에 동의하는 것으로 간주합니다.</p>
+      <p class="form-msg" id="notifMsg" role="status" aria-live="polite"></p>
+    </div>
+
+    <!-- Done state -->
+    <div class="done-state" id="doneState" aria-live="polite">
+      <div class="done-icon">
+        <svg viewBox="0 0 28 28"><path d="M5 14l6 6L23 8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <h2>신청이 완료됐어요!</h2>
+      <p>출시 소식이 생기면 <strong id="doneEmail" style="color:#fff"></strong>으로<br>가장 먼저 알려드릴게요.</p>
+      <div class="done-links">
+        <a class="done-link" href="landing.html">워드프레스 버전 보기</a>
+        <a class="done-link" href="general.html">일반 사용자 페이지로</a>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer>COPYRIGHT 2024 INSEQUENCE Co., Ltd. ALL RIGHT RESERVED.</footer>
+
+<script>
+  // Purpose option selection
+  document.getElementById('purposeOpts').addEventListener('change', function(e){
+    document.querySelectorAll('.purpose-opt').forEach(function(el){
+      el.classList.toggle('sel', el.querySelector('input') === e.target);
+    });
+  });
+
+  function isEmail(v){return /\S+@\S+\.\S+/.test(v);}
+
+  document.getElementById('notifSubmit').addEventListener('click', function(){
+    var email = document.getElementById('notif-email').value.trim().toLowerCase();
+    var emailInput = document.getElementById('notif-email');
+    var msg = document.getElementById('notifMsg');
+
+    if(!isEmail(email)){
+      msg.textContent = '이메일 주소를 정확히 입력해 주세요.';
+      msg.style.color = '#ff9c85';
+      emailInput.classList.add('error');
+      emailInput.focus();
+      return;
+    }
+
+    emailInput.classList.remove('error');
+    msg.textContent = '';
+    document.getElementById('doneEmail').textContent = email;
+    document.getElementById('formState').style.display = 'none';
+    document.getElementById('doneState').style.display = 'block';
+  });
+
+  document.getElementById('notif-email').addEventListener('input', function(){
+    this.classList.remove('error');
+    document.getElementById('notifMsg').textContent = '';
+  });
+</script>
+</body>
+</html>
