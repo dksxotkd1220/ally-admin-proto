@@ -271,22 +271,25 @@
       <div class="mcard">
         <div class="mcard-icon" style="background:#F0F4FF">
           <svg viewBox="0 0 22 22" fill="none" stroke="#4338CA" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <rect x="3" y="3" width="16" height="16" rx="3"/><circle cx="8" cy="8" r="1.5"/><path d="m3 15 5-4 4 4 2-2 5 4"/>
+            <rect x="3" y="3" width="10" height="10" rx="2"/><circle cx="7" cy="7" r="1.2"/>
+            <path d="m3 12 3-2.5 2.5 2.5"/>
+            <path d="M12 9a2 2 0 0 1 2-2h2l1.5 1.5H19a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-5a2 2 0 0 1-2-2V9Z"/>
           </svg>
         </div>
-        <h3>이미지 업로드</h3>
-        <p>JPG, PNG, SVG, WebP 파일을 직접 올리면 즉시 설명을 만들어요. 한 장이든 여러 장이든, 업로드하는 순간 처리됩니다.</p>
+        <h3>이미지 · 폴더 업로드</h3>
+        <p>JPG, PNG, SVG, WebP 파일 한 장부터 프로젝트 폴더 전체까지 올리면 즉시 처리합니다. 하위 폴더의 이미지까지 자동으로 탐색해 일괄 생성합니다.</p>
         <span class="mcard-badge soon">출시 예정</span>
       </div>
 
       <div class="mcard">
-        <div class="mcard-icon" style="background:#FEF3E2">
-          <svg viewBox="0 0 22 22" fill="none" stroke="#D97706" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M3 7a2 2 0 0 1 2-2h4l2 2h6a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"/>
+        <div class="mcard-icon" style="background:#F3F0FF">
+          <svg viewBox="0 0 22 22" fill="none" stroke="#7C3AED" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="2" y="4" width="18" height="14" rx="2"/>
+            <path d="M7 9l-2 2 2 2M15 9l2 2-2 2M10 14l2-4"/>
           </svg>
         </div>
-        <h3>폴더 업로드</h3>
-        <p>프로젝트 폴더를 통째로 올리면 이미지 전체를 한번에 일괄 처리합니다. 하위 폴더까지 자동으로 탐색합니다.</p>
+        <h3>사이트 스캔 <span style="font-size:11px;font-weight:500;color:#7C3AED;font-family:'IBM Plex Mono',monospace;vertical-align:middle">SDK</span></h3>
+        <p>앨리 SDK를 소스코드에 연결하면 사이트 전체 이미지를 자동으로 스캔하고, 이미지가 추가·변경될 때마다 실시간으로 감지해 대체 텍스트를 생성·관리합니다.</p>
         <span class="mcard-badge soon">출시 예정</span>
       </div>
 
@@ -430,7 +433,8 @@
     <h2 id="faq-h" style="font-size:clamp(26px,3.8vw,40px)">출시 전에 궁금한 것들.</h2>
     <div class="faq-list">
       <details><summary>지금 바로 사용할 수 있나요?</summary><div class="a">URL 스캔, 파일 업로드, 폴더 업로드, 플랫폼 연결 기능은 현재 개발 중이에요. 이메일을 남겨두시면 출시될 때 가장 먼저 알려드립니다.</div></details>
-      <details><summary>어떤 파일 형식을 지원하나요?</summary><div class="a">JPG, PNG, SVG, WebP 이미지 파일을 지원할 예정입니다. 복잡한 인포그래픽, 데이터 차트, 텍스트가 포함된 이미지도 처리할 수 있어요.</div></details>
+      <details><summary>어떤 파일 형식을 지원하나요?</summary><div class="a">JPG, PNG, SVG, WebP 이미지 파일을 지원할 예정입니다. 파일 한 장도, 프로젝트 폴더 전체도 업로드할 수 있으며, 인포그래픽·데이터 차트·텍스트가 포함된 복잡한 이미지도 처리합니다.</div></details>
+      <details><summary>SDK를 연결하면 어떻게 동작하나요?</summary><div class="a">앨리 SDK를 프로젝트에 추가하면 사이트에 있는 이미지를 자동으로 스캔하고, 이후 이미지가 추가되거나 변경될 때마다 실시간으로 감지해 대체 텍스트를 자동 생성합니다. 별도의 수동 업로드 없이 항상 최신 상태를 유지할 수 있어요.</div></details>
       <details><summary>생성된 대체 텍스트를 어떻게 내보내나요?</summary><div class="a">CSV, JSON 형식으로 다운로드하거나 연결된 플랫폼에 직접 적용할 수 있습니다. 생성된 설명은 검토 후 직접 수정도 가능합니다.</div></details>
       <details><summary>Shopify, Wix 같은 플랫폼도 지원하나요?</summary><div class="a">플랫폼 연결 기능은 준비 중입니다. Shopify, Wix, Squarespace 등 주요 CMS와의 연동을 계획하고 있어요. 구체적인 지원 플랫폼 목록은 출시 시 공개됩니다.</div></details>
       <details><summary>생성된 설명의 품질은 어느 정도인가요?</summary><div class="a">WCAG 2.2 국제 표준을 기준으로 학습된 AI가 설명을 생성합니다. 단순한 이미지 묘사가 아니라 표·차트 안의 실제 데이터까지 추출해 화면 낭독기 사용자에게 정확히 전달하는 것을 목표로 합니다.</div></details>
