@@ -188,11 +188,24 @@
   .plan-cta:hover{border-color:var(--ink);transform:translateY(-1px)}
   .plan-card.featured .plan-cta{background:var(--teal);color:#fff;border-color:var(--teal)}
   .plan-card.featured .plan-cta:hover{background:#0a585c}
-  .plan-feats{list-style:none;padding:0;margin:24px 0 0;display:flex;flex-direction:column;gap:10px}
-  .plan-feats li{display:flex;align-items:flex-start;gap:9px;font-size:14.5px;color:var(--ink);line-height:1.5}
-  .plan-feats li::before{content:"✓";color:var(--teal);font-weight:700;flex:none;font-size:13px;margin-top:3px}
+
   .plan-vat{margin-top:16px;font-size:13px;color:var(--muted);text-align:center}
   .plan-vat a{color:var(--teal)}
+  /* --- 결제 모달 --- */
+  .pay-field{display:flex;flex-direction:column;gap:5px;margin-top:14px}
+  .pay-field label{font-size:13px;font-weight:600;color:var(--muted)}
+  .pay-input{padding:12px 14px;border-radius:10px;border:1.5px solid var(--mist);background:#fff;color:var(--ink);font-size:15px;font-family:"IBM Plex Mono",monospace;width:100%;box-sizing:border-box;outline:none;transition:border-color .15s}
+  .pay-input.name{font-family:"Inter","Apple SD Gothic Neo",sans-serif}
+  .pay-input:focus{border-color:var(--teal-bright)}
+  .pay-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .pay-plan-box{background:#f6fbfa;border:1.5px solid #cfe7e5;border-radius:14px;padding:16px 18px;display:flex;justify-content:space-between;align-items:center;gap:12px}
+  .pay-plan-name{font-family:"Bricolage Grotesque","Apple SD Gothic Neo",sans-serif;font-weight:800;font-size:18px;color:var(--teal)}
+  .pay-plan-detail{font-size:13px;color:var(--muted);margin-top:3px}
+  .pay-plan-price{font-family:"Bricolage Grotesque","Apple SD Gothic Neo",sans-serif;font-weight:800;font-size:22px;color:var(--ink);text-align:right;white-space:nowrap}
+  .pay-plan-unit{font-size:13px;color:var(--muted);text-align:right}
+  .demo-badge{display:inline-flex;align-items:center;gap:5px;font-family:"IBM Plex Mono",monospace;font-size:11px;background:#fde8e4;color:#b0320e;padding:3px 10px;border-radius:99px;margin-bottom:12px}
+  .pay-spinner{width:40px;height:40px;border:3px solid var(--mist);border-top-color:var(--teal);border-radius:50%;animation:pay-spin .8s linear infinite;margin:0 auto}
+  @keyframes pay-spin{to{transform:rotate(360deg)}}
   .notify-band{background:#f0f8f7;border-top:1px solid var(--mist);border-bottom:1px solid var(--mist)}
   .notify-band .field label{color:var(--muted)}
   .notify-band .field input{background:#fff;color:var(--ink);border-color:var(--mist)}
@@ -873,14 +886,7 @@
         </div>
         <p class="plan-credits js-credits" data-monthly="크레딧 40개/월" data-annual="크레딧 480개 일괄 제공">크레딧 480개 일괄 제공</p>
         <p class="plan-per js-per" data-monthly="약 498원/이미지" data-annual="약 416원/이미지">약 416원/이미지</p>
-        <a class="btn plan-cta" href="#">무료 체험 후 구매하기</a>
-        <ul class="plan-feats">
-          <li>워드프레스 사이트 1개 연결</li>
-          <li>이미지 개별 생성</li>
-          <li>이미지 일괄 생성</li>
-          <li>자동 생성 (업로드 시)</li>
-          <li>생성 이력 보관 30일</li>
-        </ul>
+        <a class="btn plan-cta" href="#" data-pay-id="starter">구매하기</a>
       </div>
 
       <!-- 프로 -->
@@ -895,13 +901,7 @@
         </div>
         <p class="plan-credits js-credits" data-monthly="크레딧 60개/월" data-annual="크레딧 720개 일괄 제공">크레딧 720개 일괄 제공</p>
         <p class="plan-per js-per" data-monthly="약 498원/이미지" data-annual="약 416원/이미지">약 416원/이미지</p>
-        <a class="btn plan-cta" href="#">무료 체험 후 구매하기</a>
-        <ul class="plan-feats">
-          <li>스타터 모든 기능</li>
-          <li>워드프레스 사이트 2개 연결</li>
-          <li>이미지 일괄 업로드</li>
-          <li>생성 이력 보관 180일</li>
-        </ul>
+        <a class="btn plan-cta" href="#" data-pay-id="pro">구매하기</a>
       </div>
 
       <!-- 비즈 (featured) -->
@@ -917,14 +917,7 @@
         </div>
         <p class="plan-credits js-credits" data-monthly="크레딧 200개/월" data-annual="크레딧 2,400개 일괄 제공">크레딧 2,400개 일괄 제공</p>
         <p class="plan-per js-per" data-monthly="약 500원/이미지" data-annual="약 416원/이미지">약 416원/이미지</p>
-        <a class="btn plan-cta" href="#">무료 체험 후 구매하기</a>
-        <ul class="plan-feats">
-          <li>프로 모든 기능</li>
-          <li>워드프레스 사이트 무제한</li>
-          <li>팀 멤버 2명</li>
-          <li>생성 이력 무제한 보관</li>
-          <li>우선 지원</li>
-        </ul>
+        <a class="btn plan-cta" href="#" data-pay-id="biz">구매하기</a>
       </div>
 
     </div>
@@ -998,6 +991,101 @@
 
 </main>
 
+<!-- 결제 모달 -->
+<div class="survey-ov" id="payOv" role="dialog" aria-modal="true" aria-labelledby="pay-title" hidden>
+  <div class="survey-modal" style="max-width:480px">
+    <button class="sv-x" type="button" id="payClose" aria-label="닫기">×</button>
+
+    <!-- Step 1: 주문 확인 -->
+    <div data-paystep="order">
+      <h3 id="pay-title">플랜 선택 확인</h3>
+      <div class="pay-plan-box" style="margin-top:16px">
+        <div>
+          <div class="pay-plan-name" id="payPlanName">비즈</div>
+          <div class="pay-plan-detail" id="payPlanFor">이미지를 자주 업데이트하는 팀</div>
+          <div class="pay-plan-detail" id="payPlanCredits" style="margin-top:4px;color:var(--teal);font-weight:600">크레딧 2,400개 일괄 제공</div>
+        </div>
+        <div style="flex:none;text-align:right">
+          <div class="pay-plan-price"><span id="payPlanPrice">999,900</span>원</div>
+          <div class="pay-plan-unit" id="payPlanPeriod">/년</div>
+          <div style="font-size:11px;color:#c2410c;margin-top:2px">VAT 별도</div>
+        </div>
+      </div>
+      <div class="pay-field">
+        <label for="payEmail">이메일 주소 (계정)</label>
+        <input class="pay-input name" id="payEmail" type="email" inputmode="email" autocomplete="email" placeholder="you@company.com">
+      </div>
+      <p id="payOrderMsg" style="margin-top:8px;font-size:13px;color:#c2410c;min-height:1.2em"></p>
+      <button type="button" id="payToCard" class="btn" style="margin-top:12px;width:100%;justify-content:center;color:#fff;background:#005EFF">결제 정보 입력하기</button>
+    </div>
+
+    <!-- Step 2: 카드 정보 -->
+    <div data-paystep="card" hidden>
+      <div class="demo-badge">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        데모 · 실제 결제가 이루어지지 않습니다
+      </div>
+      <h3>카드 정보 입력</h3>
+      <div class="pay-field">
+        <label for="payCard">카드 번호</label>
+        <input class="pay-input" id="payCard" type="text" inputmode="numeric" placeholder="0000 0000 0000 0000" maxlength="19" autocomplete="cc-number">
+      </div>
+      <div class="pay-row" style="margin-top:14px">
+        <div class="pay-field" style="margin-top:0">
+          <label for="payExpiry">유효기간</label>
+          <input class="pay-input" id="payExpiry" type="text" inputmode="numeric" placeholder="MM/YY" maxlength="5" autocomplete="cc-exp">
+        </div>
+        <div class="pay-field" style="margin-top:0">
+          <label for="payCvc">CVC</label>
+          <input class="pay-input" id="payCvc" type="text" inputmode="numeric" placeholder="000" maxlength="4" autocomplete="cc-csc">
+        </div>
+      </div>
+      <div class="pay-field">
+        <label for="payCardName">카드 소유자 이름</label>
+        <input class="pay-input name" id="payCardName" type="text" placeholder="HONG GILDONG" autocomplete="cc-name">
+      </div>
+      <div style="margin-top:18px;display:flex;justify-content:space-between;align-items:center;padding:14px 16px;background:#f8fafc;border-radius:10px;border:1px solid var(--mist)">
+        <span style="font-size:14px;color:var(--muted)">결제 금액</span>
+        <span style="font-weight:700;font-size:17px;color:var(--ink)" id="paySummaryAmt">—</span>
+      </div>
+      <p id="payCardMsg" style="margin-top:8px;font-size:13px;color:#c2410c;min-height:1.2em"></p>
+      <button type="button" id="paySubmit" class="btn" style="margin-top:10px;width:100%;justify-content:center;color:#fff;background:#005EFF">결제하기</button>
+      <button type="button" id="payBack" class="btn btn-ghost" style="margin-top:8px;width:100%;justify-content:center;font-size:14px;padding:10px">← 이전으로</button>
+    </div>
+
+    <!-- Step 3: 처리 중 -->
+    <div data-paystep="processing" hidden style="text-align:center;padding:24px 0">
+      <div class="pay-spinner"></div>
+      <p style="margin-top:20px;font-size:15px;color:var(--muted)">결제를 처리하고 있어요...</p>
+    </div>
+
+    <!-- Step 4: 완료 -->
+    <div data-paystep="done" hidden>
+      <div style="width:56px;height:56px;border-radius:999px;background:#d7f0ef;display:flex;align-items:center;justify-content:center;margin:0 auto 20px">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#0C6B70" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+      </div>
+      <h3 style="text-align:center">결제가 완료됐어요!</h3>
+      <div class="pay-plan-box" style="margin-top:16px">
+        <div>
+          <div class="pay-plan-name" id="payDonePlan">비즈</div>
+          <div class="pay-plan-detail" id="payDoneCredits">크레딧 2,400개 일괄 제공</div>
+        </div>
+        <div style="flex:none;text-align:right">
+          <div class="pay-plan-price"><span id="payDonePrice">999,900</span>원</div>
+          <div class="pay-plan-unit" id="payDonePeriod">/년</div>
+        </div>
+      </div>
+      <p style="margin-top:14px;font-size:14px;color:var(--muted);line-height:1.6">API Key가 발급됐어요. 워드프레스 플러그인에 아래 키를 입력해 주세요.</p>
+      <div style="margin-top:10px;background:#0c1019;border:1.5px solid #2a3645;border-radius:12px;padding:14px 16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+        <code id="payKeyValue" style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#8db6ff;word-break:break-all;flex:1;min-width:0"></code>
+        <button type="button" id="payCopyKey" class="btn" style="flex:none;justify-content:center;color:#fff;background:#005EFF;padding:8px 16px;font-size:14px">복사</button>
+      </div>
+      <a href="mypage.html" class="btn" style="margin-top:16px;width:100%;justify-content:center;color:#fff;background:var(--teal);display:inline-flex">마이페이지에서 확인하기 →</a>
+    </div>
+
+  </div>
+</div>
+
 <!-- 로그인 / 가입 모달 -->
 <div class="survey-ov" id="authOv" role="dialog" aria-modal="true" aria-labelledby="auth-title" hidden>
   <div class="survey-modal">
@@ -1050,8 +1138,9 @@
         <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#0C6B70" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
       </div>
       <h3 style="text-align:center">로그인됐어요</h3>
-      <p class="sv-lead" style="text-align:center;margin-top:10px">실제 서비스에서는 이 시점에 대시보드로 이동해요. 지금은 프로토타입이라 페이지 이동이 없지만, 로그인 플로우는 이렇게 동작합니다.</p>
-      <button type="button" id="authCloseDash" class="btn" style="margin-top:20px;width:100%;justify-content:center;color:#fff;background:#005EFF">닫기</button>
+      <p class="sv-lead" style="text-align:center;margin-top:10px">실제 서비스에서는 이 시점에 대시보드로 이동해요.</p>
+      <a href="mypage.html" class="btn" style="margin-top:20px;width:100%;justify-content:center;color:#fff;background:#005EFF;display:inline-flex">마이페이지로 이동하기 →</a>
+      <button type="button" id="authCloseDash" class="btn btn-ghost" style="margin-top:8px;width:100%;justify-content:center;font-size:14px;padding:10px">닫기</button>
     </div>
 
     <!-- Step 3b: API Key 확인 (신규) -->
@@ -1087,6 +1176,96 @@
     },{threshold:.12});
     els.forEach(function(e){io.observe(e)});
   })();
+  // --- 결제 모달 ---
+  (function(){
+    var KEYS = 'ally_api_keys'; var PLAN_STORE = 'ally_plan';
+    function loadKeys(){ try{ return JSON.parse(localStorage.getItem(KEYS))||{}; }catch(e){ return {}; } }
+    function saveKeys(m){ try{ localStorage.setItem(KEYS,JSON.stringify(m)); }catch(e){} }
+    function loadPlan(){ try{ return JSON.parse(localStorage.getItem(PLAN_STORE))||null; }catch(e){ return null; } }
+    function savePlan(p){ try{ localStorage.setItem(PLAN_STORE,JSON.stringify(p)); }catch(e){} }
+    function genKey(){ var h=''; for(var i=0;i<32;i++) h+=Math.floor(Math.random()*16).toString(16); return 'ally_live_'+h; }
+
+    var PLAN_DATA = {
+      starter:{ name:'스타터', for:'개인 블로그, 소규모 홈페이지', counts:{ m:40, a:480 }, prices:{ m:'19,900', a:'199,900' }, credits:{ m:'크레딧 40개/월', a:'크레딧 480개 일괄 제공' } },
+      pro:{ name:'프로', for:'웹 실무자, 소규모 팀', counts:{ m:60, a:720 }, prices:{ m:'29,900', a:'299,900' }, credits:{ m:'크레딧 60개/월', a:'크레딧 720개 일괄 제공' } },
+      biz:{ name:'비즈', for:'이미지를 자주 업데이트하는 팀', counts:{ m:200, a:2400 }, prices:{ m:'99,900', a:'999,900' }, credits:{ m:'크레딧 200개/월', a:'크레딧 2,400개 일괄 제공' } }
+    };
+
+    var ov = document.getElementById('payOv'); if(!ov) return;
+    var ps = {}; ov.querySelectorAll('[data-paystep]').forEach(function(el){ ps[el.getAttribute('data-paystep')]=el; });
+    function showStep(n){ Object.keys(ps).forEach(function(k){ ps[k].hidden=(k!==n); }); }
+    var cur = null;
+
+    function openPay(planId){
+      var isAnnual = document.getElementById('togAnnual').classList.contains('on');
+      var pd = PLAN_DATA[planId] || PLAN_DATA.biz;
+      var mk = isAnnual ? 'a' : 'm';
+      cur = { id:planId, name:pd.name, for:pd.for, price:pd.prices[mk], period:isAnnual?'/년':'/월', credits:pd.credits[mk], count:pd.counts[mk], isAnnual:isAnnual };
+      document.getElementById('payPlanName').textContent = cur.name;
+      document.getElementById('payPlanFor').textContent = cur.for;
+      document.getElementById('payPlanCredits').textContent = cur.credits;
+      document.getElementById('payPlanPrice').textContent = cur.price;
+      document.getElementById('payPlanPeriod').textContent = cur.period;
+      var knownEmail = Object.keys(loadKeys())[0] || '';
+      document.getElementById('payEmail').value = knownEmail;
+      document.getElementById('payOrderMsg').textContent = '';
+      showStep('order');
+      ov.hidden=false; requestAnimationFrame(function(){ ov.classList.add('open'); }); document.body.style.overflow='hidden';
+    }
+    function closePay(){
+      ov.classList.remove('open'); document.body.style.overflow='';
+      setTimeout(function(){ ov.hidden=true; showStep('order'); ['payCard','payExpiry','payCvc','payCardName'].forEach(function(id){ document.getElementById(id).value=''; }); document.getElementById('payCardMsg').textContent=''; }, 200);
+    }
+
+    document.querySelectorAll('[data-pay-id]').forEach(function(el){ el.addEventListener('click', function(e){ e.preventDefault(); openPay(this.dataset.payId); }); });
+    document.getElementById('payClose').addEventListener('click', closePay);
+    ov.addEventListener('click', function(e){ if(e.target===ov) closePay(); });
+    document.addEventListener('keydown', function(e){ if(e.key==='Escape'&&!ov.hidden) closePay(); });
+
+    document.getElementById('payToCard').addEventListener('click', function(){
+      var email = document.getElementById('payEmail').value.trim().toLowerCase();
+      if(!/\S+@\S+\.\S+/.test(email)){ document.getElementById('payOrderMsg').textContent='이메일 주소를 입력해 주세요.'; return; }
+      document.getElementById('payOrderMsg').textContent='';
+      document.getElementById('paySummaryAmt').textContent = cur.price+'원 '+cur.period+' (VAT 별도)';
+      showStep('card');
+    });
+    document.getElementById('payBack').addEventListener('click', function(){ showStep('order'); });
+
+    var cardIn=document.getElementById('payCard'), expiryIn=document.getElementById('payExpiry'), cvcIn=document.getElementById('payCvc');
+    cardIn.addEventListener('input', function(){ var v=this.value.replace(/\D/g,'').substring(0,16); this.value=v.replace(/(.{4})/g,'$1 ').trim(); });
+    expiryIn.addEventListener('input', function(){ var v=this.value.replace(/\D/g,'').substring(0,4); if(v.length>=3) v=v.substring(0,2)+'/'+v.substring(2); this.value=v; });
+    cvcIn.addEventListener('input', function(){ this.value=this.value.replace(/\D/g,'').substring(0,4); });
+
+    document.getElementById('paySubmit').addEventListener('click', function(){
+      var card=cardIn.value.replace(/\s/g,''), expiry=expiryIn.value, cvc=cvcIn.value, name=document.getElementById('payCardName').value.trim();
+      var msg=document.getElementById('payCardMsg');
+      if(card.length<16){ msg.textContent='카드 번호를 확인해 주세요.'; return; }
+      if(!/^\d{2}\/\d{2}$/.test(expiry)){ msg.textContent='유효기간을 확인해 주세요. (MM/YY)'; return; }
+      if(cvc.length<3){ msg.textContent='CVC를 확인해 주세요.'; return; }
+      if(!name){ msg.textContent='카드 소유자 이름을 입력해 주세요.'; return; }
+      msg.textContent=''; showStep('processing');
+      setTimeout(function(){
+        var email=document.getElementById('payEmail').value.trim().toLowerCase();
+        var map=loadKeys(); if(!map[email]){ map[email]=genKey(); saveKeys(map); }
+        var today=new Date(); var ymd=today.getFullYear()+'.'+(today.getMonth()+1)+'.'+today.getDate();
+        savePlan({ email:email, planId:cur.id, planName:cur.name, price:cur.price, period:cur.period, credits:cur.credits, creditCount:cur.count, isAnnual:cur.isAnnual, purchaseDate:ymd });
+        document.getElementById('payDonePlan').textContent=cur.name;
+        document.getElementById('payDoneCredits').textContent=cur.credits;
+        document.getElementById('payDonePrice').textContent=cur.price;
+        document.getElementById('payDonePeriod').textContent=cur.period;
+        document.getElementById('payKeyValue').textContent=map[email];
+        showStep('done');
+      }, 1800);
+    });
+
+    document.getElementById('payCopyKey').addEventListener('click', function(){
+      var val=document.getElementById('payKeyValue').textContent, btn=this;
+      function done(){ btn.textContent='복사됨'; setTimeout(function(){ btn.textContent='복사'; },1800); }
+      if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(val).then(done,done); }
+      else{ var t=document.createElement('textarea');t.value=val;document.body.appendChild(t);t.select();try{document.execCommand('copy');}catch(e){}document.body.removeChild(t);done(); }
+    });
+  })();
+
   // --- 로그인 / 가입 모달 ---
   (function(){
     var STORE = 'ally_api_keys';
