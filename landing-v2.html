@@ -451,7 +451,7 @@
       <a class="nav-item" href="#pricing">요금제</a>
     </nav>
     <div class="nav-auth">
-      <a class="btn-nav-sign" href="#">로그인</a>
+      <a class="btn-nav-sign" href="#" data-auth-open="1">로그인</a>
       <a class="btn-nav-start" href="#pricing">무료 시작하기</a>
     </div>
   </div>
@@ -940,8 +940,8 @@
     <h2 id="signup-h" style="margin-left:auto;margin-right:auto">25 크레딧 무료 제공<br>신용카드 불필요</h2>
     <p class="lead" style="margin:14px auto 0;max-width:52ch">가입 즉시 25 크레딧이 지급됩니다. 워드프레스 플러그인을 설치하고 바로 사용해 보세요. 마음에 들면 그때 요금제를 선택하시면 돼요.</p>
     <div style="margin-top:32px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
-      <a class="btn" href="#" style="background:#005EFF;color:#fff;font-size:17px;padding:16px 32px;border-radius:12px">무료 가입하기</a>
-      <a class="btn btn-ghost" href="#" style="color:#aeb8c4;border-color:#2a3645;font-size:17px;padding:16px 32px;border-radius:12px">로그인</a>
+      <a class="btn" href="#" data-auth-open="1" style="background:#005EFF;color:#fff;font-size:17px;padding:16px 32px;border-radius:12px">무료 가입하기</a>
+      <a class="btn btn-ghost" href="#" data-auth-open="1" style="color:#aeb8c4;border-color:#2a3645;font-size:17px;padding:16px 32px;border-radius:12px">로그인</a>
     </div>
     <p style="margin-top:14px;font-size:12.5px;color:#8894a6">가입하면 <a href="privacy.html" target="_blank" style="color:#8db6ff">개인정보처리방침</a>에 동의하는 것으로 간주합니다.</p>
   </div>
@@ -998,6 +998,79 @@
 
 </main>
 
+<!-- 로그인 / 가입 모달 -->
+<div class="survey-ov" id="authOv" role="dialog" aria-modal="true" aria-labelledby="auth-title" hidden>
+  <div class="survey-modal">
+    <button class="sv-x" type="button" id="authClose" aria-label="닫기">×</button>
+
+    <!-- Step 1: 이메일 입력 -->
+    <div data-authstep="email">
+      <h3 id="auth-title">앨리 시작하기</h3>
+      <p class="sv-lead">이메일 주소를 입력해 주세요.<br>기존 계정이면 로그인 링크를, 처음이시면 API Key를 보내드려요.</p>
+      <div style="margin-top:20px;display:flex;flex-direction:column;gap:10px">
+        <input id="authEmail" type="email" inputmode="email" autocomplete="email" placeholder="you@company.com"
+               style="padding:14px 16px;border-radius:10px;border:1.5px solid var(--mist);background:#fff;color:var(--ink);font-size:15px;font-family:'Inter','Apple SD Gothic Neo',sans-serif;width:100%;box-sizing:border-box;outline:none;transition:border-color .15s">
+        <button type="button" id="authSubmit" class="btn" style="width:100%;justify-content:center;color:#fff;background:#005EFF">계속하기</button>
+      </div>
+      <p id="authMsg" style="margin-top:10px;font-size:13px;color:#c2410c;min-height:1.2em"></p>
+    </div>
+
+    <!-- Step 2a: 기존 계정 → 로그인 링크 발송 -->
+    <div data-authstep="existing" hidden>
+      <div style="width:56px;height:56px;border-radius:999px;background:#EAF2FE;display:flex;align-items:center;justify-content:center;margin:0 auto 20px">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#005EFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+      </div>
+      <h3 style="text-align:center">로그인 링크를 보냈어요</h3>
+      <p class="sv-lead" style="text-align:center;margin-top:10px">
+        <b id="authExistEmail" style="color:var(--ink)"></b> 로<br>로그인 링크를 보냈어요. 이메일함에서 <b>"앨리 로그인"</b> 메일을 열고 버튼을 클릭하면 대시보드로 이동합니다.
+      </p>
+      <div style="margin-top:16px;background:#F2F7FF;border-radius:12px;padding:14px 16px;font-size:13.5px;color:#586271;line-height:1.6">
+        메일이 보이지 않으면 스팸함을 확인해 주세요.<br>
+        <span id="authResend" style="color:#005EFF;cursor:pointer;font-weight:600">재발송 요청하기</span>
+      </div>
+      <button type="button" id="authDemoLogin" class="btn" style="margin-top:18px;width:100%;justify-content:center;color:#fff;background:#005EFF">이메일 링크 클릭하기 (데모)</button>
+    </div>
+
+    <!-- Step 2b: 신규 → 가입 이메일 발송 -->
+    <div data-authstep="new" hidden>
+      <div style="width:56px;height:56px;border-radius:999px;background:#d7f0ef;display:flex;align-items:center;justify-content:center;margin:0 auto 20px">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#0C6B70" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+      </div>
+      <h3 style="text-align:center">가입 이메일을 보냈어요!</h3>
+      <p class="sv-lead" style="text-align:center;margin-top:10px">
+        <b id="authNewEmail" style="color:var(--ink)"></b> 로<br>
+        <b>API Key</b>와 워드프레스 설치 안내를 보냈어요. 이메일을 확인해 주세요.
+      </p>
+      <button type="button" id="authDemoNew" class="btn" style="margin-top:18px;width:100%;justify-content:center;color:#fff;background:#005EFF">이메일 확인하기 (데모)</button>
+    </div>
+
+    <!-- Step 3a: 로그인 완료 (데모) -->
+    <div data-authstep="dashboard" hidden>
+      <div style="width:56px;height:56px;border-radius:999px;background:#d7f0ef;display:flex;align-items:center;justify-content:center;margin:0 auto 20px">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#0C6B70" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+      </div>
+      <h3 style="text-align:center">로그인됐어요</h3>
+      <p class="sv-lead" style="text-align:center;margin-top:10px">실제 서비스에서는 이 시점에 대시보드로 이동해요. 지금은 프로토타입이라 페이지 이동이 없지만, 로그인 플로우는 이렇게 동작합니다.</p>
+      <button type="button" id="authCloseDash" class="btn" style="margin-top:20px;width:100%;justify-content:center;color:#fff;background:#005EFF">닫기</button>
+    </div>
+
+    <!-- Step 3b: API Key 확인 (신규) -->
+    <div data-authstep="apikey" hidden>
+      <div style="width:56px;height:56px;border-radius:999px;background:#d7f0ef;display:flex;align-items:center;justify-content:center;margin:0 auto 20px">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#0C6B70" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+      </div>
+      <h3 style="text-align:center">API Key가 발급됐어요</h3>
+      <p class="sv-lead" style="text-align:center;margin-top:10px"><b id="authKeyEmail" style="color:var(--ink)"></b> 계정의 API Key예요.<br>워드프레스 플러그인 설정에 붙여넣으세요.</p>
+      <div style="margin-top:16px;background:#0c1019;border:1.5px solid #2a3645;border-radius:12px;padding:14px 16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+        <code id="authKeyValue" style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#8db6ff;word-break:break-all;flex:1;min-width:0"></code>
+        <button type="button" id="authCopyKey" class="btn" style="flex:none;justify-content:center;color:#fff;background:#005EFF;padding:8px 16px;font-size:14px">복사</button>
+      </div>
+      <p style="margin-top:12px;font-size:13px;color:var(--muted);line-height:1.55">⚠ 이 키는 비밀번호처럼 관리해 주세요. 잃어버려도 같은 이메일로 다시 받을 수 있어요.</p>
+    </div>
+
+  </div>
+</div>
+
 <footer class="site">
   <div class="wrap">
     <div class="logo" style="font-size:18px"><img src="a11yrogo.png" alt="A11Y.so" style="height:22px;width:auto;display:block"></div>
@@ -1014,6 +1087,92 @@
     },{threshold:.12});
     els.forEach(function(e){io.observe(e)});
   })();
+  // --- 로그인 / 가입 모달 ---
+  (function(){
+    var STORE = 'ally_api_keys';
+    function loadKeys(){ try{ return JSON.parse(localStorage.getItem(STORE)) || {}; }catch(e){ return {}; } }
+    function saveKeys(m){ try{ localStorage.setItem(STORE, JSON.stringify(m)); }catch(e){} }
+    function genKey(){ var h=''; for(var i=0;i<32;i++) h+=Math.floor(Math.random()*16).toString(16); return 'ally_live_'+h; }
+    function isEmail(v){ return /\S+@\S+\.\S+/.test(v); }
+
+    var ov = document.getElementById('authOv');
+    if(!ov) return;
+    var authSteps = {};
+    ov.querySelectorAll('[data-authstep]').forEach(function(el){ authSteps[el.getAttribute('data-authstep')] = el; });
+    function showStep(name){ Object.keys(authSteps).forEach(function(k){ authSteps[k].hidden = (k!==name); }); }
+
+    function openAuth(){
+      ov.hidden = false;
+      requestAnimationFrame(function(){ ov.classList.add('open'); });
+      document.body.style.overflow = 'hidden';
+      setTimeout(function(){ document.getElementById('authEmail').focus(); }, 50);
+    }
+    function closeAuth(){
+      ov.classList.remove('open');
+      document.body.style.overflow = '';
+      setTimeout(function(){
+        ov.hidden = true;
+        showStep('email');
+        document.getElementById('authEmail').value = '';
+        document.getElementById('authMsg').textContent = '';
+        document.getElementById('authResend').textContent = '재발송 요청하기';
+        document.getElementById('authResend').style.cursor = 'pointer';
+      }, 200);
+    }
+
+    document.querySelectorAll('[data-auth-open]').forEach(function(el){
+      el.addEventListener('click', function(e){ e.preventDefault(); openAuth(); });
+    });
+    document.getElementById('authClose').addEventListener('click', closeAuth);
+    ov.addEventListener('click', function(e){ if(e.target===ov) closeAuth(); });
+    document.addEventListener('keydown', function(e){ if(e.key==='Escape' && !ov.hidden) closeAuth(); });
+
+    var emailIn = document.getElementById('authEmail');
+    var msg = document.getElementById('authMsg');
+
+    emailIn.addEventListener('keydown', function(e){ if(e.key==='Enter') document.getElementById('authSubmit').click(); });
+
+    document.getElementById('authSubmit').addEventListener('click', function(){
+      var email = emailIn.value.trim().toLowerCase();
+      if(!isEmail(email)){ msg.textContent = '이메일 주소를 정확히 입력해 주세요.'; return; }
+      msg.textContent = '';
+      var map = loadKeys();
+      if(map[email]){
+        document.getElementById('authExistEmail').textContent = email;
+        showStep('existing');
+      } else {
+        var key = genKey();
+        map[email] = key;
+        saveKeys(map);
+        document.getElementById('authNewEmail').textContent = email;
+        showStep('new');
+      }
+    });
+
+    document.getElementById('authResend').addEventListener('click', function(){
+      this.textContent = '재발송됐어요!';
+      this.style.cursor = 'default';
+    });
+    document.getElementById('authDemoLogin').addEventListener('click', function(){ showStep('dashboard'); });
+    document.getElementById('authCloseDash').addEventListener('click', closeAuth);
+
+    document.getElementById('authDemoNew').addEventListener('click', function(){
+      var email = document.getElementById('authNewEmail').textContent;
+      var map = loadKeys();
+      document.getElementById('authKeyEmail').textContent = email;
+      document.getElementById('authKeyValue').textContent = map[email] || '';
+      showStep('apikey');
+    });
+
+    document.getElementById('authCopyKey').addEventListener('click', function(){
+      var val = document.getElementById('authKeyValue').textContent;
+      var btn = this;
+      function done(){ btn.textContent='복사됨'; setTimeout(function(){ btn.textContent='복사'; }, 1800); }
+      if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(val).then(done,done); }
+      else { var t=document.createElement('textarea');t.value=val;document.body.appendChild(t);t.select();try{document.execCommand('copy');}catch(e){}document.body.removeChild(t);done(); }
+    });
+  })();
+
   // --- 요금제 월간/연간 토글 ---
   (function(){
     var monthly = document.getElementById('togMonthly');
