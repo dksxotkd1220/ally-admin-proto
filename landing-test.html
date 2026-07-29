@@ -1004,21 +1004,10 @@
       if(!pending) return;
       var picked = opts.querySelector('input:checked');
       pending.purpose = picked ? picked.value : null;
-      // 이메일당 1키 저장
-      if(pending.isNew){ var map2 = load(); map2[pending.email] = pending.key; save(map2); }
-      // 매직 링크 발송(데모) → 팝업 닫고 메일함 확인 화면으로
+      // 팝업 닫고 등록 완료 화면으로
       document.getElementById('sentEmail').textContent = pending.email;
-      document.getElementById('sentDupe').hidden = pending.isNew;
       closeSurvey();
       show('sent');
-    });
-
-    document.getElementById('demoLink').addEventListener('click', function(){
-      if(!pending) return;
-      document.getElementById('keyEmail').textContent = pending.email;
-      document.getElementById('keyValue').textContent = pending.key;
-      document.getElementById('copyKey').textContent = '복사';
-      show('key');
     });
 
     document.getElementById('resetEmail').addEventListener('click', function(){
@@ -1027,18 +1016,6 @@
       opts.querySelectorAll('.sv-opt').forEach(function(l){ l.classList.remove('sel'); });
       msg.textContent = '';
       show('form');
-    });
-
-    document.getElementById('copyKey').addEventListener('click', function(){
-      var val = document.getElementById('keyValue').textContent;
-      var btn = this;
-      function done(){ btn.textContent = '복사됨'; setTimeout(function(){ btn.textContent = '복사'; }, 1800); }
-      if(navigator.clipboard && navigator.clipboard.writeText){
-        navigator.clipboard.writeText(val).then(done, done);
-      } else {
-        var t = document.createElement('textarea'); t.value = val; document.body.appendChild(t); t.select();
-        try{ document.execCommand('copy'); }catch(e){} document.body.removeChild(t); done();
-      }
     });
   })();
 
