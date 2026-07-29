@@ -101,10 +101,31 @@ a:hover{text-decoration:underline}
 .stat-tile-label{font-size:12px;color:var(--muted);margin-top:4px}
 
 /* filter row */
-.filter-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+.filter-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}
 .filter-select{font-family:"Inter","Apple SD Gothic Neo",sans-serif;font-size:13px;padding:7px 12px;border:1px solid var(--mist);border-radius:8px;background:#fff;color:var(--ink);cursor:pointer;outline:none}
 .filter-select:focus{border-color:var(--teal-bright)}
 .filter-label{font-size:13px;color:var(--muted)}
+.search-wrap{position:relative;flex:1;min-width:180px;max-width:300px}
+.search-wrap svg{position:absolute;left:10px;top:50%;transform:translateY(-50%);pointer-events:none;color:var(--muted)}
+.search-input{width:100%;font-family:"Inter","Apple SD Gothic Neo",sans-serif;font-size:13px;padding:7px 12px 7px 34px;border:1px solid var(--mist);border-radius:8px;background:#fff;color:var(--ink);outline:none}
+.search-input:focus{border-color:var(--teal-bright)}
+.search-input::placeholder{color:#b0b8c4}
+
+/* table toolbar */
+.table-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.toolbar-left{display:flex;align-items:center;gap:10px}
+.toolbar-right{display:flex;align-items:center;gap:8px}
+.per-page-label{font-size:13px;color:var(--muted);white-space:nowrap}
+.btn-csv{display:inline-flex;align-items:center;gap:6px;font-family:"Inter","Apple SD Gothic Neo",sans-serif;font-size:13px;font-weight:600;padding:7px 14px;border-radius:8px;border:1px solid var(--mist);background:#fff;cursor:pointer;color:var(--ink);white-space:nowrap;transition:background .15s,color .15s}
+.btn-csv:hover{background:#16a34a;color:#fff;border-color:#16a34a}
+
+/* pagination */
+.pagination{display:flex;align-items:center;justify-content:center;gap:4px;margin-top:14px;flex-wrap:wrap}
+.page-btn{font-family:"IBM Plex Mono",monospace;font-size:13px;min-width:34px;height:34px;padding:0 6px;border:1px solid var(--mist);border-radius:8px;background:#fff;color:var(--ink);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:background .12s,color .12s}
+.page-btn:hover:not(:disabled){background:var(--ink);color:#fff;border-color:var(--ink)}
+.page-btn.active{background:var(--teal);color:#fff;border-color:var(--teal)}
+.page-btn:disabled{color:#c5ccd6;cursor:default}
+.page-info{font-size:13px;color:var(--muted);padding:0 8px}
 
 /* alt text history table */
 .alt-wrap{overflow-x:auto;border-radius:14px;border:1px solid var(--mist)}
@@ -301,17 +322,40 @@ a:hover{text-decoration:underline}
     <div class="section-card" style="padding:20px 24px">
       <!-- 필터 -->
       <div class="filter-row">
+        <div class="search-wrap">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input class="search-input" id="searchInput" type="search" placeholder="파일명 검색…" autocomplete="off">
+        </div>
         <span class="filter-label">사이트</span>
         <select class="filter-select" id="siteFilter">
           <option value="">전체</option>
         </select>
-        <span class="filter-label" style="margin-left:8px">상태</span>
+        <span class="filter-label">상태</span>
         <select class="filter-select" id="statusFilter">
           <option value="">전체</option>
           <option value="auto">자동 생성</option>
           <option value="edited">직접 수정</option>
         </select>
-        <span style="margin-left:auto;font-size:13px;color:var(--muted)" id="filterCount"></span>
+      </div>
+
+      <!-- 테이블 툴바 -->
+      <div class="table-toolbar">
+        <div class="toolbar-left">
+          <span style="font-size:13px;color:var(--muted)" id="filterCount"></span>
+        </div>
+        <div class="toolbar-right">
+          <span class="per-page-label">페이지당</span>
+          <select class="filter-select" id="perPageSelect">
+            <option value="10">10개</option>
+            <option value="25">25개</option>
+            <option value="50">50개</option>
+            <option value="100">100개</option>
+          </select>
+          <button class="btn-csv" id="csvDownload" type="button">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            CSV 다운로드
+          </button>
+        </div>
       </div>
 
       <!-- 테이블 -->
@@ -333,6 +377,9 @@ a:hover{text-decoration:underline}
         </table>
       </div>
       <div class="empty" id="altEmpty" style="display:none">처리 내역이 없어요.</div>
+
+      <!-- 페이지네이션 -->
+      <div class="pagination" id="pagination"></div>
     </div>
 
   </div>
@@ -458,8 +505,6 @@ a:hover{text-decoration:underline}
     { id:10, emoji:'🖼️', fname:'ceo_signature.png', site:'shop.mystore.kr', orig:'서명 이미지', altNew:'대표이사 김○○의 자필 서명 이미지.', wcag:'SC 1.1.1', date:'2026.07.22 17:55', status:'edited' },
   ];
 
-  var currentData = DEMO.slice();
-
   // 사이트 필터 옵션 구성
   var sites = [];
   DEMO.forEach(function(r){ if(sites.indexOf(r.site) === -1) sites.push(r.site); });
@@ -476,17 +521,36 @@ a:hover{text-decoration:underline}
   document.getElementById('statMonth').textContent = thisMonth;
   document.getElementById('statSites').textContent = sites.length;
 
-  function renderTable(data){
+  // 페이지네이션 상태
+  var currentPage = 1;
+  var currentFiltered = DEMO.slice();
+
+  function getPerPage(){ return parseInt(document.getElementById('perPageSelect').value, 10); }
+
+  function renderTable(data, page){
+    var perPage = getPerPage();
+    currentFiltered = data;
+    currentPage = page || 1;
+
     var tbody = document.getElementById('altBody');
     var empty = document.getElementById('altEmpty');
-    document.getElementById('filterCount').textContent = '총 ' + data.length + '건';
-    if(!data.length){
+    var totalCount = data.length;
+    document.getElementById('filterCount').textContent = '총 ' + totalCount + '건';
+
+    if(!totalCount){
       tbody.innerHTML = '';
       empty.style.display = 'block';
+      document.getElementById('pagination').innerHTML = '';
       return;
     }
     empty.style.display = 'none';
-    tbody.innerHTML = data.map(function(r){
+
+    var totalPages = Math.ceil(totalCount / perPage);
+    if(currentPage > totalPages) currentPage = totalPages;
+    var start = (currentPage - 1) * perPage;
+    var pageData = data.slice(start, start + perPage);
+
+    tbody.innerHTML = pageData.map(function(r){
       var origTxt = r.orig ? '<span class="alt-text-orig">' + r.orig + '</span>' : '<span class="alt-text-orig empty">비어 있었음</span>';
       var statusHtml = r.status === 'auto'
         ? '<span class="status-chip status-auto">자동 생성</span>'
@@ -502,20 +566,78 @@ a:hover{text-decoration:underline}
         + '<td>' + statusHtml + '</td>'
         + '</tr>';
     }).join('');
+
+    // 페이지네이션 렌더
+    renderPagination(currentPage, totalPages);
+  }
+
+  function renderPagination(page, total){
+    var pag = document.getElementById('pagination');
+    if(total <= 1){ pag.innerHTML = ''; return; }
+    var html = '';
+    html += '<button class="page-btn" id="pagPrev" type="button"' + (page===1?' disabled':'') + '>‹</button>';
+    var range = [];
+    for(var i=1;i<=total;i++){
+      if(i===1||i===total||Math.abs(i-page)<=1) range.push(i);
+      else if(range[range.length-1]!=='…') range.push('…');
+    }
+    range.forEach(function(p){
+      if(p==='…'){ html+='<span class="page-info">…</span>'; }
+      else{ html+='<button class="page-btn'+(p===page?' active':'')+'" data-p="'+p+'" type="button">'+p+'</button>'; }
+    });
+    html += '<button class="page-btn" id="pagNext" type="button"' + (page===total?' disabled':'') + '>›</button>';
+    pag.innerHTML = html;
+    pag.querySelectorAll('.page-btn[data-p]').forEach(function(btn){
+      btn.addEventListener('click', function(){ renderTable(currentFiltered, parseInt(btn.dataset.p,10)); });
+    });
+    var prev = pag.querySelector('#pagPrev');
+    var next = pag.querySelector('#pagNext');
+    if(prev) prev.addEventListener('click', function(){ if(currentPage>1) renderTable(currentFiltered, currentPage-1); });
+    if(next) next.addEventListener('click', function(){ if(currentPage<total) renderTable(currentFiltered, currentPage+1); });
   }
 
   function applyFilter(){
+    var q = document.getElementById('searchInput').value.toLowerCase().trim();
     var site = document.getElementById('siteFilter').value;
     var status = document.getElementById('statusFilter').value;
     var filtered = DEMO.filter(function(r){
-      return (!site || r.site === site) && (!status || r.status === status);
+      var matchQ = !q || r.fname.toLowerCase().indexOf(q) !== -1;
+      return matchQ && (!site || r.site === site) && (!status || r.status === status);
     });
-    renderTable(filtered);
+    renderTable(filtered, 1);
   }
 
+  document.getElementById('searchInput').addEventListener('input', applyFilter);
   document.getElementById('siteFilter').addEventListener('change', applyFilter);
   document.getElementById('statusFilter').addEventListener('change', applyFilter);
-  renderTable(DEMO);
+  document.getElementById('perPageSelect').addEventListener('change', function(){ renderTable(currentFiltered, 1); });
+
+  // CSV 다운로드
+  document.getElementById('csvDownload').addEventListener('click', function(){
+    var headers = ['번호','파일명','사이트','원본 대체 텍스트','앨리 생성 대체 텍스트','WCAG 기준','생성 일시','상태'];
+    var rows = currentFiltered.map(function(r){
+      return [
+        r.id,
+        r.fname,
+        r.site,
+        r.orig || '(비어 있었음)',
+        r.altNew,
+        r.wcag,
+        r.date,
+        r.status === 'auto' ? '자동 생성' : '직접 수정'
+      ].map(function(v){ return '"' + String(v).replace(/"/g,'""') + '"'; }).join(',');
+    });
+    var csv = '﻿' + headers.join(',') + '\n' + rows.join('\n');
+    var blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url; a.download = 'ally_alt_history.csv';
+    document.body.appendChild(a); a.click();
+    document.body.removeChild(a); URL.revokeObjectURL(url);
+    toast('CSV 파일이 다운로드됐어요.');
+  });
+
+  renderTable(DEMO, 1);
 
 })();
 </script>
