@@ -8,10 +8,10 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{--ink:#11161F;--paper:#F4F6F8;--surface:#fff;--mist:#E1E7EC;--teal:#0C6B70;--teal-bright:#14A3A8;--fblue:#005EFF;--muted:#586271;--maxw:900px}
+:root{--ink:#11161F;--paper:#F4F6F8;--surface:#fff;--mist:#E1E7EC;--teal:#0C6B70;--teal-bright:#14A3A8;--fblue:#005EFF;--muted:#586271;--maxw:1060px}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{margin:0;background:var(--paper);color:var(--ink);font-family:"Inter",system-ui,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"Inter",system-ui,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
 h1,h2,h3{font-family:"Bricolage Grotesque","Inter","Apple SD Gothic Neo",sans-serif;line-height:1.15;letter-spacing:-.02em;margin:0}
 p{margin:0}
 a{color:var(--teal);text-decoration:none}
@@ -21,7 +21,7 @@ a:hover{text-decoration:underline}
 .skip:focus{left:12px;top:12px}
 
 /* header */
-.site-header{position:sticky;top:0;z-index:50;background:rgba(244,246,248,.9);backdrop-filter:blur(10px);border-bottom:1px solid var(--mist)}
+.site-header{position:sticky;top:0;z-index:50;background:rgba(244,246,248,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--mist)}
 .header-inner{max-width:var(--maxw);margin:0 auto;padding:0 24px;height:64px;display:flex;align-items:center;gap:12px}
 .logo{font-family:"Bricolage Grotesque";font-weight:800;font-size:21px;letter-spacing:-.02em;color:var(--ink);text-decoration:none;display:flex;align-items:center;gap:8px}
 .logo:hover{text-decoration:none}
@@ -32,23 +32,29 @@ a:hover{text-decoration:underline}
 .btn-logout:hover{background:var(--ink);color:#fff;border-color:var(--ink)}
 
 /* main layout */
-.main{max-width:var(--maxw);margin:0 auto;padding:40px 24px 80px}
-.page-title{font-size:clamp(24px,3.5vw,32px);font-weight:800}
-.page-sub{font-size:15px;color:var(--muted);margin-top:6px}
+.main{max-width:var(--maxw);margin:0 auto;padding:36px 24px 80px}
+.page-title{font-size:clamp(22px,3vw,28px);font-weight:800}
+.page-sub{font-size:14px;color:var(--muted);margin-top:5px}
+
+/* tab nav */
+.tab-nav{display:flex;gap:2px;margin-top:28px;border-bottom:2px solid var(--mist);padding-bottom:0}
+.tab-btn{font-family:"Inter","Apple SD Gothic Neo",sans-serif;font-size:14px;font-weight:600;padding:10px 20px;border:none;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:color .15s,border-color .15s;border-radius:6px 6px 0 0;white-space:nowrap}
+.tab-btn:hover{color:var(--ink)}
+.tab-btn.active{color:var(--teal);border-bottom-color:var(--teal)}
+.tab-panel{display:none;margin-top:24px}
+.tab-panel.active{display:block}
 
 /* section cards */
-.section-card{background:var(--surface);border:1px solid var(--mist);border-radius:18px;padding:28px 30px;margin-top:24px}
-.section-card + .section-card{margin-top:16px}
+.section-card{background:var(--surface);border:1px solid var(--mist);border-radius:18px;padding:26px 28px;margin-bottom:16px}
 .card-header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:20px}
 .card-title{font-size:15px;font-weight:700;color:var(--ink);display:flex;align-items:center;gap:8px}
 .card-icon{width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex:none}
 .card-badge{font-family:"IBM Plex Mono",monospace;font-size:11px;padding:3px 10px;border-radius:99px;letter-spacing:.04em;white-space:nowrap}
 .badge-active{background:#d7f0ef;color:var(--teal)}
-.badge-free{background:#EEF2FF;color:#4338CA}
 .badge-none{background:var(--paper);color:var(--muted)}
 
 /* info rows */
-.info-grid{display:grid;grid-template-columns:140px 1fr;gap:14px 0}
+.info-grid{display:grid;grid-template-columns:140px 1fr;gap:13px 0}
 @media(max-width:600px){.info-grid{grid-template-columns:1fr;gap:10px}}
 .info-label{font-size:13px;color:var(--muted);font-weight:600;padding-top:1px}
 .info-value{font-size:15px;color:var(--ink)}
@@ -69,31 +75,64 @@ a:hover{text-decoration:underline}
 .credit-bar{height:10px;border-radius:99px;background:#e8edf2;overflow:hidden}
 .credit-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--teal-bright),var(--teal));transition:width .6s ease}
 
-/* plan card inner */
+/* plan */
 .plan-summary{display:flex;align-items:flex-start;gap:16px;flex-wrap:wrap}
 .plan-tag{display:inline-block;font-family:"IBM Plex Mono",monospace;font-size:11px;padding:3px 10px;border-radius:99px;background:#d7f0ef;color:var(--teal);letter-spacing:.04em;margin-top:4px}
-.plan-price-big{font-family:"Bricolage Grotesque","Apple SD Gothic Neo",sans-serif;font-weight:800;font-size:32px;letter-spacing:-.03em;margin-left:auto;text-align:right;white-space:nowrap}
+.plan-price-big{font-family:"Bricolage Grotesque","Apple SD Gothic Neo",sans-serif;font-weight:800;font-size:30px;letter-spacing:-.03em;margin-left:auto;text-align:right;white-space:nowrap}
 .plan-price-unit{font-size:14px;color:var(--muted);font-weight:400}
+.no-plan{background:#EAF2FE;border:1px solid #C7DCFF;border-radius:14px;padding:20px 22px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.no-plan p{font-size:14px;color:#1E3A6E;line-height:1.55}
+.btn-plan{display:inline-flex;align-items:center;font-family:"Inter","Apple SD Gothic Neo",sans-serif;font-weight:600;font-size:14px;color:#fff;background:var(--fblue);padding:10px 20px;border-radius:10px;white-space:nowrap;text-decoration:none;transition:background .15s}
+.btn-plan:hover{background:#0047CC;text-decoration:none}
 
-/* history table */
+/* payment history table */
 .hist-table{width:100%;border-collapse:collapse;font-size:14px}
-.hist-table th{text-align:left;padding:10px 12px;border-bottom:2px solid var(--mist);font-size:12px;font-weight:600;color:var(--muted);letter-spacing:.04em;text-transform:uppercase;font-family:"IBM Plex Mono",monospace}
-.hist-table td{padding:14px 12px;border-bottom:1px solid var(--mist);vertical-align:middle}
+.hist-table th{text-align:left;padding:10px 12px;border-bottom:2px solid var(--mist);font-size:11px;font-weight:600;color:var(--muted);letter-spacing:.04em;text-transform:uppercase;font-family:"IBM Plex Mono",monospace}
+.hist-table td{padding:13px 12px;border-bottom:1px solid var(--mist);vertical-align:middle}
 .hist-table tr:last-child td{border-bottom:none}
 .hist-status{font-family:"IBM Plex Mono",monospace;font-size:11px;padding:3px 9px;border-radius:99px}
 .hist-status.paid{background:#d7f0ef;color:var(--teal)}
 
-/* empty state */
-.empty{text-align:center;padding:32px 0;color:var(--muted);font-size:14px}
+/* stat tiles */
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
+@media(max-width:600px){.stat-row{grid-template-columns:1fr 1fr}}
+.stat-tile{background:var(--surface);border:1px solid var(--mist);border-radius:14px;padding:18px 20px}
+.stat-tile-num{font-family:"Bricolage Grotesque","Apple SD Gothic Neo",sans-serif;font-weight:800;font-size:26px;letter-spacing:-.03em;color:var(--ink)}
+.stat-tile-label{font-size:12px;color:var(--muted);margin-top:4px}
+
+/* filter row */
+.filter-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+.filter-select{font-family:"Inter","Apple SD Gothic Neo",sans-serif;font-size:13px;padding:7px 12px;border:1px solid var(--mist);border-radius:8px;background:#fff;color:var(--ink);cursor:pointer;outline:none}
+.filter-select:focus{border-color:var(--teal-bright)}
+.filter-label{font-size:13px;color:var(--muted)}
+
+/* alt text history table */
+.alt-wrap{overflow-x:auto;border-radius:14px;border:1px solid var(--mist)}
+.alt-table{width:100%;border-collapse:collapse;font-size:13px;min-width:900px}
+.alt-table th{text-align:left;padding:10px 14px;background:#f8f9fb;border-bottom:1px solid var(--mist);font-size:11px;font-weight:600;color:var(--muted);letter-spacing:.05em;text-transform:uppercase;font-family:"IBM Plex Mono",monospace;white-space:nowrap}
+.alt-table td{padding:12px 14px;border-bottom:1px solid var(--mist);vertical-align:top;line-height:1.45}
+.alt-table tr:last-child td{border-bottom:none}
+.alt-table tr:hover td{background:#fafbfc}
+.alt-thumb{width:44px;height:44px;border-radius:8px;object-fit:cover;background:#e8edf2;display:flex;align-items:center;justify-content:center;flex:none;font-size:18px}
+.alt-thumb-cell{display:flex;align-items:center;gap:10px}
+.alt-fname{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--muted);margin-top:3px;word-break:break-all}
+.alt-text-cell{max-width:220px}
+.alt-text-orig{font-size:12px;color:#9aa3af;font-style:italic;line-height:1.4}
+.alt-text-orig.empty{color:#c5ccd6}
+.alt-text-new{font-size:13px;color:var(--ink);line-height:1.4;margin-top:0}
+.site-chip{display:inline-flex;align-items:center;font-family:"IBM Plex Mono",monospace;font-size:11px;background:#f0f4ff;color:#3b5bdb;padding:2px 9px;border-radius:99px;white-space:nowrap}
+.wcag-chip{font-family:"IBM Plex Mono",monospace;font-size:11px;background:#d7f0ef;color:var(--teal);padding:2px 9px;border-radius:99px;white-space:nowrap}
+.status-chip{font-family:"IBM Plex Mono",monospace;font-size:11px;padding:2px 9px;border-radius:99px;white-space:nowrap}
+.status-auto{background:#d7f0ef;color:var(--teal)}
+.status-edited{background:#FEF3E2;color:#D97706}
+.row-num{font-family:"IBM Plex Mono",monospace;font-size:12px;color:#c5ccd6;text-align:center}
+.date-cell{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--muted);white-space:nowrap}
+
+/* empty */
+.empty{text-align:center;padding:40px 0;color:var(--muted);font-size:14px}
 .empty a{color:var(--fblue);font-weight:600}
 
-/* no plan prompt */
-.no-plan{background:#EAF2FE;border:1px solid #C7DCFF;border-radius:14px;padding:20px 22px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
-.no-plan p{font-size:14.5px;color:#1E3A6E;line-height:1.55}
-.btn-plan{display:inline-flex;align-items:center;font-family:"Inter","Apple SD Gothic Neo",sans-serif;font-weight:600;font-size:14px;color:#fff;background:var(--fblue);padding:10px 20px;border-radius:10px;white-space:nowrap;text-decoration:none;transition:background .15s}
-.btn-plan:hover{background:#0047CC;text-decoration:none}
-
-/* logout confirm */
+/* toast */
 .toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;font-size:14px;padding:12px 22px;border-radius:10px;z-index:200;opacity:0;transition:opacity .2s;pointer-events:none;white-space:nowrap}
 .toast.show{opacity:1}
 </style>
@@ -118,104 +157,110 @@ a:hover{text-decoration:underline}
   <h1 class="page-title">마이페이지</h1>
   <p class="page-sub">내 계정과 구독 정보를 확인하세요.</p>
 
-  <!-- 내 계정 정보 -->
-  <div class="section-card">
-    <div class="card-header">
-      <div class="card-title">
-        <div class="card-icon" style="background:#EAF2FE">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#005EFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-        </div>
-        내 계정 정보
-      </div>
-    </div>
-    <div class="info-grid">
-      <span class="info-label">이메일 주소</span>
-      <span class="info-value" id="infoEmail">—</span>
-      <span class="info-label">가입일</span>
-      <span class="info-value" id="infoJoinDate">—</span>
-      <span class="info-label">계정 유형</span>
-      <span class="info-value" id="infoAccountType">—</span>
-    </div>
-  </div>
+  <!-- 탭 네비게이션 -->
+  <nav class="tab-nav" aria-label="마이페이지 탭">
+    <button class="tab-btn active" data-tab="account" type="button">계정 정보</button>
+    <button class="tab-btn" data-tab="billing" type="button">결제 정보</button>
+    <button class="tab-btn" data-tab="history" type="button">대체 텍스트 처리 내역</button>
+  </nav>
 
-  <!-- API Key -->
-  <div class="section-card">
-    <div class="card-header">
-      <div class="card-title">
-        <div class="card-icon" style="background:#d7f0ef">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0C6B70" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0 3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
-        </div>
-        API Key
-      </div>
-    </div>
-    <div class="key-box">
-      <span class="key-code masked" id="keyDisplay">••••••••••••••••••••••••••••••••</span>
-      <button class="btn-sm" id="keyToggle" type="button">보기</button>
-      <button class="btn-sm primary" id="keyCopy" type="button">복사</button>
-    </div>
-    <p style="margin-top:10px;font-size:13px;color:var(--muted);line-height:1.55">⚠ API Key는 비밀번호처럼 관리해 주세요. 외부에 공개되지 않도록 주의하세요.</p>
-  </div>
+  <!-- 탭 1: 계정 정보 -->
+  <div class="tab-panel active" id="panel-account">
 
-  <!-- 구독 플랜 -->
-  <div class="section-card">
-    <div class="card-header">
-      <div class="card-title">
-        <div class="card-icon" style="background:#EEF2FF">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4338CA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-        </div>
-        구독 플랜
-      </div>
-      <span class="card-badge" id="planBadge">—</span>
-    </div>
-
-    <!-- 플랜 없음 -->
-    <div id="noPlanBlock">
-      <div class="no-plan">
-        <p>현재 구독 중인 플랜이 없어요.<br>플랜을 선택하면 더 많은 크레딧을 사용할 수 있어요.</p>
-        <a class="btn-plan" href="landing-v2.html#pricing">플랜 보러 가기 →</a>
-      </div>
-    </div>
-
-    <!-- 플랜 있음 -->
-    <div id="hasPlanBlock" style="display:none">
-      <div class="plan-summary">
-        <div>
-          <h2 style="font-size:22px" id="planName">비즈</h2>
-          <span class="plan-tag" id="planTag">연간</span>
-          <div class="info-grid" style="margin-top:16px">
-            <span class="info-label">결제일</span>
-            <span class="info-value" id="planPurchaseDate">—</span>
-            <span class="info-label">크레딧</span>
-            <span class="info-value" id="planCreditsLabel">—</span>
+    <div class="section-card">
+      <div class="card-header">
+        <div class="card-title">
+          <div class="card-icon" style="background:#EAF2FE">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#005EFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
           </div>
+          내 계정 정보
         </div>
-        <div class="plan-price-big" id="planPriceBig">—<span class="plan-price-unit" id="planPriceUnit"></span></div>
       </div>
-      <div class="credit-wrap">
-        <div class="credit-label-row">
-          <span>크레딧 사용 현황</span>
-          <span><span class="credit-num" id="creditUsed">0</span> / <span class="credit-num" id="creditTotal">0</span> 사용</span>
-        </div>
-        <div class="credit-bar"><div class="credit-fill" id="creditFill" style="width:0%"></div></div>
-        <p style="margin-top:8px;font-size:13px;color:var(--muted)" id="creditRemain">남은 크레딧: —개</p>
-      </div>
-      <div style="margin-top:18px;display:flex;gap:10px;flex-wrap:wrap">
-        <a href="landing-v2.html#pricing" class="btn-sm primary" style="text-decoration:none;display:inline-flex;align-items:center">플랜 변경</a>
+      <div class="info-grid">
+        <span class="info-label">이메일 주소</span>
+        <span class="info-value" id="infoEmail">—</span>
+        <span class="info-label">가입일</span>
+        <span class="info-value" id="infoJoinDate">—</span>
+        <span class="info-label">계정 유형</span>
+        <span class="info-value" id="infoAccountType">—</span>
       </div>
     </div>
+
+    <div class="section-card">
+      <div class="card-header">
+        <div class="card-title">
+          <div class="card-icon" style="background:#d7f0ef">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0C6B70" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0 3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
+          </div>
+          API Key
+        </div>
+      </div>
+      <div class="key-box">
+        <span class="key-code masked" id="keyDisplay">••••••••••••••••••••••••••••••••</span>
+        <button class="btn-sm" id="keyToggle" type="button">보기</button>
+        <button class="btn-sm primary" id="keyCopy" type="button">복사</button>
+      </div>
+      <p style="margin-top:10px;font-size:13px;color:var(--muted);line-height:1.55">⚠ API Key는 비밀번호처럼 관리해 주세요. 하나의 Key로 여러 워드프레스 사이트에 연결할 수 있으며, 외부에 공개되지 않도록 주의하세요.</p>
+    </div>
+
   </div>
 
-  <!-- 결제 내역 -->
-  <div class="section-card">
-    <div class="card-header">
-      <div class="card-title">
-        <div class="card-icon" style="background:#FEF3E2">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+  <!-- 탭 2: 결제 정보 -->
+  <div class="tab-panel" id="panel-billing">
+
+    <div class="section-card">
+      <div class="card-header">
+        <div class="card-title">
+          <div class="card-icon" style="background:#EEF2FF">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4338CA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          </div>
+          구독 플랜
         </div>
-        결제 내역
+        <span class="card-badge" id="planBadge">—</span>
+      </div>
+      <div id="noPlanBlock">
+        <div class="no-plan">
+          <p>현재 구독 중인 플랜이 없어요.<br>플랜을 선택하면 더 많은 크레딧을 사용할 수 있어요.</p>
+          <a class="btn-plan" href="landing-v2.html#pricing">플랜 보러 가기 →</a>
+        </div>
+      </div>
+      <div id="hasPlanBlock" style="display:none">
+        <div class="plan-summary">
+          <div>
+            <h2 style="font-size:22px" id="planName">—</h2>
+            <span class="plan-tag" id="planTag">—</span>
+            <div class="info-grid" style="margin-top:16px">
+              <span class="info-label">결제일</span>
+              <span class="info-value" id="planPurchaseDate">—</span>
+              <span class="info-label">크레딧</span>
+              <span class="info-value" id="planCreditsLabel">—</span>
+            </div>
+          </div>
+          <div class="plan-price-big" id="planPriceBig">—</div>
+        </div>
+        <div class="credit-wrap">
+          <div class="credit-label-row">
+            <span>크레딧 사용 현황</span>
+            <span><span class="credit-num" id="creditUsed">0</span> / <span class="credit-num" id="creditTotal">0</span> 사용</span>
+          </div>
+          <div class="credit-bar"><div class="credit-fill" id="creditFill" style="width:0%"></div></div>
+          <p style="margin-top:8px;font-size:13px;color:var(--muted)" id="creditRemain">남은 크레딧: —개</p>
+        </div>
+        <div style="margin-top:18px">
+          <a href="landing-v2.html#pricing" class="btn-sm primary" style="text-decoration:none;display:inline-flex;align-items:center">플랜 변경</a>
+        </div>
       </div>
     </div>
-    <div id="histBlock">
+
+    <div class="section-card">
+      <div class="card-header">
+        <div class="card-title">
+          <div class="card-icon" style="background:#FEF3E2">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+          </div>
+          결제 내역
+        </div>
+      </div>
       <div class="empty" id="histEmpty">결제 내역이 없어요. <a href="landing-v2.html#pricing">플랜을 선택해 보세요.</a></div>
       <div id="histTable" style="display:none;overflow-x:auto">
         <table class="hist-table">
@@ -231,6 +276,65 @@ a:hover{text-decoration:underline}
         </table>
       </div>
     </div>
+
+  </div>
+
+  <!-- 탭 3: 대체 텍스트 처리 내역 -->
+  <div class="tab-panel" id="panel-history">
+
+    <!-- 요약 통계 -->
+    <div class="stat-row">
+      <div class="stat-tile">
+        <div class="stat-tile-num" id="statTotal">—</div>
+        <div class="stat-tile-label">총 처리 건수</div>
+      </div>
+      <div class="stat-tile">
+        <div class="stat-tile-num" id="statMonth">—</div>
+        <div class="stat-tile-label">이번 달 처리</div>
+      </div>
+      <div class="stat-tile">
+        <div class="stat-tile-num" id="statSites">—</div>
+        <div class="stat-tile-label">연결된 사이트 수</div>
+      </div>
+    </div>
+
+    <div class="section-card" style="padding:20px 24px">
+      <!-- 필터 -->
+      <div class="filter-row">
+        <span class="filter-label">사이트</span>
+        <select class="filter-select" id="siteFilter">
+          <option value="">전체</option>
+        </select>
+        <span class="filter-label" style="margin-left:8px">상태</span>
+        <select class="filter-select" id="statusFilter">
+          <option value="">전체</option>
+          <option value="auto">자동 생성</option>
+          <option value="edited">직접 수정</option>
+        </select>
+        <span style="margin-left:auto;font-size:13px;color:var(--muted)" id="filterCount"></span>
+      </div>
+
+      <!-- 테이블 -->
+      <div class="alt-wrap">
+        <table class="alt-table" id="altTable">
+          <thead>
+            <tr>
+              <th style="width:40px;text-align:center">#</th>
+              <th style="width:180px">이미지</th>
+              <th style="width:130px">사이트</th>
+              <th>원본 대체 텍스트</th>
+              <th>앨리 생성 대체 텍스트</th>
+              <th style="width:90px">WCAG</th>
+              <th style="width:120px">생성 일시</th>
+              <th style="width:80px">상태</th>
+            </tr>
+          </thead>
+          <tbody id="altBody"></tbody>
+        </table>
+      </div>
+      <div class="empty" id="altEmpty" style="display:none">처리 내역이 없어요.</div>
+    </div>
+
   </div>
 
 </main>
@@ -249,29 +353,37 @@ a:hover{text-decoration:underline}
   var key = email ? map[email] : null;
   var plan = loadPlan();
 
-  // 로그인 안 된 경우 랜딩으로 리다이렉트
   if(!email || !key){
     alert('로그인이 필요해요. 로그인 후 다시 접근해 주세요.');
     location.href = 'landing-v2.html';
     return;
   }
 
-  // 토스트
   function toast(msg){
     var el = document.getElementById('toast');
     el.textContent = msg; el.classList.add('show');
     setTimeout(function(){ el.classList.remove('show'); }, 2000);
   }
 
+  // 탭
+  var tabBtns = document.querySelectorAll('.tab-btn');
+  var tabPanels = document.querySelectorAll('.tab-panel');
+  tabBtns.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      tabBtns.forEach(function(b){ b.classList.remove('active'); });
+      tabPanels.forEach(function(p){ p.classList.remove('active'); });
+      btn.classList.add('active');
+      document.getElementById('panel-' + btn.dataset.tab).classList.add('active');
+    });
+  });
+
   // 헤더
-  var initial = email.charAt(0).toUpperCase();
-  document.getElementById('hdrAvatar').textContent = initial;
+  document.getElementById('hdrAvatar').textContent = email.charAt(0).toUpperCase();
   document.getElementById('hdrEmail').textContent = email;
 
-  // 내 계정
+  // 계정 정보
   document.getElementById('infoEmail').textContent = email;
-  var joinDate = plan ? plan.purchaseDate : '—';
-  document.getElementById('infoJoinDate').textContent = joinDate;
+  document.getElementById('infoJoinDate').textContent = plan ? plan.purchaseDate : '—';
   document.getElementById('infoAccountType').textContent = plan ? plan.planName + ' 플랜' : '무료';
 
   // API Key
@@ -291,7 +403,6 @@ a:hover{text-decoration:underline}
   renderKey();
   document.getElementById('keyToggle').addEventListener('click', function(){ keyMasked = !keyMasked; renderKey(); });
   document.getElementById('keyCopy').addEventListener('click', function(){
-    var btn = this;
     function done(){ toast('API Key가 복사됐어요.'); }
     if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(key).then(done, done); }
     else { var t=document.createElement('textarea');t.value=key;document.body.appendChild(t);t.select();try{document.execCommand('copy');}catch(e){}document.body.removeChild(t);done(); }
@@ -308,22 +419,16 @@ a:hover{text-decoration:underline}
     document.getElementById('planPurchaseDate').textContent = plan.purchaseDate;
     document.getElementById('planCreditsLabel').textContent = plan.credits;
     document.getElementById('planPriceBig').innerHTML = plan.price + '원<span class="plan-price-unit">' + plan.period + '</span>';
-
-    // 크레딧 - 데모: 전체의 약 8% 사용으로 표현
     var total = plan.creditCount;
     var used = Math.floor(total * 0.08);
     var remain = total - used;
-    var pct = Math.round((used / total) * 100);
     document.getElementById('creditUsed').textContent = used;
     document.getElementById('creditTotal').textContent = total;
-    document.getElementById('creditFill').style.width = pct + '%';
+    document.getElementById('creditFill').style.width = Math.round((used/total)*100) + '%';
     document.getElementById('creditRemain').textContent = '남은 크레딧: ' + remain.toLocaleString() + '개';
-
-    // 결제 내역
     document.getElementById('histEmpty').style.display = 'none';
     document.getElementById('histTable').style.display = 'block';
-    var tbody = document.getElementById('histBody');
-    tbody.innerHTML = '<tr>'
+    document.getElementById('histBody').innerHTML = '<tr>'
       + '<td>' + plan.purchaseDate + '</td>'
       + '<td>' + plan.planName + ' 플랜 ' + (plan.isAnnual ? '(연간)' : '(월간)') + '</td>'
       + '<td style="font-family:\'IBM Plex Mono\',monospace;font-weight:600">' + plan.price + '원</td>'
@@ -336,10 +441,82 @@ a:hover{text-decoration:underline}
 
   // 로그아웃
   document.getElementById('logoutBtn').addEventListener('click', function(){
-    if(confirm('로그아웃 하시겠어요?')){
-      location.href = 'landing-v2.html';
-    }
+    if(confirm('로그아웃 하시겠어요?')){ location.href = 'landing-v2.html'; }
   });
+
+  // ── 대체 텍스트 처리 내역 (데모 데이터) ──
+  var DEMO = [
+    { id:1, emoji:'🖼️', fname:'hero_banner.jpg', site:'www.inseq.co.kr', orig:'', altNew:'흰색 배경에 파란 텍스트로 "INSEQ 기업 소개"가 적힌 배너 이미지. 왼쪽에는 회사 로고가 있습니다.', wcag:'SC 1.1.1', date:'2026.07.28 14:32', status:'auto' },
+    { id:2, emoji:'📊', fname:'q2_revenue_chart.png', site:'www.inseq.co.kr', orig:'차트 이미지', altNew:'2026년 2분기 매출 막대그래프. 4월 1.2억, 5월 1.8억, 6월 2.4억으로 전분기 대비 42% 성장.', wcag:'SC 1.1.1', date:'2026.07.28 14:31', status:'edited' },
+    { id:3, emoji:'🖼️', fname:'team_photo_2026.jpg', site:'www.inseq.co.kr', orig:'', altNew:'6명의 팀원이 밝은 사무실에서 노트북을 보며 회의하는 모습. 화이트보드에 프로젝트 일정이 적혀 있습니다.', wcag:'SC 1.1.1', date:'2026.07.28 09:15', status:'auto' },
+    { id:4, emoji:'🖼️', fname:'product_main.jpg', site:'blog.example.com', orig:'제품 사진', altNew:'앨리 워드프레스 플러그인 설정 화면. 상단에 API Key 입력란이 있고 자동 생성 토글이 활성화된 상태입니다.', wcag:'SC 1.1.1', date:'2026.07.27 16:44', status:'auto' },
+    { id:5, emoji:'📊', fname:'wcag_compliance_table.png', site:'blog.example.com', orig:'', altNew:'WCAG 2.2 준수 항목 비교표. A 레벨 28개 항목 중 26개 통과, AA 레벨 20개 항목 중 18개 통과.', wcag:'SC 1.1.1', date:'2026.07.27 11:20', status:'auto' },
+    { id:6, emoji:'🖼️', fname:'office_exterior.jpg', site:'blog.example.com', orig:'건물 사진', altNew:'서울 강남구에 위치한 INSEQ 사무실 건물 외관. 유리 파사드로 된 10층짜리 현대식 건물이며 1층에 회사 로고가 부착되어 있습니다.', wcag:'SC 1.1.1', date:'2026.07.26 13:05', status:'edited' },
+    { id:7, emoji:'🖼️', fname:'speaker_profile.jpg', site:'www.inseq.co.kr', orig:'', altNew:'발표자 프로필 사진. 40대 여성이 밝은 회색 재킷을 입고 미소 짓고 있습니다. 배경은 단색 화이트입니다.', wcag:'SC 1.1.1', date:'2026.07.25 10:30', status:'auto' },
+    { id:8, emoji:'📊', fname:'monthly_stats.png', site:'shop.mystore.kr', orig:'통계 차트', altNew:'7월 월간 통계 도넛차트. 신규 방문자 42%, 재방문자 35%, 전환 23% 비율로 구성. 전월 대비 전환율 3%p 상승.', wcag:'SC 1.1.1', date:'2026.07.24 15:18', status:'auto' },
+    { id:9, emoji:'🖼️', fname:'product_detail_01.jpg', site:'shop.mystore.kr', orig:'', altNew:'파란색 에코백 제품 상세 이미지. 정면 각도에서 촬영. 손잡이 길이 40cm, 본체 가로 35cm 세로 40cm. 로고 자수 처리.', wcag:'SC 1.1.1', date:'2026.07.23 09:42', status:'auto' },
+    { id:10, emoji:'🖼️', fname:'ceo_signature.png', site:'shop.mystore.kr', orig:'서명 이미지', altNew:'대표이사 김○○의 자필 서명 이미지.', wcag:'SC 1.1.1', date:'2026.07.22 17:55', status:'edited' },
+  ];
+
+  var currentData = DEMO.slice();
+
+  // 사이트 필터 옵션 구성
+  var sites = [];
+  DEMO.forEach(function(r){ if(sites.indexOf(r.site) === -1) sites.push(r.site); });
+  var siteSelect = document.getElementById('siteFilter');
+  sites.forEach(function(s){
+    var opt = document.createElement('option');
+    opt.value = s; opt.textContent = s;
+    siteSelect.appendChild(opt);
+  });
+
+  // 통계
+  document.getElementById('statTotal').textContent = DEMO.length;
+  var thisMonth = DEMO.filter(function(r){ return r.date.indexOf('2026.07') === 0; }).length;
+  document.getElementById('statMonth').textContent = thisMonth;
+  document.getElementById('statSites').textContent = sites.length;
+
+  function renderTable(data){
+    var tbody = document.getElementById('altBody');
+    var empty = document.getElementById('altEmpty');
+    document.getElementById('filterCount').textContent = '총 ' + data.length + '건';
+    if(!data.length){
+      tbody.innerHTML = '';
+      empty.style.display = 'block';
+      return;
+    }
+    empty.style.display = 'none';
+    tbody.innerHTML = data.map(function(r){
+      var origTxt = r.orig ? '<span class="alt-text-orig">' + r.orig + '</span>' : '<span class="alt-text-orig empty">비어 있었음</span>';
+      var statusHtml = r.status === 'auto'
+        ? '<span class="status-chip status-auto">자동 생성</span>'
+        : '<span class="status-chip status-edited">직접 수정</span>';
+      return '<tr>'
+        + '<td class="row-num">' + r.id + '</td>'
+        + '<td><div class="alt-thumb-cell"><div class="alt-thumb">' + r.emoji + '</div><div><div style="font-size:12px;font-weight:600;color:var(--ink)">' + r.fname.replace(/\.[^.]+$/, '') + '</div><div class="alt-fname">.' + r.fname.split('.').pop() + '</div></div></div></td>'
+        + '<td><span class="site-chip">' + r.site + '</span></td>'
+        + '<td class="alt-text-cell">' + origTxt + '</td>'
+        + '<td class="alt-text-cell"><span class="alt-text-new">' + r.altNew + '</span></td>'
+        + '<td><span class="wcag-chip">' + r.wcag + '</span></td>'
+        + '<td class="date-cell">' + r.date + '</td>'
+        + '<td>' + statusHtml + '</td>'
+        + '</tr>';
+    }).join('');
+  }
+
+  function applyFilter(){
+    var site = document.getElementById('siteFilter').value;
+    var status = document.getElementById('statusFilter').value;
+    var filtered = DEMO.filter(function(r){
+      return (!site || r.site === site) && (!status || r.status === status);
+    });
+    renderTable(filtered);
+  }
+
+  document.getElementById('siteFilter').addEventListener('change', applyFilter);
+  document.getElementById('statusFilter').addEventListener('change', applyFilter);
+  renderTable(DEMO);
+
 })();
 </script>
 </body>
