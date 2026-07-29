@@ -809,10 +809,6 @@
 
       <!-- STEP 1: 이메일 입력 -->
       <div data-astep="form">
-        <div style="display:inline-flex;align-items:center;gap:8px;margin-bottom:20px">
-          <span style="display:inline-block;background:#005EFF;color:#fff;font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:500;letter-spacing:.06em;padding:5px 14px;border-radius:999px">D-90</span>
-          <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#8db6ff;letter-spacing:.06em">선착순 300명 한정</span>
-        </div>
         <h2 id="api-h" style="margin-left:auto;margin-right:auto">이메일과 URL만 입력하면<br>API 키를 바로 드려요.</h2>
         <p class="lead" style="margin:14px auto 0;max-width:52ch">회원가입은 필요 없어요. 발급된 API 키는 입력하신 사이트에 연결됩니다. 얼리 액세스 기간 동안 발급된 키는 한도에 맞게 사용할 수 있어요.</p>
         <form id="apiForm" novalidate style="margin:28px auto 0;max-width:460px;flex-direction:column;gap:0">
@@ -825,7 +821,10 @@
             <input id="api-url" name="site_url" type="url" inputmode="url" placeholder="https://your-site.com" required>
           </div>
           <div style="margin-top:20px">
-            <button class="btn" type="submit" style="width:100%;justify-content:center;color:#fff;background:#005EFF">API Key 무료 발급 받기</button>
+            <button class="btn" type="submit" style="width:100%;justify-content:center;flex-direction:column;gap:3px;color:#fff;background:#005EFF;padding-top:14px;padding-bottom:14px">
+              <span style="font-size:17px;font-weight:700">API Key 무료 발급 받기</span>
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;opacity:.8;letter-spacing:.06em">D-90 · 선착순 300명 한정</span>
+            </button>
             <p style="margin:10px 0 0;font-size:12.5px;color:#8894a6;text-align:center">신청하면 <a href="privacy.html" target="_blank" style="color:#8db6ff">개인정보처리방침</a>에 동의하는 것으로 간주합니다.</p>
           </div>
           <p class="formmsg" id="apiMsg" role="status" aria-live="polite" style="color:#ff9c85"></p>
