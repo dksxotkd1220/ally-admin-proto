@@ -129,7 +129,7 @@ a:hover{text-decoration:underline}
 
 /* alt text history table */
 .alt-wrap{overflow-x:auto;border-radius:14px;border:1px solid var(--mist)}
-.alt-table{width:100%;border-collapse:collapse;font-size:13px;min-width:900px}
+.alt-table{width:100%;border-collapse:collapse;font-size:13px;min-width:1540px}
 .alt-table th{text-align:left;padding:10px 14px;background:#f8f9fb;border-bottom:1px solid var(--mist);font-size:11px;font-weight:600;color:var(--muted);letter-spacing:.05em;text-transform:uppercase;font-family:"IBM Plex Mono",monospace;white-space:nowrap}
 .alt-table td{padding:12px 14px;border-bottom:1px solid var(--mist);vertical-align:top;line-height:1.45}
 .alt-table tr:last-child td{border-bottom:none}
@@ -137,15 +137,24 @@ a:hover{text-decoration:underline}
 .alt-thumb{width:44px;height:44px;border-radius:8px;object-fit:cover;background:#e8edf2;display:flex;align-items:center;justify-content:center;flex:none;font-size:18px}
 .alt-thumb-cell{display:flex;align-items:center;gap:10px}
 .alt-fname{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--muted);margin-top:3px;word-break:break-all}
-.alt-text-cell{max-width:220px}
+.alt-text-cell{max-width:200px}
 .alt-text-orig{font-size:12px;color:#9aa3af;font-style:italic;line-height:1.4}
 .alt-text-orig.empty{color:#c5ccd6}
 .alt-text-new{font-size:13px;color:var(--ink);line-height:1.4;margin-top:0}
+.alt-desc-new{font-size:12px;color:#586271;line-height:1.4;margin-top:4px;font-style:italic}
 .site-chip{display:inline-flex;align-items:center;font-family:"IBM Plex Mono",monospace;font-size:11px;background:#f0f4ff;color:#3b5bdb;padding:2px 9px;border-radius:99px;white-space:nowrap}
+.page-url{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--teal);word-break:break-all;max-width:160px;display:block;line-height:1.4}
 .wcag-chip{font-family:"IBM Plex Mono",monospace;font-size:11px;background:#d7f0ef;color:var(--teal);padding:2px 9px;border-radius:99px;white-space:nowrap}
 .status-chip{font-family:"IBM Plex Mono",monospace;font-size:11px;padding:2px 9px;border-radius:99px;white-space:nowrap}
 .status-auto{background:#d7f0ef;color:var(--teal)}
 .status-edited{background:#FEF3E2;color:#D97706}
+.alttype-chip{font-family:"IBM Plex Mono",monospace;font-size:11px;padding:2px 9px;border-radius:99px;white-space:nowrap;display:inline-block;margin-bottom:4px}
+.alttype-none{background:#fee2e2;color:#b91c1c}
+.alttype-empty{background:#fef3c7;color:#92400e}
+.alttype-poor{background:#fde8d0;color:#c2410c}
+.applied-date{font-family:"IBM Plex Mono",monospace;font-size:11px;white-space:nowrap}
+.applied-ok{color:var(--teal)}
+.applied-pending{color:#D97706}
 .row-num{font-family:"IBM Plex Mono",monospace;font-size:12px;color:#c5ccd6;text-align:center}
 .date-cell{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--muted);white-space:nowrap}
 
@@ -363,14 +372,18 @@ a:hover{text-decoration:underline}
         <table class="alt-table" id="altTable">
           <thead>
             <tr>
-              <th style="width:40px;text-align:center">#</th>
-              <th style="width:180px">이미지</th>
-              <th style="width:130px">사이트</th>
-              <th>원본 대체 텍스트</th>
-              <th>앨리 생성 대체 텍스트</th>
-              <th style="width:90px">WCAG</th>
-              <th style="width:120px">생성 일시</th>
-              <th style="width:80px">상태</th>
+              <th style="width:36px;text-align:center">#</th>
+              <th style="width:160px">이미지</th>
+              <th style="width:170px">페이지 URL</th>
+              <th style="width:120px">사이트</th>
+              <th style="width:120px">원본 alt 유형</th>
+              <th style="width:160px">원본 대체 텍스트</th>
+              <th style="width:185px">앨리 생성 alt</th>
+              <th style="width:185px">앨리 생성 description</th>
+              <th style="width:80px">WCAG</th>
+              <th style="width:115px">생성 일시</th>
+              <th style="width:115px">반영 일시</th>
+              <th style="width:78px">상태</th>
             </tr>
           </thead>
           <tbody id="altBody"></tbody>
@@ -492,17 +505,19 @@ a:hover{text-decoration:underline}
   });
 
   // ── 대체 텍스트 처리 내역 (데모 데이터) ──
+  // altType: 'none'=속성없음 / 'empty'=빈값(alt="") / 'poor'=의미없는값
+  // appliedDate: null이면 미반영(대기)
   var DEMO = [
-    { id:1, emoji:'🖼️', fname:'hero_banner.jpg', site:'www.inseq.co.kr', orig:'', altNew:'흰색 배경에 파란 텍스트로 "INSEQ 기업 소개"가 적힌 배너 이미지. 왼쪽에는 회사 로고가 있습니다.', wcag:'SC 1.1.1', date:'2026.07.28 14:32', status:'auto' },
-    { id:2, emoji:'📊', fname:'q2_revenue_chart.png', site:'www.inseq.co.kr', orig:'차트 이미지', altNew:'2026년 2분기 매출 막대그래프. 4월 1.2억, 5월 1.8억, 6월 2.4억으로 전분기 대비 42% 성장.', wcag:'SC 1.1.1', date:'2026.07.28 14:31', status:'edited' },
-    { id:3, emoji:'🖼️', fname:'team_photo_2026.jpg', site:'www.inseq.co.kr', orig:'', altNew:'6명의 팀원이 밝은 사무실에서 노트북을 보며 회의하는 모습. 화이트보드에 프로젝트 일정이 적혀 있습니다.', wcag:'SC 1.1.1', date:'2026.07.28 09:15', status:'auto' },
-    { id:4, emoji:'🖼️', fname:'product_main.jpg', site:'blog.example.com', orig:'제품 사진', altNew:'앨리 워드프레스 플러그인 설정 화면. 상단에 API Key 입력란이 있고 자동 생성 토글이 활성화된 상태입니다.', wcag:'SC 1.1.1', date:'2026.07.27 16:44', status:'auto' },
-    { id:5, emoji:'📊', fname:'wcag_compliance_table.png', site:'blog.example.com', orig:'', altNew:'WCAG 2.2 준수 항목 비교표. A 레벨 28개 항목 중 26개 통과, AA 레벨 20개 항목 중 18개 통과.', wcag:'SC 1.1.1', date:'2026.07.27 11:20', status:'auto' },
-    { id:6, emoji:'🖼️', fname:'office_exterior.jpg', site:'blog.example.com', orig:'건물 사진', altNew:'서울 강남구에 위치한 INSEQ 사무실 건물 외관. 유리 파사드로 된 10층짜리 현대식 건물이며 1층에 회사 로고가 부착되어 있습니다.', wcag:'SC 1.1.1', date:'2026.07.26 13:05', status:'edited' },
-    { id:7, emoji:'🖼️', fname:'speaker_profile.jpg', site:'www.inseq.co.kr', orig:'', altNew:'발표자 프로필 사진. 40대 여성이 밝은 회색 재킷을 입고 미소 짓고 있습니다. 배경은 단색 화이트입니다.', wcag:'SC 1.1.1', date:'2026.07.25 10:30', status:'auto' },
-    { id:8, emoji:'📊', fname:'monthly_stats.png', site:'shop.mystore.kr', orig:'통계 차트', altNew:'7월 월간 통계 도넛차트. 신규 방문자 42%, 재방문자 35%, 전환 23% 비율로 구성. 전월 대비 전환율 3%p 상승.', wcag:'SC 1.1.1', date:'2026.07.24 15:18', status:'auto' },
-    { id:9, emoji:'🖼️', fname:'product_detail_01.jpg', site:'shop.mystore.kr', orig:'', altNew:'파란색 에코백 제품 상세 이미지. 정면 각도에서 촬영. 손잡이 길이 40cm, 본체 가로 35cm 세로 40cm. 로고 자수 처리.', wcag:'SC 1.1.1', date:'2026.07.23 09:42', status:'auto' },
-    { id:10, emoji:'🖼️', fname:'ceo_signature.png', site:'shop.mystore.kr', orig:'서명 이미지', altNew:'대표이사 김○○의 자필 서명 이미지.', wcag:'SC 1.1.1', date:'2026.07.22 17:55', status:'edited' },
+    { id:1, emoji:'🖼️', fname:'hero_banner.jpg', site:'www.inseq.co.kr', pageUrl:'www.inseq.co.kr/about', altType:'none', orig:'', altNew:'흰색 배경에 파란 텍스트로 "INSEQ 기업 소개"가 적힌 배너 이미지. 왼쪽에는 회사 로고가 있습니다.', desc:'INSEQ 회사 소개 페이지 상단에 위치한 메인 배너. 브랜드 색상인 파란색과 흰색으로 구성된 수평 레이아웃.', wcag:'SC 1.1.1', date:'2026.07.28 14:32', appliedDate:'2026.07.28 14:33', status:'auto' },
+    { id:2, emoji:'📊', fname:'q2_revenue_chart.png', site:'www.inseq.co.kr', pageUrl:'www.inseq.co.kr/ir/2026-q2', altType:'poor', orig:'차트 이미지', altNew:'2026년 2분기 매출 막대그래프. 4월 1.2억, 5월 1.8억, 6월 2.4억으로 전분기 대비 42% 성장.', desc:'IR 자료 페이지에 삽입된 2026년 2분기 실적 차트. 월별 매출 추이를 시각화한 세로 막대 그래프.', wcag:'SC 1.1.1', date:'2026.07.28 14:31', appliedDate:'2026.07.28 15:10', status:'edited' },
+    { id:3, emoji:'🖼️', fname:'team_photo_2026.jpg', site:'www.inseq.co.kr', pageUrl:'www.inseq.co.kr/team', altType:'empty', orig:'', altNew:'6명의 팀원이 밝은 사무실에서 노트북을 보며 회의하는 모습. 화이트보드에 프로젝트 일정이 적혀 있습니다.', desc:'팀 소개 페이지 최상단에 배치된 단체 사진. 서울 사무실 회의실에서 촬영.', wcag:'SC 1.1.1', date:'2026.07.28 09:15', appliedDate:'2026.07.28 09:16', status:'auto' },
+    { id:4, emoji:'🖼️', fname:'product_main.jpg', site:'blog.example.com', pageUrl:'blog.example.com/ally-plugin-guide', altType:'poor', orig:'제품 사진', altNew:'앨리 워드프레스 플러그인 설정 화면. 상단에 API Key 입력란이 있고 자동 생성 토글이 활성화된 상태입니다.', desc:'앨리 플러그인 설치 가이드 포스팅에 삽입된 플러그인 설정 스크린샷.', wcag:'SC 1.1.1', date:'2026.07.27 16:44', appliedDate:'2026.07.27 16:45', status:'auto' },
+    { id:5, emoji:'📊', fname:'wcag_compliance_table.png', site:'blog.example.com', pageUrl:'blog.example.com/wcag-checklist-2026', altType:'none', orig:'', altNew:'WCAG 2.2 준수 항목 비교표. A 레벨 28개 항목 중 26개 통과, AA 레벨 20개 항목 중 18개 통과.', desc:'WCAG 2.2 체크리스트 포스팅에 삽입된 준수 현황 표. 레벨별 통과·미통과 항목 수를 정리한 표 형태 이미지.', wcag:'SC 1.1.1', date:'2026.07.27 11:20', appliedDate:'2026.07.27 11:21', status:'auto' },
+    { id:6, emoji:'🖼️', fname:'office_exterior.jpg', site:'blog.example.com', pageUrl:'blog.example.com/inseq-office-tour', altType:'poor', orig:'건물 사진', altNew:'서울 강남구에 위치한 INSEQ 사무실 건물 외관. 유리 파사드로 된 10층짜리 현대식 건물이며 1층에 회사 로고가 부착되어 있습니다.', desc:'오피스 투어 포스팅의 첫 번째 이미지. 낮 시간대 맑은 날씨에 촬영된 건물 정면 사진.', wcag:'SC 1.1.1', date:'2026.07.26 13:05', appliedDate:'2026.07.26 14:22', status:'edited' },
+    { id:7, emoji:'🖼️', fname:'speaker_profile.jpg', site:'www.inseq.co.kr', pageUrl:'www.inseq.co.kr/events/2026-accessibility-conf', altType:'empty', orig:'', altNew:'발표자 프로필 사진. 40대 여성이 밝은 회색 재킷을 입고 미소 짓고 있습니다. 배경은 단색 화이트입니다.', desc:'접근성 컨퍼런스 이벤트 페이지에 게시된 키노트 발표자 공식 프로필 이미지.', wcag:'SC 1.1.1', date:'2026.07.25 10:30', appliedDate:'2026.07.25 10:31', status:'auto' },
+    { id:8, emoji:'📊', fname:'monthly_stats.png', site:'shop.mystore.kr', pageUrl:'shop.mystore.kr/admin/reports/july', altType:'poor', orig:'통계 차트', altNew:'7월 월간 통계 도넛차트. 신규 방문자 42%, 재방문자 35%, 전환 23% 비율로 구성. 전월 대비 전환율 3%p 상승.', desc:'7월 리포트 페이지에 삽입된 방문자 구성 비율 도넛차트. 색상별로 방문자 유형 구분.', wcag:'SC 1.1.1', date:'2026.07.24 15:18', appliedDate:'2026.07.24 15:19', status:'auto' },
+    { id:9, emoji:'🖼️', fname:'product_detail_01.jpg', site:'shop.mystore.kr', pageUrl:'shop.mystore.kr/products/eco-bag-blue', altType:'none', orig:'', altNew:'파란색 에코백 제품 상세 이미지. 정면 각도에서 촬영. 손잡이 길이 40cm, 본체 가로 35cm 세로 40cm. 로고 자수 처리.', desc:'에코백 상품 상세 페이지 첫 번째 대표 이미지. 흰색 배경에 제품 단독 촬영.', wcag:'SC 1.1.1', date:'2026.07.23 09:42', appliedDate:null, status:'auto' },
+    { id:10, emoji:'🖼️', fname:'ceo_signature.png', site:'shop.mystore.kr', pageUrl:'shop.mystore.kr/terms', altType:'poor', orig:'서명 이미지', altNew:'대표이사 김○○의 자필 서명 이미지.', desc:'이용약관 페이지 하단에 첨부된 대표이사 직인 및 서명 이미지.', wcag:'SC 1.1.1', date:'2026.07.22 17:55', appliedDate:'2026.07.22 18:01', status:'edited' },
   ];
 
   // 사이트 필터 옵션 구성
@@ -550,19 +565,32 @@ a:hover{text-decoration:underline}
     var start = (currentPage - 1) * perPage;
     var pageData = data.slice(start, start + perPage);
 
+    var altTypeMap = {
+      none:  ['alttype-none',  'alt 속성 없음'],
+      empty: ['alttype-empty', 'alt="" (빈 값)'],
+      poor:  ['alttype-poor',  '의미없는 값']
+    };
     tbody.innerHTML = pageData.map(function(r){
-      var origTxt = r.orig ? '<span class="alt-text-orig">' + r.orig + '</span>' : '<span class="alt-text-orig empty">비어 있었음</span>';
+      var origTxt = r.orig ? '<span class="alt-text-orig">' + r.orig + '</span>' : '<span class="alt-text-orig empty">—</span>';
+      var at = altTypeMap[r.altType] || ['alttype-none','—'];
+      var alttypeHtml = '<span class="alttype-chip ' + at[0] + '">' + at[1] + '</span>';
       var statusHtml = r.status === 'auto'
-        ? '<span class="status-chip status-auto">자동 생성</span>'
-        : '<span class="status-chip status-edited">직접 수정</span>';
+        ? '<span class="status-chip status-auto">자동</span>'
+        : '<span class="status-chip status-edited">수정</span>';
+      var appliedHtml = r.appliedDate
+        ? '<span class="applied-date applied-ok">✓ ' + r.appliedDate + '</span>'
+        : '<span class="applied-date applied-pending">대기 중</span>';
       return '<tr>'
         + '<td class="row-num">' + r.id + '</td>'
         + '<td><div class="alt-thumb-cell"><div class="alt-thumb">' + r.emoji + '</div><div><div style="font-size:12px;font-weight:600;color:var(--ink)">' + r.fname.replace(/\.[^.]+$/, '') + '</div><div class="alt-fname">.' + r.fname.split('.').pop() + '</div></div></div></td>'
+        + '<td><span class="page-url">' + r.pageUrl + '</span></td>'
         + '<td><span class="site-chip">' + r.site + '</span></td>'
-        + '<td class="alt-text-cell">' + origTxt + '</td>'
+        + '<td>' + alttypeHtml + origTxt + '</td>'
         + '<td class="alt-text-cell"><span class="alt-text-new">' + r.altNew + '</span></td>'
+        + '<td class="alt-text-cell"><span class="alt-desc-new">' + r.desc + '</span></td>'
         + '<td><span class="wcag-chip">' + r.wcag + '</span></td>'
         + '<td class="date-cell">' + r.date + '</td>'
+        + '<td>' + appliedHtml + '</td>'
         + '<td>' + statusHtml + '</td>'
         + '</tr>';
     }).join('');
@@ -614,16 +642,21 @@ a:hover{text-decoration:underline}
 
   // CSV 다운로드
   document.getElementById('csvDownload').addEventListener('click', function(){
-    var headers = ['번호','파일명','사이트','원본 대체 텍스트','앨리 생성 대체 텍스트','WCAG 기준','생성 일시','상태'];
+    var altTypeLabelMap = {none:'alt 속성 없음', empty:'alt="" (빈 값)', poor:'의미없는 값'};
+    var headers = ['번호','파일명','페이지 URL','사이트','원본 alt 유형','원본 대체 텍스트','앨리 생성 alt','앨리 생성 description','WCAG 기준','생성 일시','반영 일시','상태'];
     var rows = currentFiltered.map(function(r){
       return [
         r.id,
         r.fname,
+        r.pageUrl,
         r.site,
-        r.orig || '(비어 있었음)',
+        altTypeLabelMap[r.altType] || r.altType,
+        r.orig || '(없음)',
         r.altNew,
+        r.desc,
         r.wcag,
         r.date,
+        r.appliedDate || '미반영',
         r.status === 'auto' ? '자동 생성' : '직접 수정'
       ].map(function(v){ return '"' + String(v).replace(/"/g,'""') + '"'; }).join(',');
     });
