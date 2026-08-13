@@ -180,6 +180,18 @@
   .takeaway{margin-top:26px;background:#EAF2FE;border:1px solid #C7DCFF;border-left:4px solid var(--fblue);border-radius:12px;padding:20px 22px}
   .takeaway h3{font-family:"Bricolage Grotesque","Apple SD Gothic Neo";font-weight:700;font-size:15px;color:var(--fblue);margin-bottom:8px;letter-spacing:0}
   .takeaway p{font-size:15px;color:var(--ink);line-height:1.65}
+
+  /* ── 신규: 업종별 이미지 검색 유입 ── */
+  .ind-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-top:44px}
+  @media (max-width:960px){.ind-grid{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:540px){.ind-grid{grid-template-columns:1fr}}
+  .ind-card{background:#fff;border:1px solid var(--mist);border-radius:16px;padding:22px 20px;display:flex;flex-direction:column}
+  .ind-tag{font-family:"IBM Plex Mono",monospace;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
+  .ind-pct{font-family:"Bricolage Grotesque","Apple SD Gothic Neo";font-weight:800;font-size:30px;color:var(--fblue);letter-spacing:-.02em;line-height:1;margin-bottom:10px}
+  .ind-bar{height:5px;background:var(--mist);border-radius:99px;margin-bottom:12px}
+  .ind-fill{height:100%;border-radius:99px;background:var(--fblue)}
+  .ind-desc{font-size:13px;color:var(--muted);line-height:1.55;margin-top:auto}
+  .ind-foot{margin-top:28px;text-align:center;font-size:12px;color:var(--muted)}
 </style>
 </head>
 <body>
@@ -252,6 +264,50 @@
         </div>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- 1-B. 업종별 이미지 검색 유입 -->
+<section class="section" aria-labelledby="ind-h" style="background:#fff;border-top:1px solid var(--mist)">
+  <div class="wrap reveal">
+    <p class="eyebrow" style="text-align:center">업종별 이미지 검색 유입 비율</p>
+    <h2 id="ind-h" style="font-size:clamp(24px,3.6vw,40px);text-align:center;margin:0 auto">이미지 검색으로 오는 방문자,<br>내 업종은 얼마나 될까요?</h2>
+    <p class="lead" style="margin:14px auto 0;text-align:center;max-width:none">전체 구글 검색의 22%는 이미지 검색입니다. alt text가 없는 이미지는 이 트래픽에서 통째로 빠집니다.</p>
+
+    <div class="ind-grid">
+      <div class="ind-card">
+        <p class="ind-tag">쇼핑몰 · 패션</p>
+        <p class="ind-pct">35~50%</p>
+        <div class="ind-bar"><div class="ind-fill" style="width:42%"></div></div>
+        <p class="ind-desc">상품 이미지가 구매 탐색의 시작점. 경쟁사 상품이 먼저 보이면 클릭은 그쪽으로 갑니다.</p>
+      </div>
+      <div class="ind-card">
+        <p class="ind-tag">인테리어 · 홈데코</p>
+        <p class="ind-pct">40~60%</p>
+        <div class="ind-bar"><div class="ind-fill" style="width:50%"></div></div>
+        <p class="ind-desc">시공 사례·제품 사진을 이미지로 검색하는 비율이 가장 높은 업종 중 하나입니다.</p>
+      </div>
+      <div class="ind-card">
+        <p class="ind-tag">음식점 · 카페</p>
+        <p class="ind-pct">25~40%</p>
+        <div class="ind-bar"><div class="ind-fill" style="width:32%"></div></div>
+        <p class="ind-desc">메뉴·매장 분위기 사진을 먼저 검색하고 방문을 결정하는 고객이 대부분입니다.</p>
+      </div>
+      <div class="ind-card">
+        <p class="ind-tag">부동산 · 매물</p>
+        <p class="ind-pct">20~35%</p>
+        <div class="ind-bar"><div class="ind-fill" style="width:27%"></div></div>
+        <p class="ind-desc">매물 사진이 클릭 여부를 결정합니다. 같은 매물도 설명이 있는 이미지가 먼저 노출됩니다.</p>
+      </div>
+      <div class="ind-card">
+        <p class="ind-tag">학원 · 강의</p>
+        <p class="ind-pct">10~20%</p>
+        <div class="ind-bar"><div class="ind-fill" style="width:15%"></div></div>
+        <p class="ind-desc">행사·수업 사진으로 신뢰를 전달합니다. 이미지 노출이 수강 문의로 이어집니다.</p>
+      </div>
+    </div>
+
+    <p class="ind-foot">* 업종별 유기 검색 트래픽 중 이미지 검색 유입 비율 추정치. 사이트 SEO 최적화 수준에 따라 차이가 있습니다.</p>
   </div>
 </section>
 
