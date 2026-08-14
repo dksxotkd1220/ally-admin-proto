@@ -59,6 +59,16 @@
   .read-body.good{background:#f2faf9;border:1.5px solid #b8e8e3;padding-right:44px}
   .rout-check{position:absolute;top:12px;right:12px;width:22px;height:22px;border-radius:50%;background:var(--fblue);display:flex;align-items:center;justify-content:center}
   .rout-check svg{width:12px;height:12px;stroke:#fff;stroke-width:2.5;fill:none}
+  .rout-channels{list-style:none;margin:12px 0 0;padding:0;display:flex;flex-direction:column;gap:7px}
+  .rout-ch{font-size:13px;font-weight:500;padding:9px 13px;border-radius:10px;display:flex;align-items:center;gap:9px;line-height:1.3}
+  .rout-ch-icon{width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex:none}
+  .rout-ch-icon svg{width:10px;height:10px;stroke:#fff;stroke-width:2.5;fill:none}
+  .rout-ch-seo{background:#EAF2FE;color:#1a4fd6}
+  .rout-ch-seo .rout-ch-icon{background:#005EFF}
+  .rout-ch-geo{background:#F0FDF4;color:#15803d}
+  .rout-ch-geo .rout-ch-icon{background:#16a34a}
+  .rout-ch-aeo{background:#F5F3FF;color:#6d28d9}
+  .rout-ch-aeo .rout-ch-icon{background:#7c3aed}
   .band-ink{background:var(--ink);color:#fff}
   .band-ink h2{color:#fff}.band-ink .eyebrow{color:#8db6ff}.band-ink .lead{color:#aeb8c4;max-width:none}
   .feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:44px}
@@ -244,6 +254,20 @@
         </div>
       </div>
 
+    <ul class="rout-channels" aria-label="이 설명이 적용되는 채널">
+      <li class="rout-ch rout-ch-seo">
+        <span class="rout-ch-icon" aria-hidden="true"><svg viewBox="0 0 10 10"><path d="M1.5 5l2.5 2.5 4.5-4.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        Google 이미지 검색 · 롱테일 키워드 노출
+      </li>
+      <li class="rout-ch rout-ch-geo">
+        <span class="rout-ch-icon" aria-hidden="true"><svg viewBox="0 0 10 10"><path d="M1.5 5l2.5 2.5 4.5-4.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        ChatGPT · Perplexity AI 답변 인용 소스
+      </li>
+      <li class="rout-ch rout-ch-aeo">
+        <span class="rout-ch-icon" aria-hidden="true"><svg viewBox="0 0 10 10"><path d="M1.5 5l2.5 2.5 4.5-4.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        음성 검색 · Featured Snippet 답변 후보
+      </li>
+    </ul>
     </div>
   </div>
 </section>
